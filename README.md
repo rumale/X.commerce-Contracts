@@ -57,7 +57,9 @@ The Eclipse plug-in in the [X.commerce Developer Package](https://www.x.com/fabr
 
 ### Language-specific Tweaks
 
-We've made a couple of tweaks to both the PHP and Ruby Avro implementations to make them easier to use for our purposes.  Specifically, we use the format typically used for data file storage for encoding messages, which required us to add a way to "force" writing complete schemas into messages.  Both the PHP and Avro versions are in this repository, until we get appropriate patches accepted into the official open source releases.
+We've made a couple of tweaks to both the PHP and Ruby Avro implementations to make them easier to use for our purposes.  Specifically, we use the format typically used for data file storage for encoding messages, which required us to add a way to "force" writing complete schemas into messages.  The PHP versions are in this repository, and a modified Ruby gem is available:
+    gem 'avro', :git => "git://github.com/xcommerce/avro-ruby.git")
+We plan to get appropriate patches into the official open source releases.
 
 Here's an example of this in action for both PHP and Ruby, referencing [Inventory.avdl](https://github.com/xcommerce/innovate-developer-demo/blob/master/Inventory.avdl) from the Innovate developer tutorial.
 
