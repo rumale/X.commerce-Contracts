@@ -1,0 +1,277 @@
+@namespace("com.x.service.payments.contract")
+protocol Payments {  
+  // interaction type - front end
+  enum InteractionType {
+    REDIRECT, // not supported yet
+	REDIRECT_PLUS_EXECUTE,
+	CC_API,
+	CC_DIRECT_POST,  // deprecated
+	CC_DIRECT_POST_CACHED, // deprecated
+	OUT_OF_BAND // not supported yet
+  }
+  
+  // render/information for bid response
+  record RedirectRenderInfo {
+    union {null, string} logoUrl;
+    union {null, string} helpTitle;
+    union {null, string} helpUrl;
+  }
+  
+  enum CardType {
+  	VISA,
+  	MASTER_CARD,
+  	DISCOVER,
+  	AMERICAN_EXPRESS
+  }
+  
+  record CardRenderType {
+  	string label;
+	union {null, CardType} type;
+	boolean checksum;
+  	union {null, string} logoUrl;
+  	union {null, int} minLength;
+  	union {null, int} maxLength;
+  }
+  
+  record CreditCardRenderInfo {
+    array<CardRenderType> cardRenderType;
+  }
+  
+  enum PaymentType {
+  	GOODS,
+  	SERVICE,
+  	PERSONAL,
+  	CASHADVANCE,
+  	DIGITALGOODS
+  }
+  
+  enum Status {
+  	BID,       // internal status (does not correspond to update message, has own topic)
+  	INITIATED, // internal status
+  	PENDING,   // call to provider in progress
+  	FAILED,    // call to provider results (and below)
+  	AUTHORIZED,
+  	CAPTURED,
+  	REVERSED,
+  	REFUNDED,
+  	VOIDED,
+  	EXPIRED
+  }
+
+  record LineData {
+  	string name;
+  	union {null, string} identifier;
+  	union {null, double} totalPrice;  // price of all items for this line (itemPrice * itemCount).  Not including tax.
+  	union {null, double} itemPrice;
+  	union {null, double} itemCount;
+  	union {null, double} itemTax;  // the total tax for the line data.
+  }
+  
+  record Cart {
+  	union {null, array<LineData>} lineItems;
+  	union {null, double} totalTax;
+  	union {null, double} totalShipping;
+  	union {null, double} totalAmount;  // rename to totalItemsPrice. The sum of the totalPrice from all LineData in this cart.
+  	union {null, double} totalHandling;
+  }
+
+  record Payment {
+  	union {null, string} providerAssignedUniqueId; // initially null until the provider workflow assigns it, step may vary, use clientProvidedUniqueId
+  	double amount;
+  	string currency;  // 3 letter currency code/ISO 4217
+  	PaymentType type;
+    Status status;
+    union {null, string} statusReason; // optional field with additional information regarding status
+    union {null, string} providerSpecificReason;
+    union {null, Cart} cart;
+    // TODO expand
+  }
+
+  record PaymentMethod {
+  	InteractionType interactionType;
+	string productLabel;  // Can be displayed on the paywall
+	string providerName;  // unique name for provider
+  	string methodName; // unique name for payment method (unique for a provider)
+  	union {RedirectRenderInfo, CreditCardRenderInfo} renderInfo;
+  }
+
+  // Bid
+    
+  @topic("/payment/bid")
+  record BidMessage {
+    string clientProvidedUniqueId; // transaction id unique for merchant such as shipping cart id
+    Payment payment;
+  }
+
+  record Bids {
+    union {null, array<PaymentMethod>} paymentMethods;
+    string destId;
+  }
+  
+  @topic("/payment/bid/success")
+  record BidSuccessMessage {
+    string clientProvidedUniqueId;
+    Bids bids;
+  }
+  
+  // end Bid
+  // Initiate
+
+  enum TransactionType {
+    AUTHORIZE_ONLY, AUTH_CAPTURE
+  }
+
+  // All these fields must be encrypted
+  record CreditCard {
+  	CardType cardType;
+    @security("Restricted")
+  	string cardNumber;
+  	@security("Restricted")
+    string expYear; // YYYY
+    @security("Restricted")
+    string expMonth; // MM
+    // Never store cardCode field on disk
+    @security("DoNotStore")
+    string cardCode; // 3 or 4 digit
+  }
+  
+  // Never broadcast Customer data
+  @security("Confidential")
+  record Customer {
+    union {null, string} firstName;
+    union {null, string} lastName;
+    union {null, string} company;
+    union {null, string} address;
+    union {null, string} city;
+    union {null, string} stateProvince;
+    union {null, string} zipPostal;
+    union {null, string} country;
+    union {null, string} phone;
+    union {null, string} merchantAssignedCustomerId;
+    union {null, string} endCustomerIP;
+  }
+  
+  // Never broadcast ShipTo data
+  @security("Confidential")
+  record ShipTo {
+    union {null, string} firstName;
+    union {null, string} lastName;
+    union {null, string} company;
+    union {null, string} address;
+    union {null, string} city;
+    union {null, string} stateProvince;
+    union {null, string} zipPostal;
+    union {null, string} country;
+  }
+  
+  record RedirectExecuteInitiationData {
+  	string returnSuccessURL;
+  	string returnCancelURL;
+  }
+  
+  record APIInitiationData {
+    TransactionType transactionType;
+    CreditCard creditCard;
+    Customer customer;
+    ShipTo shipTo;
+  }
+  
+  @topic("/payment/initiate")
+  record InitiateMessage {
+  	string clientProvidedUniqueId; // transaction id unique for merchant such as shipping cart id
+  	string destinationId; // XXX should this be here? or passed in header
+  	string selectedMethodName; // comes from paymentMethod.methodName received in response to bid
+  	union {RedirectExecuteInitiationData, APIInitiationData} initiationData;
+  	Payment payment;
+  }
+
+  // initiation result data should contain info to act on interaction type initiated (id is assigned in payment)
+  // should contain any information needed for front end redirect  
+  record RedirectExecuteInitiationResultData {
+  	string redirectURL;
+  }
+
+  // place holder  
+  record APIInitiationResultData {
+  }
+  
+  @topic("/payment/initiate/success")
+  record InitiateSuccessMessage {
+    string clientProvidedUniqueId;
+    string paymentSessionId;
+    union {RedirectExecuteInitiationResultData, APIInitiationResultData} initiationResultData;
+  }
+  
+  @topic("/payment/execute")
+  record ExecuteMessage {
+  	string clientProvidedUniqueId; // transaction id unique for merchant such as shipping cart id
+  }
+
+  @topics("/payment/update/authorized,/payment/update/captured,/payment/update/reversed,/payment/update/refunded,/payment/update/voided,/payment/update/expired")
+  record UpdateMessage {
+    string clientProvidedUniqueId;
+  	Payment payment;
+  }
+  
+  record Criterion {
+    string field;
+    string operation;
+    string operand1;
+    union {null, string} operand2;
+  }
+  
+  @topic("/payment/query")
+  record QueryMessage {
+  	array<Criterion> criteria;
+  	int page;
+  }
+  
+  @topic("/payment/query/success")
+  record QuerySuccessMessage {
+  	array<Payment> payments;
+  	QueryMessage criteria;
+  	int totalPages;
+  }
+  
+  record Error {
+  	string code;
+  	union {null, string} message;
+  	union {null, array<string>} parameters;
+  }
+  
+  @topics("/payment/bid/failure, /payment/initiate/failure, /payment/execute/failure, /payment/query/failure")
+  error Failure
+  {
+    string destinationId;
+    string clientProvidedUniqueId;
+  	array<Error> errors;
+  }
+ 
+  record MethodProperties {
+      string methodName;
+      boolean enabled;
+      union {null, map<string>} properties;
+  }
+
+  // adapter
+  record Configuration {
+      string guid;
+	  map<string> globalProperties;
+      union {null, array<MethodProperties>} methodProperties;
+  }
+
+  @topic("/payment/configuration/changed")
+  record ConfigurationChanged {
+  	string guid;
+  	string destinationId;
+  	boolean enabled;	// true if any method supported by the adapter is enabled
+  }
+  
+  @topic("/payment/configuration/failed")
+  error ConfigurationFailed {
+    string guid;
+    // XXX - Should configuration be sent back? contains sensitive data that the proper recipient should already have
+  	Configuration configuration;
+  	array<Error> errors;
+  }
+}
