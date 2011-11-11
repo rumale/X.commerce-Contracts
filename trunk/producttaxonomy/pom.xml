@@ -1,16 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.x.cap</groupId>
+		<artifactId>ontology-builder</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../builder</relativePath>
+	</parent>
 	<groupId>com.x.cap</groupId>
-	<artifactId>ontology-contracts</artifactId>
+	<artifactId>producttaxonomy-contract</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Ontology Contracts</name>
+	<name>Product Taxonomy Contract</name>
 	<description>
-		This artifact contains all of the contracts that makes up X.commerce.  
-		This is the ontology of X.commerce
+		This artifact contains the Product Taxonomy contract
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/ontology-contract</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/producttaxonomy</connection>
 	</scm>
 
 	<repositories>
@@ -32,14 +37,14 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology release repository</name>
+			<id>producttaxonomydeploy</id>
+			<name>Product Taxonomy release repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology snapshot repository</name>
+			<id>producttaxonomydeploy</id>
+			<name>Product Taxonomy snapshot repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -48,7 +53,7 @@
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
-			<version>1.5.1</version>
+			<version>${avro.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -63,7 +68,7 @@
 			<plugin>
 				<groupId>org.apache.avro</groupId>
 				<artifactId>avro-maven-plugin</artifactId>
-				<version>1.5.1</version>
+				<version>${avro.version}</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -74,15 +79,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
