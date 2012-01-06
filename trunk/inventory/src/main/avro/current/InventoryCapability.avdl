@@ -1,0 +1,363 @@
+@namespace("com.x.inventory.v1")
+
+/**
+ * topics and contracts for the inventory 
+ */
+
+protocol InventoryCapability {
+
+  record Error{
+    /** 
+     * Numeric value that indicates the type of error 
+     * ==============================================
+     */
+    string code;
+    
+    /** 
+     * Key whose value is a human displayable version of this error
+     * ============================================================
+     */
+    union {null, string} message = null;
+    
+    /** 
+     * Parameters for the message. Parameter place holders identified using the format in java.text.MessageFormat
+     * ==========================================================================================================
+     */
+
+    union {null, array<string>} parameters = null;
+  }
+    
+  enum ProductStatus {
+    AVAILABLE, RESERVED, COMMITTED, SHIPPED, UNAVAILABLE
+  }
+  
+  enum ReasonStatus {
+    ACTIVE, INACTIVE
+  }
+  
+  enum LocationStatus {
+    ACTIVE, INACTIVE
+  }
+
+  record SetStockAmountEntry {
+    string sku;
+    float quantity;
+    string reasonID;
+    union{null, string} locationID;
+    ProductStatus status;
+  }
+
+  record SetStockAmountEntryResponse {
+    string sku;
+    float quantity;
+    union{null, string} locationID;
+    ProductStatus status;
+  }
+
+  record SetStockAmountEntryError {
+    string sku;
+    union{null, string} locationID;
+    ProductStatus status; 
+    Error response;
+  }
+  
+  record GetStockEntryError {
+    string sku;
+    Error response;
+  }
+  
+  record GetStockLocationEntry {
+    string locationID;
+    float available;
+    float committed;
+    float reserved;
+    float shipped;
+    float unavailable;
+  }
+
+  record GetStockEntryResponse {
+    string sku;
+    float totalCommitted;
+    float totalReserved;
+    float totalShipped;
+    float totalUnavailable;
+    array<GetStockLocationEntry> locationAmounts;
+  }
+  
+  record AdjustStockEntry {
+    string sku;
+    float quantity;
+    string reasonID;
+    string locationID;
+    ProductStatus oldStatus;
+    ProductStatus newStatus;
+    union{null, string} referenceID;
+    union{null, int} changeDuration;
+  }
+  
+    record AdjustStockEntryError {
+    string sku;
+    string locationID;
+    ProductStatus oldStatus;
+    ProductStatus newStatus;
+    Error response;
+  }
+
+  record AdjustStockEntryResponse {
+    string sku;
+    float quantityAdjusted;
+    union{null, string} locationID;
+    ProductStatus oldStatus;
+    ProductStatus newStatus;
+  }
+  
+  record SetReorderPointEntry {
+    string sku;
+    union{null, float} reorderAmount;
+    string reasonID;
+    union{null, string} locationID;
+  }
+  
+  record SetReorderPointEntryError {
+    string sku;
+    union{null, float} reorderAmount;
+    union{null, string} locationID;
+    Error response;
+  }
+
+  record SetReorderPointEntryResponse {
+    string sku;
+    union{null, float} reorderAmount;
+    union{null, string} locationID;
+  }
+  
+  record GetLocationEntryResponse {
+    string name;
+    string abbreviation;
+    LocationStatus status;
+    string locationID;
+    boolean isDefault;
+  }
+  
+  record GetReasonEntryResponse {
+    string name;
+    ReasonStatus status;
+    string reasonID;
+  }
+  
+  // Set Stock Request, Response and Failure Messages
+  @topic("/inventory/stock/setAmount")
+  @version("1.0.0") 
+  record SetStockAmount {
+    array<SetStockAmountEntry> entries;
+  }
+  
+  @topic("/inventory/stock/setAmountSucceeded")
+  @version("1.0.0") 
+  record SetStockAmountSucceeded {
+    array<SetStockAmountEntryResponse> responses;
+  }
+  
+  @topic("/inventory/stock/setAmountFailed" )
+  @version("1.0.0") 
+  record SetStockAmountFailed{
+    array<SetStockAmountEntryError> responses;
+  }
+
+  error SetStockAmountFailedError{
+    array<SetStockAmountEntryError> responses;
+  }
+
+  // GetStock Request, Response and Failure Messages
+  @topic("/inventory/stock/get")
+  @version("1.0.0") 
+  record GetStock {
+    union{null, array<string>} sku;
+  }
+  
+  @topic("/inventory/stock/getSucceeded")
+  @version("1.0.0") 
+  record GetStockSucceeded {
+    array<GetStockEntryResponse> responses;
+  }
+  
+  @topic("/inventory/stock/getFailed")
+  @version("1.0.0") 
+  record GetStockFailed{
+    array<GetStockEntryError> responses;
+  }
+
+  // AdjustStock Request, Response and Failure Messages
+  @topic("/inventory/stock/adjust")
+  @version("1.0.0") 
+  record AdjustStock {
+    array<AdjustStockEntry> entries;
+  }
+  
+  @topic("/inventory/stock/adjustSucceeded")
+  @version("1.0.0") 
+  record AdjustStockSucceeded {
+    array<AdjustStockEntryResponse> responses;
+  }
+  
+  @topic("/inventory/stock/adjustFailed")
+  @version("1.0.0") 
+  record AdjustStockFailed{
+    array<AdjustStockEntryError> responses;
+  }
+  
+  // SetReorderPoint Request, Response and Failure Messages
+  @topic("/inventory/reorder/set")
+  @version("1.0.0") 
+  record SetReorderPoint {
+    array<SetReorderPointEntry> entries;
+  }
+  
+  @topic("/inventory/reorder/setSucceeded")
+  @version("1.0.0") 
+  record SetReorderPointSucceeded {
+    array<SetReorderPointEntryResponse> responses;
+  }
+  
+  @topic("/inventory/reorder/setFailed")
+  @version("1.0.0") 
+  record SetReorderPointFailed{
+    array<SetReorderPointEntryError> responses;
+  }
+
+  // CreateLocation Request, Response and Failure Messages
+  @topic("/inventory/location/create")
+  @version("1.0.0") 
+  record CreateLocation {
+    string name;
+    string abbreviation;
+  }
+  
+  @topic("/inventory/location/createSucceeded" )
+  @version("1.0.0") 
+  record CreateLocationSucceeded {
+    string name;
+    string abbreviation;
+    LocationStatus status;
+    string locationID;
+  }
+  
+  @topic("/inventory/location/createFailed")
+  @version("1.0.0") 
+  record CreateLocationFailed{
+    Error response;
+  }
+
+  error CreateLocationFailedError{
+    CreateLocationFailed response;
+  }
+
+  // Update Location Request, Response and Failure Messages
+  @topic("/inventory/location/update")
+  @version("1.0.0") 
+  record UpdateLocation {
+    union{null, string} name;
+    union{null, string} abbreviation;
+    union{null, LocationStatus} status;
+    string locationID;
+  }
+  
+  @topic("/inventory/location/updateSucceeded")
+  @version("1.0.0") 
+  record UpdateLocationSucceeded {
+    union{null, string} name;
+    union{null, string} abbreviation;
+    union{null, LocationStatus} status;
+    string locationID;
+  }
+  
+  @topic("/inventory/location/updateFailed")
+  @version("1.0.0") 
+  record UpdateLocationFailed{
+    Error response;
+  }
+  
+  
+  // Get Location Request, Response and Failure Messages
+  @topic("/inventory/location/get")
+  @version("1.0.0") 
+  record GetLocation {
+    union{null, string} locationID;
+  }
+  
+  @topic("/inventory/location/getSucceeded")
+  @version("1.0.0") 
+  record GetLocationSucceeded {
+    array<GetLocationEntryResponse> responses;
+  }
+  
+  @topic("/inventory/location/getFailed")
+  @version("1.0.0") 
+  record GetLocationFailed{
+    union{null, Error} response;
+  }
+    
+  // Create Reason Request, Response and Failure Messages
+  @topic("/inventory/reason/create")
+  @version("1.0.0") 
+  record CreateReason {
+    string name;
+  }
+  
+  @topic("/inventory/reason/createSucceeded")
+  @version("1.0.0") 
+  record CreateReasonSucceeded {
+    string reasonID;
+    string name;
+    ReasonStatus status;
+  }
+  
+  @topic("/inventory/reason/createFailed")
+  @version("1.0.0") 
+  record CreateReasonFailed{
+    Error response;
+  }
+
+  // Update Reason Request, Response and Failure Messages
+  @topic("/inventory/reason/update")
+  @version("1.0.0") 
+  record UpdateReason {
+    union{null, string} name;
+    union{null, ReasonStatus} status;
+    string reasonID;
+  }
+  
+  @topic("/inventory/reason/updateSucceeded")
+  @version("1.0.0") 
+  record UpdateReasonSucceeded {
+    union{null, string} name;
+    union{null, ReasonStatus}  status;
+    string reasonID;
+  }
+  
+  @topic("/inventory/reason/updateFailed")
+  @version("1.0.0") 
+  record UpdateReasonFailed{
+    Error response;
+  }
+  
+  
+  // Get Reason Request, Response and Failure Messages
+  @topic("/inventory/reason/get")
+  @version("1.0.0") 
+  record GetReason {
+    union{null, string} reasonID;
+  }
+  
+  @topic("/inventory/reason/getSucceeded")
+  @version("1.0.0") 
+  record GetReasonSucceeded {
+    array<GetReasonEntryResponse> responses;
+  }
+  
+  @topic("/inventory/reason/getFailed")
+  @version("1.0.0") 
+  record GetReasonFailed{
+    Error response;
+  }
+}
