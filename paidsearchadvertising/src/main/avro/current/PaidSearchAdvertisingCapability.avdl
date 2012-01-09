@@ -363,7 +363,8 @@ protocol PaidSearchAdvertisingCapability
     @version("1.0.0") 
     record CreateAdvertiserAccountFailed
     {
-        Error error;
+        AdvertiserAccount advertiserAccount;
+        array<Error> errors;
     }
 
     /**
@@ -394,7 +395,7 @@ protocol PaidSearchAdvertisingCapability
     record CreateCampaignFailed
     {
         Campaign campaign;
-        Error error;
+        array<Error> errors;
     }
 
     /**
