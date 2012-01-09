@@ -12,8 +12,24 @@ protocol InventoryCapability
         union {null, array<string>} parameters = null;
     }
  
+    // TODO: Model location (warehouse)
+    record Location
+    {
+    }
+
+    enum Condition
+    {
+        // TODO enumerated values of condition
+    }
+
     record StockItem 
     {
+        string id;
+        string sku;
+        string productId;
+        int quantity;
+        Condition condition;
+        Location location;
     }
  
     enum Filter 
