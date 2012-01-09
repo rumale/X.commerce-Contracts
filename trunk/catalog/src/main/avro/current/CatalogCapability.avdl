@@ -35,9 +35,18 @@ protocol CatalogCapability
         TBD
     }
  
+    record ProductImage
+    {
+        string url;
+        // TODO: Other image attributes
+    }
+
     // TODO: Set of ProductAttributeValues
     record Product 
     {
+        union {null, string} id;
+        union {null, string} productTypeId;
+        union {null, array<ProductImage> images = null;
         union {null, array<ProductAttributeValue>} attributes;
     }
 
