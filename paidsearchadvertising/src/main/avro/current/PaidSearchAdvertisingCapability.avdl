@@ -23,8 +23,6 @@ protocol PaidSearchAdvertisingCapability
         union{null, string} currencyCode;
 
         // TODO: Additional data needed to create the account
-
-        // TODO: 
     }
 
     /**
@@ -86,6 +84,13 @@ protocol PaidSearchAdvertisingCapability
         int code;
         union {null, string} message = null;
         union {null, array<string>} parameters = null;
+    }
+
+    /**
+     * Filter identifies the subset of the Campaign that should be retrieved.
+     */
+    record Filter
+    {
     }
 
     /**
@@ -388,17 +393,20 @@ protocol PaidSearchAdvertisingCapability
     @version("1.0.0") 
     record CreateCampaignFailed
     {
+        Campaign campaign;
         Error error;
     }
 
     /**
-     * Retrieve a campaign
+     * Retrieve a campaign. If a Filter is not provided, the entire Campaign
+     * is requested.
      */
     @topic("/paidSearchAdvertising/campaign/get") 
     @version("1.0.0") 
     record GetCampaign
     {
         Campaign campaign;
+        union {null, Filter} filter;
     }
 
     /**
@@ -409,6 +417,7 @@ protocol PaidSearchAdvertisingCapability
     record GetCampaignSucceeded
     {
         Campaign campaign;
+        union {null, Filter} filter;
     }
 
     /**
@@ -418,70 +427,53 @@ protocol PaidSearchAdvertisingCapability
     @version("1.0.0") 
     record GetCampaignFailed
     {
-        // TODO
-    }
-
-    @topic("/paidSearchAdvertising/campaign/search") 
-    @version("1.0.0") 
-    record SearchCampaign
-    {
-        // TODO
-    }
-
-    @topic("/paidSearchAdvertising/campaign/searchSucceeded") 
-    @version("1.0.0") 
-    record SearchCampaignSucceeded
-    {
-        // TODO
-    }
-
-    @topic("/paidSearchAdvertising/campaign/searchFailed") 
-    @version("1.0.0") 
-    record SearchCampaignFailed
-    {
-        // TODO
+        Campaign campaign;
+        union {null, Filter} filter;
+        array<Error> errors;
     }
 
     @topic("/paidSearchAdvertising/campaign/update") 
     @version("1.0.0") 
     record UpdateCampaign
     {
-        // TODO
+        Campaign campaign;
     }
 
     @topic("/paidSearchAdvertising/campaign/updated") 
     @version("1.0.0") 
     record CampaignUpdated
     {
-        // TODO
+        Campaign campaign;
     }
 
     @topic("/paidSearchAdvertising/campaign/updateFailed") 
     @version("1.0.0") 
     record UpdateCampaignFailed
     {
-        // TODO
+        Campaign campaign;
+        array<Error> errors;
     }
 
     @topic("/paidSearchAdvertising/campaign/delete") 
     @version("1.0.0") 
     record DeleteCampaign
     {
-        // TODO
+        Campaign campaign;
     }
 
     @topic("/paidSearchAdvertising/campaign/deleted") 
     @version("1.0.0") 
     record CampaignDeleted
     {
-        // TODO
+        Campaign campaign;
     }
 
     @topic("/paidSearchAdvertising/campaign/deleteFailed") 
     @version("1.0.0") 
     record DeleteCampaignFailed
     {
-        // TODO
+        Campaign campaign;
+        array<Error> errors;
     }
 
     // Add Campaign Ad Extension messages
@@ -490,21 +482,22 @@ protocol PaidSearchAdvertisingCapability
     @version("1.0.0") 
     record AddCampaignAdExtension
     {
-        // TODO
+        CampaignAdExtension campaignAdExtension;
     }
 
     @topic("/paidSearchAdvertising/campaignAdExtension/added") 
     @version("1.0.0") 
     record CampaignAdExtensionAdded
     {
-        // TODO
+        CampaignAdExtension campaignAdExtension;
     }
 
     @topic("/paidSearchAdvertising/campaignAdExtension/addFailed") 
     @version("1.0.0") 
     record AddCampaignAdExtensionFailed
     {
-        // TODO
+        CampaignAdExtension campaignAdExtension;
+        array<Error> errors;
     }
 
     // Delete Campaign Ad Extension messages
@@ -513,24 +506,23 @@ protocol PaidSearchAdvertisingCapability
     @version("1.0.0") 
     record DeleteCampaignAdExtension
     {
-        // TODO
+        CampaignAdExtension campaignAdExtension;
     }
 
     @topic("/paidSearchAdvertising/campaignAdExtension/deleted") 
     @version("1.0.0") 
     record CampaignAdExtensionDeleted
     {
-        // TODO
+        CampaignAdExtension campaignAdExtension;
     }
 
     @topic("/paidSearchAdvertising/campaignAdExtension/deleteFailed") 
     @version("1.0.0") 
     record DeleteCampaignAdExtensionFailed
     {
-        // TODO
+        CampaignAdExtension campaignAdExtension;
+        array<Error> errors;
     }
-
-    // TODO Do we need to have creation of reports?
 
     @topic("/paidSearchAdvertising/report/get") 
     @version("1.0.0") 
@@ -550,7 +542,8 @@ protocol PaidSearchAdvertisingCapability
     @version("1.0.0") 
     record GetReportFailed
     {
-        Error error;
+        ReportDefinition reportDefinition;
+        array<Error> errors;
     }
 
 }
