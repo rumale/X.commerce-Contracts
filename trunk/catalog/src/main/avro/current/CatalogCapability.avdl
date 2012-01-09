@@ -2,70 +2,25 @@
  
 protocol CatalogCapability 
 {
- 
-    record AttributeId {
-        string id;
+    record BooleanAttributeValue
+    {
+        boolean value;
     }
  
-    record AttributeValueId {
-        string id;
+    record StringEnumerationAttributeValue
+    {
+        string enumerationIndex;
     }
  
-    record StringAttributeValue {
-        // use AttributeValueId for ProductTaxonomyl-provided recommended values
-        union {AttributeValueId, string} value;
-    }
- 
-    record XStringAttribute {
-        AttributeId key;
-        array<StingAttributeValue> value;
-    }
- 
-    record CustomStringAttribute {
-        string key;
+    record StringAttributeValue
+    {
         string value;
     }
  
-    record XBooleanAttribute {
-        AttributeId key;
-        boolean value;
-    }
- 
-    record CustomBooleanAttribute {
-        string key;
-        boolean value;
-    }
- 
-    record XEnumerationAttribute {
-        AttributeId key;
-        AttributeValueId value;
-    }
- 
-    record ProductAttribute {
-        union {XStringAttribute, CustomStringAttribute, XBooleanAttribute, CustomBooleanAttribute, XEnumerationAttribute} attribute;
-    }
- 
-    enum ImagePurpose {
-        FEATURED,
-        GALLERY,
-        THUMBNAIL
-    }
- 
-    record ProductImage {
-        string locationURL;
-        ImagePurpose purpose;
-    }
- 
-    // TODO: Set of ProductAttributeValues
-    record Product 
+    record ProductAttributeValue
     {
-        union {null, string} id = null;
-        union {null, string} xProductTypeId = null;
-        string sku;
-        string name;
-        union {null, string} description = null
-        union {null, array<ProductImage> images = null;
-        union {null, array<ProductAttribute>} attributes = null;
+        String attributeId;
+        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue};
     }
  
     enum Filter 
@@ -74,15 +29,18 @@ protocol CatalogCapability
         FULL_DETAILS
     }
  
-    record Query {
+    // TODO: Query pattern from paid search advertising
+    record Query 
+    {
         TBD
     }
  
-    record ProductFilter {
-        Filter filter;
-        Query query;
+    // TODO: Set of ProductAttributeValues
+    record Product 
+    {
+        union {null, array<ProductAttributeValue>} attributes;
     }
- 
+
     /*-------------------------------------------------------------------
     /* Message definitions
     /*-------------------------------------------------------------------
