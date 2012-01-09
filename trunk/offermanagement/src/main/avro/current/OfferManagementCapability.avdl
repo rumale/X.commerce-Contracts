@@ -1,0 +1,163 @@
+@namespace("com.x.offermanagement.v1")
+ 
+protocol OfferManagementCapability 
+{
+    /**
+     * Details of error in failed messages
+     */
+    record Error 
+    {
+        int code;
+        union {null, string} message = null;
+        union {null, array<string>} parameters = null;
+    }
+
+    record State
+    {
+        // TODO: States of an offer
+    }
+ 
+    record Offer 
+    {
+        string id;
+        State state;
+    }
+ 
+    enum Filter 
+    {
+    }
+ 
+    record Query 
+    {
+    }
+ 
+    /*-------------------------------------------------------------------
+    /* Message definitions
+    /*-------------------------------------------------------------------
+    /**
+     * Create stock item
+     */
+    @topic("/offermanagement/offer/create")
+    @version("1.0.0")
+    record CreateOffer
+    {
+        array<Offer> offers;
+    }
+ 
+    @topic("/offermanagement/offer/created")
+    @version("1.0.0")
+    record OfferCreated
+    {
+        array<Offer> offers;
+    }
+ 
+    @topic("/offermanagement/offer/createFailed")
+    @version("1.0.0")
+    record CreateOfferFailed
+    {
+        array<Offer> offers;
+        array<Error> errors;
+    }
+ 
+    @topic("/offermanagement/offer/get")
+    @version("1.0.0")
+    record GetOffer
+    {
+        array<string> offerIds;
+        union {null, Filter} filter; 
+        // TODO: locale
+    }
+ 
+    @topic("/offermanagement/offer/getSucceeded")
+    @version("1.0.0")
+    record GetOfferSucceeded
+    {
+        array<Offer> offers;
+        union {null, Filter} filter; 
+        // TODO: locale
+    }
+ 
+    @topic("/offermanagement/offer/getFailed")
+    @version("1.0.0")
+    record GetOfferFailed
+    {
+        array<string> offerIds;
+        union {null, Filter} filter; 
+        // TODO: locale
+        array<Error> errors;
+    }
+ 
+    // TODO: Search pattern based on report in paid search advertising
+    @topic("/offermanagement/offer/search")
+    @version("1.0.0")
+    record SearchOffer
+    {
+        Query query;
+        Filter filter = FULL_DETAILS;
+        // TODO: locale
+    }
+ 
+    @topic("/offermanagement/offer/searchSucceeded")
+    @version("1.0.0")
+    record SearchOfferSucceeded
+    {
+        Query query;
+        Filter filter = FULL_DETAILS;
+        // TODO: locale
+        union {null, array<Offer>} offers;
+    }
+ 
+    @topic("/offermanagement/offer/searchFailed")
+    @version("1.0.0")
+    record SearchOfferFailed
+    {
+        Query query;
+        Filter filter = FULL_DETAILS;
+        // TODO: locale
+        array<Error> errors;
+    }
+ 
+    @topic("/offermanagement/offer/update")
+    @version("1.0.0")
+    record UpdateStockItem
+    {
+        StockItem stockItem;
+    }
+ 
+    @topic("/offermanagement/offer/updated")
+    @version("1.0.0")
+    record OfferUpdated
+    {
+        Offer offer;
+    }
+ 
+    @topic("/offermanagement/offer/updateFailed")
+    @version("1.0.0")
+    record UpdateOfferFailed
+    {
+        Offer offer;
+        array<Error> errors;
+    }
+ 
+    @topic("/offermanagement/offer/delete")
+    @version("1.0.0")
+    record DeleteOffer
+    {
+        Offer offer;
+    }
+ 
+    @topic("/offermanagement/offer/deleted")
+    @version("1.0.0")
+    record OfferDeleted
+    {
+        Offer offer;
+    }
+ 
+    @topic("/offermanagement/offer/deleteFailed")
+    @version("1.0.0")
+    record DeleteOfferFailed
+    {
+        Offer offer;
+        array<Error> errors;
+    }
+}
