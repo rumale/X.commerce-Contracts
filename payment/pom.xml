@@ -3,9 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.cap</groupId>
-		<artifactId>ontology-builder</artifactId>
+		<artifactId>ontology-superpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../builder</relativePath>
+
+		<relativePath>../superpom</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
 	<artifactId>payment-contract</artifactId>

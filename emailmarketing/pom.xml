@@ -1,18 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.x.cap</groupId>
-	<artifactId>ontology-builder</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>Ontology</name>
-	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/builder</connection>
-	</scm>
+	<parent>
+		<groupId>com.x.cap</groupId>
+		<artifactId>ontology-superpom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 
-	<properties>
-		<avro.version>1.5.1</avro.version>
-	</properties>
+		<relativePath>../superpom</relativePath>
+	</parent>
+	<groupId>com.x.cap</groupId>
+	<artifactId>emailmarketing-contract</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Email Marketing Contract</name>
+	<description>
+		This artifact contains the email marketing contract.
+	</description>
+	<scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/emailmarketing</connection>
+	</scm>
 
 	<repositories>
 		<repository>
@@ -33,14 +38,14 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology release repository</name>
+			<id>emailmarketingdeploy</id>
+			<name>Email Marketing release repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology snapshot repository</name>
+			<id>emailmarketingdeploy</id>
+			<name>Email Marketing snapshot repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -49,28 +54,34 @@
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
-			<version>1.5.1</version>
+			<version>${avro.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/avro</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>${avro.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>protocol</goal>
+							<goal>idl-protocol</goal>
+							<goal>schema</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
-		<module>../marketplace</module>
-		<module>../payment</module>
-		<module>../producttaxonomy</module>
-		<module>../all</module>
-	</modules>
+
 </project>
