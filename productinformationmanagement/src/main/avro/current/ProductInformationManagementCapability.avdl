@@ -1,0 +1,182 @@
+@namespace("com.x.catalog.v1")
+ 
+protocol CatalogCapability 
+{
+    record BooleanAttributeValue
+    {
+        boolean value;
+    }
+ 
+    record StringEnumerationAttributeValue
+    {
+        string enumerationIndex;
+    }
+ 
+    record StringAttributeValue
+    {
+        string value;
+    }
+ 
+    record ProductAttributeValue
+    {
+        String attributeId;
+        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue};
+    }
+ 
+    enum Filter 
+    {
+        SUMMARY,
+        FULL_DETAILS
+    }
+ 
+    // TODO: Query pattern from paid search advertising
+    record Query 
+    {
+        TBD
+    }
+ 
+    record ProductImage
+    {
+        string url;
+        // TODO: Other image attributes
+    }
+
+    // TODO: Set of ProductAttributeValues
+    record Product 
+    {
+        union {null, string} id;
+        union {null, string} productTypeId;
+        union {null, array<ProductImage> images = null;
+        union {null, array<ProductAttributeValue>} attributes;
+    }
+
+    /*-------------------------------------------------------------------
+    /* Message definitions
+    /*-------------------------------------------------------------------
+    /**
+     * Create products
+     */
+    @topic("/catalog/product/create")
+    @version("1.0.0")
+    record CreateProduct
+    {
+        array<Product> products;
+    }
+ 
+    @topic("/catalog/product/created")
+    @version("1.0.0")
+    record ProductCreated
+    {
+        array<Product> products;
+    }
+ 
+    @topic("/catalog/product/createFailed")
+    @version("1.0.0")
+    record CreateProductFailed
+    {
+        array<Product> products;
+        array<Error> errors;
+    }
+ 
+    @topic("/catalog/product/get")
+    @version("1.0.0")
+    record GetProduct
+    {
+        array<string> productIds;
+        union {null, Filter} filter; 
+        // TODO: locale
+    }
+ 
+    @topic("/catalog/product/getSucceeded")
+    @version("1.0.0")
+    record GetProductSucceeded
+    {
+        array<Product> products;
+        union {null, Filter} filter; 
+        // TODO: locale
+    }
+ 
+    @topic("/catalog/product/getFailed")
+    @version("1.0.0")
+    record GetProductFailed
+    {
+        array<string> productIds;
+        union {null, Filter} filter; 
+        // TODO: locale
+        array<Error> errors;
+    }
+ 
+    // TODO: Search pattern based on report in paid search advertising
+    @topic("/catalog/product/search")
+    @version("1.0.0")
+    record SearchProduct
+    {
+        Query query;
+        Filter filter = FULL_DETAILS;
+        // TODO: locale
+    }
+ 
+    @topic("/catalog/product/searchSucceeded")
+    @version("1.0.0")
+    record SearchProductSucceeded
+    {
+        Query query;
+        Filter filter = FULL_DETAILS;
+        // TODO: locale
+        union {null, array<Product>} products;
+    }
+ 
+    @topic("/catalog/product/searchFailed")
+    @version("1.0.0")
+    record SearchProductFailed
+    {
+        Query query;
+        Filter filter = FULL_DETAILS;
+        // TODO: locale
+        array<Error> errors;
+    }
+ 
+    @topic("/catalog/product/update")
+    @version("1.0.0")
+    record UpdateProduct
+    {
+        Product product;
+    }
+ 
+    @topic("/catalog/product/updated")
+    @version("1.0.0")
+    record ProductUpdated
+    {
+        Product product;
+    }
+ 
+    @topic("/catalog/product/updateFailed")
+    @version("1.0.0")
+    record UpdateProductFailed
+    {
+        Product product;
+        array<Error> errors;
+    }
+ 
+    @topic("/catalog/product/delete")
+    @version("1.0.0")
+    record DeleteProduct
+    {
+        Product product;
+    }
+ 
+    @topic("/catalog/product/deleted")
+    @version("1.0.0")
+    record ProductDeleted
+    {
+        Product product;
+    }
+ 
+    @topic("/catalog/product/deleteFailed")
+    @version("1.0.0")
+    record DeleteProductFailed
+    {
+        Product product;
+        array<Error> errors;
+    }
+}
