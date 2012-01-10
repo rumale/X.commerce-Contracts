@@ -1,0 +1,108 @@
+    /**
+     * Range of dates
+     */
+    record DateRange
+    {
+        /**
+         * Start date
+         * Format: ISO 8601 YYYYMMDD
+         */
+        union {null, string} startDate;
+
+        /**
+         * End date
+         * Format: ISO 8601 YYYYMMDD
+         */
+        union {null, string} endDate;
+    }
+
+    /**
+     * Operator
+     */
+    enum Operator
+    {
+        EQUALS,
+        NOT_EQUALS,
+        GREATER_THAN,
+        GREATER_THAN_EQUALS,
+        LESS_THAN,
+        LESS_THAN_EQUALS,
+    }
+    
+    /**
+     * Predicate
+     */
+    record Predicate
+    {
+        string field;
+
+        Operator operator;
+
+        array<string> values;
+    }
+
+    /**
+     * Sort order
+     */
+    enum SortOrder
+    {
+        ASCENDING,
+        DESCENDING
+    }
+
+    /**
+     * Order by
+     */
+    record OrderBy
+    {
+        string field;
+
+        SortOrder sortOrder;
+    }
+
+    /**
+     * Specifies the page of results to return in the response
+     */
+    record Paging
+    {
+        int startIndex;
+ 
+        int numberResults;
+    }
+
+    /**
+     * Query that corresponds to the report
+     */
+    record Query
+    {
+        /**
+         * Fields to be selected. These will be 'columns' in the report
+         */
+        array<string> fields;
+        
+        /**
+         * Specifies how an entity should be filtered. Essentially, the WHERE
+         * clause
+         */
+        array<Predicate> predicates;
+
+        /**
+         * Range of dates for which the report data should be included
+         * TODO: Can this be replaced by the startDate and endDate fields in
+         * predicate
+         */
+        DateRange dateRange;
+
+        /**
+         * Fields on which the report should be sorted. The order is significant -
+         * first field determines primary sort order, the next determines
+         * secondary sort order, etc.
+         */
+        array<OrderBy> ordering;
+
+        /**
+         * Pagination information
+         */
+        Paging paging;
+    }
+
