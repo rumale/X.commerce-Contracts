@@ -31,11 +31,15 @@ protocol OfferManagementCapability
 
     record Offer 
     {
-        string id;
-        State state;
+        /** Unique ID */
+        union {null, string} id;
+        /** State of the offer */
+        union {null, State} state;
+        /** The channel this offer is for */
+        union {null, string} channelId;
         // Helps with creation of other types of offers (e.g. promotions)
         // in the future
-        union {ProductOffer} about;
+        union {null, ProductOffer} about;
     }
  
     enum Filter 
@@ -108,7 +112,6 @@ protocol OfferManagementCapability
     record SearchOffer
     {
         Query query;
-        Filter filter = FULL_DETAILS;
         // TODO: locale
     }
  
@@ -117,7 +120,6 @@ protocol OfferManagementCapability
     record SearchOfferSucceeded
     {
         Query query;
-        Filter filter = FULL_DETAILS;
         // TODO: locale
         union {null, array<Offer>} offers;
     }
@@ -127,7 +129,6 @@ protocol OfferManagementCapability
     record SearchOfferFailed
     {
         Query query;
-        Filter filter = FULL_DETAILS;
         // TODO: locale
         array<Error> errors;
     }
@@ -136,21 +137,21 @@ protocol OfferManagementCapability
     @version("1.0.0")
     record UpdateOffer
     {
-        Offer offer;
+        array<Offer> offers;
     }
  
     @topic("/offermanagement/offer/updated")
     @version("1.0.0")
     record OfferUpdated
     {
-        Offer offer;
+        array<Offer> offers;
     }
  
     @topic("/offermanagement/offer/updateFailed")
     @version("1.0.0")
     record UpdateOfferFailed
     {
-        Offer offer;
+        array<Offer> offers;
         array<Error> errors;
     }
  
@@ -158,21 +159,21 @@ protocol OfferManagementCapability
     @version("1.0.0")
     record DeleteOffer
     {
-        Offer offer;
+        array<Offer> offers;
     }
  
     @topic("/offermanagement/offer/deleted")
     @version("1.0.0")
     record OfferDeleted
     {
-        Offer offer;
+        array<Offer> offers;
     }
  
     @topic("/offermanagement/offer/deleteFailed")
     @version("1.0.0")
     record DeleteOfferFailed
     {
-        Offer offer;
+        array<Offer> offers;
         array<Error> errors;
     }
 }
