@@ -17,10 +17,25 @@ protocol OfferManagementCapability
         // TODO: States of an offer
     }
  
+    /**
+     * What the offer is about
+     */
+    record ProductOffer
+    {
+        String productId;
+        CurrencyAmount price;
+        int quantity;
+        // TODO: Include all other attributes from Marketplace/Listing
+        
+    }
+
     record Offer 
     {
         string id;
         State state;
+        // Helps with creation of other types of offers (e.g. promotions)
+        // in the future
+        union {ProductOffer} about;
     }
  
     enum Filter 
@@ -35,7 +50,7 @@ protocol OfferManagementCapability
     /* Message definitions
     /*-------------------------------------------------------------------
     /**
-     * Create stock item
+     * Create offers
      */
     @topic("/offermanagement/offer/create")
     @version("1.0.0")
@@ -119,9 +134,9 @@ protocol OfferManagementCapability
  
     @topic("/offermanagement/offer/update")
     @version("1.0.0")
-    record UpdateStockItem
+    record UpdateOffer
     {
-        StockItem stockItem;
+        Offer offer;
     }
  
     @topic("/offermanagement/offer/updated")
