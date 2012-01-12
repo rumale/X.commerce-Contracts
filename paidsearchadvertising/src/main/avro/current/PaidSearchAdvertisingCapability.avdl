@@ -81,7 +81,7 @@ protocol PaidSearchAdvertisingCapability
      */
     record Error 
     {
-        int code;
+        string code;
         union {null, string} message = null;
         union {null, array<string>} parameters = null;
     }
