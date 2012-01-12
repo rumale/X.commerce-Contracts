@@ -22,11 +22,11 @@ protocol OfferManagementCapability
      */
     record ProductOffer
     {
+        // TODO: How would this look for variable products?
         String productId;
         CurrencyAmount price;
         int quantity;
         // TODO: Include all other attributes from Marketplace/Listing
-        
     }
 
     record Offer 
