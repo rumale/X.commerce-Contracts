@@ -17,18 +17,10 @@ protocol InventoryCapability
     {
     }
 
-    enum Condition
-    {
-        // TODO enumerated values of condition
-    }
-
     record StockItem 
     {
-        string id;
-        string sku;
-        string productId;
+        string skuId;
         int quantity;
-        Condition condition;
         Location location;
     }
  
@@ -36,6 +28,7 @@ protocol InventoryCapability
     {
     }
  
+    // TODO: Include the common definition from core
     record Query 
     {
     }
@@ -102,7 +95,6 @@ protocol InventoryCapability
     record SearchStockItem
     {
         Query query;
-        Filter filter = FULL_DETAILS;
         // TODO: locale
     }
  
@@ -111,7 +103,6 @@ protocol InventoryCapability
     record SearchStockItemSucceeded
     {
         Query query;
-        Filter filter = FULL_DETAILS;
         // TODO: locale
         union {null, array<StockItem>} stockItems;
     }
@@ -121,7 +112,6 @@ protocol InventoryCapability
     record SearchStockItemFailed
     {
         Query query;
-        Filter filter = FULL_DETAILS;
         // TODO: locale
         array<Error> errors;
     }
