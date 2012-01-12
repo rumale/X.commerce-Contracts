@@ -1,6 +1,6 @@
-@namespace("com.x.catalog.v1")
+@namespace("com.x.productinformationmanagement.v1")
  
-protocol CatalogCapability 
+protocol ProductInformationManagementCapability 
 {
     record BooleanAttributeValue
     {
@@ -83,21 +83,21 @@ protocol CatalogCapability
     /**
      * Create products
      */
-    @topic("/catalog/product/create")
+    @topic("/productinformationmanagement/product/create")
     @version("1.0.0")
     record CreateProduct
     {
         array<Product> products;
     }
  
-    @topic("/catalog/product/created")
+    @topic("/productinformationmanagement/product/created")
     @version("1.0.0")
     record ProductCreated
     {
         array<Product> products;
     }
  
-    @topic("/catalog/product/createFailed")
+    @topic("/productinformationmanagement/product/createFailed")
     @version("1.0.0")
     record CreateProductFailed
     {
@@ -108,21 +108,21 @@ protocol CatalogCapability
     /**
      * Create SKUs
      */
-    @topic("/catalog/sku/create")
+    @topic("/productinformationmanagement/sku/create")
     @version("1.0.0")
     record CreateSKU
     {
         array<SKU> skus;
     }
  
-    @topic("/catalog/SKU/created")
+    @topic("/productinformationmanagement/SKU/created")
     @version("1.0.0")
     record SKUCreated
     {
         array<SKU> skus;
     }
  
-    @topic("/catalog/sku/createFailed")
+    @topic("/productinformationmanagement/sku/createFailed")
     @version("1.0.0")
     record CreateSKUFailed
     {
@@ -133,7 +133,7 @@ protocol CatalogCapability
     /**
      * Get Products
      */
-    @topic("/catalog/product/get")
+    @topic("/productinformationmanagement/product/get")
     @version("1.0.0")
     record GetProduct
     {
@@ -142,7 +142,7 @@ protocol CatalogCapability
         // TODO: locale
     }
  
-    @topic("/catalog/product/getSucceeded")
+    @topic("/productinformationmanagement/product/getSucceeded")
     @version("1.0.0")
     record GetProductSucceeded
     {
@@ -151,7 +151,7 @@ protocol CatalogCapability
         // TODO: locale
     }
  
-    @topic("/catalog/product/getFailed")
+    @topic("/productinformationmanagement/product/getFailed")
     @version("1.0.0")
     record GetProductFailed
     {
@@ -164,7 +164,7 @@ protocol CatalogCapability
     /**
      * Get SKUs
      */
-    @topic("/catalog/sku/get")
+    @topic("/productinformationmanagement/sku/get")
     @version("1.0.0")
     record GetSKU
     {
@@ -173,7 +173,7 @@ protocol CatalogCapability
         // TODO: locale
     }
  
-    @topic("/catalog/sku/getSucceeded")
+    @topic("/productinformationmanagement/sku/getSucceeded")
     @version("1.0.0")
     record GetSKUSucceeded
     {
@@ -182,7 +182,7 @@ protocol CatalogCapability
         // TODO: locale
     }
  
-    @topic("/catalog/SKU/getFailed")
+    @topic("/productinformationmanagement/SKU/getFailed")
     @version("1.0.0")
     record GetSKUFailed
     {
@@ -193,7 +193,7 @@ protocol CatalogCapability
     }
  
     // TODO: Use Query pattern
-    @topic("/catalog/product/search")
+    @topic("/productinformationmanagement/product/search")
     @version("1.0.0")
     record SearchProduct
     {
@@ -201,7 +201,7 @@ protocol CatalogCapability
         // TODO: locale
     }
  
-    @topic("/catalog/product/searchSucceeded")
+    @topic("/productinformationmanagement/product/searchSucceeded")
     @version("1.0.0")
     record SearchProductSucceeded
     {
@@ -210,7 +210,7 @@ protocol CatalogCapability
         QueryResult queryResult;
     }
  
-    @topic("/catalog/product/searchFailed")
+    @topic("/productinformationmanagement/product/searchFailed")
     @version("1.0.0")
     record SearchProductFailed
     {
@@ -220,7 +220,7 @@ protocol CatalogCapability
     }
  
     // TODO: Use Query pattern
-    @topic("/catalog/sku/search")
+    @topic("/productinformationmanagement/sku/search")
     @version("1.0.0")
     record SearchSKU
     {
@@ -228,7 +228,7 @@ protocol CatalogCapability
         // TODO: locale
     }
  
-    @topic("/catalog/sku/searchSucceeded")
+    @topic("/productinformationmanagement/sku/searchSucceeded")
     @version("1.0.0")
     record SearchSKUSucceeded
     {
@@ -237,7 +237,7 @@ protocol CatalogCapability
         QueryResult queryResult;
     }
  
-    @topic("/catalog/product/searchFailed")
+    @topic("/productinformationmanagement/product/searchFailed")
     @version("1.0.0")
     record SearchProductFailed
     {
@@ -247,21 +247,21 @@ protocol CatalogCapability
     }
  
     /** Update Product */
-    @topic("/catalog/product/update")
+    @topic("/productinformationmanagement/product/update")
     @version("1.0.0")
     record UpdateProduct
     {
         Product product;
     }
  
-    @topic("/catalog/product/updated")
+    @topic("/productinformationmanagement/product/updated")
     @version("1.0.0")
     record ProductUpdated
     {
         Product product;
     }
  
-    @topic("/catalog/product/updateFailed")
+    @topic("/productinformationmanagement/product/updateFailed")
     @version("1.0.0")
     record UpdateProductFailed
     {
@@ -270,21 +270,21 @@ protocol CatalogCapability
     }
  
     /** Update SKU */
-    @topic("/catalog/sku/update")
+    @topic("/productinformationmanagement/sku/update")
     @version("1.0.0")
     record UpdateSKU
     {
         SKU sku;
     }
  
-    @topic("/catalog/sku/updated")
+    @topic("/productinformationmanagement/sku/updated")
     @version("1.0.0")
     record SKUUpdated
     {
         SKU sku;
     }
  
-    @topic("/catalog/sku/updateFailed")
+    @topic("/productinformationmanagement/sku/updateFailed")
     @version("1.0.0")
     record UpdateSKUFailed
     {
@@ -293,21 +293,21 @@ protocol CatalogCapability
     }
  
     /** Delete Product */
-    @topic("/catalog/product/delete")
+    @topic("/productinformationmanagement/product/delete")
     @version("1.0.0")
     record DeleteProduct
     {
         Product product;
     }
  
-    @topic("/catalog/product/deleted")
+    @topic("/productinformationmanagement/product/deleted")
     @version("1.0.0")
     record ProductDeleted
     {
         Product product;
     }
  
-    @topic("/catalog/product/deleteFailed")
+    @topic("/productinformationmanagement/product/deleteFailed")
     @version("1.0.0")
     record DeleteProductFailed
     {
@@ -316,21 +316,21 @@ protocol CatalogCapability
     }
 
     /** Delete SKU */
-    @topic("/catalog/sku/delete")
+    @topic("/productinformationmanagement/sku/delete")
     @version("1.0.0")
     record DeleteSKU
     {
         SKU sku;
     }
  
-    @topic("/catalog/sku/deleted")
+    @topic("/productinformationmanagement/sku/deleted")
     @version("1.0.0")
     record SKUDeleted
     {
         SKU sku;
     }
  
-    @topic("/catalog/sku/deleteFailed")
+    @topic("/productinformationmanagement/sku/deleteFailed")
     @version("1.0.0")
     record DeleteSKUFailed
     {
