@@ -2,6 +2,10 @@
  
 protocol OfferManagementCapability 
 {
+	record CurrencyAmount {
+		double amount;
+		string code;
+	}
 
     /** This record is used to return error information */
     record Error
@@ -31,7 +35,7 @@ protocol OfferManagementCapability
     record ProductOffer
     {
         // TODO: How would this look for variable products?
-        String productId;
+        string productId;
         CurrencyAmount price;
         int quantity;
         // TODO: Include all other attributes from Marketplace/Listing
@@ -56,7 +60,7 @@ protocol OfferManagementCapability
  
     record Query 
     {
-        Selector selector;
+        //Selector selector;
     }
  
     /*-------------------------------------------------------------------

@@ -48,5 +48,9 @@
 		<module>producttaxonomy</module>
 		<module>emailmarketing</module>
 		<module>payment</module>
+		<module>inventory</module>
+		<module>offermanagement</module>
+		<module>paidsearchadvertising</module>
+		<module>productinformationmanagement</module>
 	</modules>
 </project>
