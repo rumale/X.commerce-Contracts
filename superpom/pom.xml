@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.x.cap</groupId>
 	<artifactId>ontology-superpom</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Ontology Superpom</name>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/trunk/superpom</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/superpom</connection>
 	</scm>
 
 	<properties>

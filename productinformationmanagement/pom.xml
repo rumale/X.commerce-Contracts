@@ -3,19 +3,19 @@
 	<parent>
 		<groupId>com.x.cap</groupId>
 		<artifactId>ontology-superpom</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 
 		<relativePath>../superpom</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
 	<artifactId>productinformationmanagement-contract</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Product Information Management Contract</name>
 	<description>
 		This artifact contains the Product Information Management contract.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/trunk/productinformationmanagement</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/productinformationmanagement</connection>
 	</scm>
 
 	<repositories>

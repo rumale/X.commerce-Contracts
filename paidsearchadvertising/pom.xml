@@ -3,19 +3,19 @@
 	<parent>
 		<groupId>com.x.cap</groupId>
 		<artifactId>ontology-superpom</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 
 		<relativePath>../superpom</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
 	<artifactId>paidsearchadvertising-contract</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Paid Search Advertising Contract</name>
 	<description>
 		This artifact contains the Paid Search Advertising contract.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/trunk/paidsearchadvertising</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/paidsearchadvertising</connection>
 	</scm>
 
 	<repositories>
