@@ -3,19 +3,19 @@
 	<parent>
 		<groupId>com.x.cap</groupId>
 		<artifactId>ontology-superpom</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 
 		<relativePath>../superpom</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
 	<artifactId>marketplace-contract</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Marketplace Contract</name>
 	<description>
 		This artifact contains the marketplace contracts.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/0.0.1/trunk/marketplace</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/marketplace</connection>
 	</scm>
 
 	<repositories>
