@@ -38,7 +38,7 @@ protocol ProductInformationManagementCapability
  
     record StringEnumerationAttributeValue
     {
-        string enumerationIndex;
+        union {string, array<string>} value;
     }
  
     record StringAttributeValue
