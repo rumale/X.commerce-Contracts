@@ -48,6 +48,22 @@
 	</distributionManagement>
 
 	<dependencies>
+		<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
+		<dependency>
+			<groupId>com.x.cap</groupId>
+			<artifactId>core-contract</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.cap</groupId>
+			<artifactId>emailmarketing-contract</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.cap</groupId>
+			<artifactId>inventory-contract</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>marketplace-contract</artifactId>
@@ -55,7 +71,22 @@
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
+			<artifactId>offermanagement-contract</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.cap</groupId>
+			<artifactId>paidsearchadvertising-contract</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.cap</groupId>
 			<artifactId>payment-contract</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.cap</groupId>
+			<artifactId>productinformationmanagement-contract</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

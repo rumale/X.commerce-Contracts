@@ -11,16 +11,19 @@
 	element of certain types.
 */
 protocol Marketplace {
-	enum SeverityType {
-		ERROR,
-		WARNING
+	/*
+		This record is used to return market specific data using the schema specified.
+	*/
+	record EmbeddedMessage {
+		string schemaVersion;
+		union{null, string} schemaUri;
+		bytes payload;
 	}
 
 	/*
 		This record is used to return error information.
 	 */
 	record Error {
-		SeverityType severity;
 		string code;
 		string message;
 	}
@@ -75,11 +78,11 @@ protocol Marketplace {
 	*/
 	record SupportedShippingService {
 		string description;
-		union{null,string} carrier; //USPS
+		union{null, string} carrier = null; //USPS
 		string serviceName; //i.e. USPSPriorityFlatRateBox
 		int shippingTimeMax; //in days
 		int shippingTimeMin;
-		union{null, ShippingRateType} rateType;
+		union{null, ShippingRateType} rateType = null;
 
 		boolean dimensionsRequired;
 		boolean weightRequired;
@@ -90,11 +93,11 @@ protocol Marketplace {
 		int sellerPriority;
 		string serviceName;
 		CurrencyAmount cost;
-		union{null,CurrencyAmount} discountAmount;
-		union{null,CurrencyAmount} additionalCost;
-		union{null,CurrencyAmount} packagingHandlingCost;
-		union{null,CurrencyAmount} surcharge;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
-		union{null,array<string>} shipToLocations;  // International shipping only
+		union{null, CurrencyAmount} discountAmount = null;
+		union{null, CurrencyAmount} additionalCost = null;
+		union{null, CurrencyAmount} packagingHandlingCost = null;
+		union{null, CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+		union{null, array<string>} shipToLocations = null;  // International shipping only
 	}
 
 	record ShippingLocaleService {
@@ -136,9 +139,9 @@ protocol Marketplace {
 	}
 
 	record Payment {
-		union{null,array<PaymentMethod>} acceptedPaymentTypes;
-		union{null,boolean} immediatePaymentRequired;
-		union{null,string} paymentInstructions;
+		union{null, array<PaymentMethod>} acceptedPaymentTypes = null;
+		union{null, boolean} immediatePaymentRequired = null;
+		union{null, string} paymentInstructions = null;
 	}
 
 	enum RefundMethod {
@@ -154,11 +157,11 @@ protocol Marketplace {
 	}
 
 	record ReturnPolicy {
-		union{null,string} description;
-		union{null,boolean} returnAccepted;
-		union{null,boolean} buyerPaysReturnShipping;
-		union{null,int} returnByDays;
-		union{null,RefundMethod} refundMethod;
+		union{null, string} description = null;
+		union{null, boolean} returnAccepted = null;
+		union{null, boolean} buyerPaysReturnShipping = null;
+		union{null, int} returnByDays = null;
+		union{null, RefundMethod} refundMethod = null;
 	}
 
 	record SupportedCountry {
@@ -176,27 +179,27 @@ protocol Marketplace {
 		will use for listings on that marketplace.
 	*/
 	record MarketplaceProfile {
-		union{null,string} xId; //ID provided by X.commerce
+		union{null, string} xId = null; //ID provided by X.commerce
 		string name;  // unique name given to this profile
-		
+
 		/*
 		Site the item should be listed to.  In most cases, this will be the ISO country code.
 		Can be null when specified on the MarketplaceAccount.
 		*/
-		union{null,string} siteCode;
+		union{null, string} siteCode = null;
 
 		string xAccountId;
 
-		union{null,Payment} payment;
-		union{null,Shipping} shipping;
-		union{null,ReturnPolicy} returnPolicy;
+		union{null, Payment} payment = null;
+		union{null, Shipping} shipping = null;
+		union{null, ReturnPolicy} returnPolicy = null;
 
 		/*
-		The following is a market specific data "blob" that is encoded
-		using the avro schema of the specific marketplace profile data.
+		The following is an embedded message that contains a market specific data "blob"
+		that is encoded using the avro schema of the specific marketplace profile data.
 		ie, payPalEmailAddress for eBay
 		*/
-		union{null,bytes} marketSpecifics;
+		union{null, EmbeddedMessage} embeddedMessage = null;
 	}
 
 	record ProductCategory {
@@ -210,9 +213,9 @@ protocol Marketplace {
 	record Category {
 		string id;
 		string name;
-		string parentId;
-		boolean catalogEnabled;
-		int categoryLevel;
+		union{null, string} parentId = null;
+		union{null, boolean} catalogEnabled = null;
+		union{null, int} categoryLevel = null;
 		boolean leafCategory;
 	}
 
@@ -228,18 +231,6 @@ protocol Marketplace {
 		map<array<string>> nameValues;
 	}
 
-	enum StandardProductIdType {
-		ISBN,
-		UPC,
-		EAN,
-		ASIN
-	}
-
-	record StandardProductId {
-		StandardProductIdType type;
-		string value;
-	}
-
 	enum ImagePurpose {
 		FEATURED,
 		GALLERY,
@@ -247,7 +238,7 @@ protocol Marketplace {
 	}
 
 	record ProductImage {
-		union{null,ImagePurpose} purpose;
+		union{null, ImagePurpose} purpose = null;
 		string locationURL;
 	}
 
@@ -258,64 +249,65 @@ protocol Marketplace {
 
 	record ProductDetails {
 		//ID as assigned by X catalog service or null if this is not a catalog product
-		union{null,string} xId;
+		union{null, string} xId = null;
+		union{null, string} xProductTypeId = null;  // Product type id as defined by the taxonomy manager.
 		string sku;//Only sku is required for a listing update.
-		union{null,array<StandardProductId>} productId;
-		union{null,string} manufacturer;
-		union{null,string} mpn;
-		union{null,string} brand;
-		union{null,CurrencyAmount} msrp;
-		union{null,array<ProductImage>} imageURL;
-		union{null,string} description;
-		union{null,string} condition;
-		union{null,array<ProductAttribute>} attributes;
+		union{null, string} manufacturer = null;
+		union{null, string} mpn = null;
+		union{null, string} brand = null;
+		union{null, CurrencyAmount} msrp = null;
+		union{null, array<ProductImage>} imageURL = null;
+		union{null, string} description = null;
+		union{null, array<ProductAttribute>} attributes = null;
 	}
 
 	record Listing {
-		union{null,string} xId; //Identifier as known by the X.commerce adapter.
-		union{null,string} marketItemId; //Unique id as known by marketplace i.e. ASIN, etc..
+		union{null, string} xId = null; //Identifier as known by the X.commerce adapter.
+		union{null, string} marketItemId = null; //Unique id as known by marketplace i.e. ASIN, etc..
 
 		ProductDetails product;
-		union{null,long} startTime; //a unix time stamp
-		union{null,CurrencyAmount} price;
-		union{null,int} quantity;
-		union{null,string} title;
-		union{null,string} listingURL;
-		union{null,string} status;
+		union{null, long} startTime = null; //a unix time stamp
+		union{null, CurrencyAmount} price = null;
+		union{null, int} quantity = null;
+		union{null, string} title = null;
+		union{null, string} listingURL = null;
+		union{null, string} status = null;
 
 		/*
 			Following are fields that are optionally supported
 			across marketplaces.  Will be ignored if market does
 			not support this.
 		*/
-		union{null,string} subTitle;
-		union{null,boolean} giftWrapAvailable;
+		union{null, string} subTitle = null;
+		union{null, boolean} giftWrapAvailable = null;
 		//Indicates where in the marketplace category to list
-		union{null,array<string>} marketCategories;
+		union{null, array<string>} marketCategories = null;
+        //Indicates where in the seller custom categories to list
+		union{null, array<string>} customCategories = null;
 
 		//Following data can override data in a specified profile
-		union{null,Payment} payment;
-		union{null,Shipping} shipping;
-		union{null,ReturnPolicy} returnPolicy;
+		union{null, Payment} payment = null;
+		union{null, Shipping} shipping = null;
+		union{null, ReturnPolicy} returnPolicy = null;
 
 		/*
-			The following is a market specific data "blob" that is encoded
-			using the avro schema of the specific marketplace this listing is intended for.
+			The following is an embedded message that contains a market specific data "blob"
+			that is encoded	using the avro schema of the specific marketplace this listing is intended for.
 		*/
-		union{null,bytes} marketSpecifics;
+		union{null, EmbeddedMessage} embeddedMessage = null;
 	}
 
 	record ListingFilter {
-		union{null,array<string>} skus;
-		union{null,long} startTime; //unix time
-		union{null,long} endTime;
+		union{null, array<string>} skus = null;
+		union{null, long} startTime = null; //unix time
+		union{null, long} endTime = null;
 	}
 
 	record Address {
 		string street1;
-		union{null,string} street2;
+		union{null, string} street2 = null;
 		string city;
-		union{null,string} county;
+		union{null, string} county = null;
 		string stateOrProvince;
 		string country;
 		string postalCode;
@@ -323,48 +315,48 @@ protocol Marketplace {
 
 	record TrackingDetail {
 		string trackingNumber;
-		union{null,string} carrier;
-		union{null,string} service;
+		union{null, string} carrier = null;
+		union{null, string} service = null;
 	}
 
 	record Shipment {
 		string shipmentId; //id unique to the order
 		Address address;
 		ShippingServiceOption shippingServiceOption;
-		union{null,array<TrackingDetail>} trackingDetails;
-		union{null,string} recipientName;
-		union{null,int} weight;
-		union{null,string} shippingDescription;
+		union{null, array<TrackingDetail>} trackingDetails = null;
+		union{null, string} recipientName = null;
+		union{null, int} weight = null;
+		union{null, string} shippingDescription = null;
 	}
 
 	record CustomerInfo {
-		union{null,string} userMarketId;
-		union{null,string} email;
-		union{null,string} name;
-		union{null,string} phone;
+		union{null, string} userMarketId = null;
+		union{null, string} email = null;
+		union{null, string} name = null;
+		union{null, string} phone = null;
 	}
 
 	record OrderItem {
 		string marketListingId;
-		union{null, string} listingTitle;
+		union{null, string} listingTitle = null;
 		string listingURL;
 		string status;
 		string sku;
 		int quantity;
-		union{null, CurrencyAmount} cost;
-		union{null, CurrencyAmount} insuranceCost;
-		union{null, CurrencyAmount} taxAmount;
-		union{null, CurrencyAmount} discountAmount;
+		union{null, CurrencyAmount} cost = null;
+		union{null, CurrencyAmount} insuranceCost = null;
+		union{null, CurrencyAmount} taxAmount = null;
+		union{null, CurrencyAmount} discountAmount = null;
 		string shipmentId;  // Ties to the shipment.
 
-		union{null,boolean} giftWrap;
-		union{null,string} giftWrapText;
+		union{null, boolean} giftWrap = null;
+		union{null, string} giftWrapText = null;
 
 		/*
-			The following is a market specific data "blob" that is encoded
-			using the avro schema of the specific marketplace this order is intended for.
+			The following is an embedded message that contains a market specific data "blob"
+			that is encoded using the avro schema of the specific marketplace this order is intended for.
 		*/
-		union{null,bytes} marketSpecifics;
+		union{null, EmbeddedMessage} embeddedMessage = null;
 	}
 
 	record Order {
@@ -373,19 +365,19 @@ protocol Marketplace {
 		string marketOrderId;
 		CustomerInfo customer;
 		array<OrderItem> items;
-		union{null, CurrencyAmount} totalInsuranceCost;
-		union{null, CurrencyAmount} totalTaxAmount;
-		union{null, CurrencyAmount} totalDiscountAmount;
+		union{null, CurrencyAmount} totalInsuranceCost = null;
+		union{null, CurrencyAmount} totalTaxAmount = null;
+		union{null, CurrencyAmount} totalDiscountAmount = null;
 		CurrencyAmount totalAmount;
 		string status;
-		union{null, PaymentMethod} paymentMethod;
+		union{null, PaymentMethod} paymentMethod = null;
 		array<Shipment> shipments;
 
 		/*
-			The following is a market specific data "blob" that is encoded
-			using the avro schema of the specific marketplace this order is intended for.
+			The following is an embedded message that contains a market specific data "blob"
+			that is encoded	using the avro schema of the specific marketplace this order is intended for.
 		*/
-		union{null,bytes} marketSpecifics;
+		union{null, EmbeddedMessage} embeddedMessage = null;
 	}
 
 	record OrderShipmentUpdate {
@@ -395,14 +387,14 @@ protocol Marketplace {
 
 	record OrderUpdate {
 		string marketOrderId;
-		union{null,boolean} processed;
-		union{null,OrderShipmentUpdate} orderShipmentUpdate;
+		union{null, boolean} processed = null;
+		union{null, OrderShipmentUpdate} orderShipmentUpdate = null;
 	}
 
 	record OrderFilter {
 		long startTime;
-		union{null,long} endTime;
-		union{null,string} status;
+		union{null, long} endTime = null;
+		union{null, string} status = null;
 	}
 
 	record OrderUpdateError {
@@ -411,7 +403,7 @@ protocol Marketplace {
 	}
 
 	record ListingError {
-		union{null,Listing} listing;
+		union{null, Listing} listing = null;
 		array<Error> errors;
 	}
 
@@ -429,12 +421,20 @@ protocol Marketplace {
 		Defines a marketplace account which is intended to be used for all supported marketplaces.
 	*/
 	record MarketplaceAccount {
-		union{null,string} xId;   // ID provided by X.commerce
-		union{null,string} userMarketplaceId;
-		union{null,string} siteCode;
-		union{null,string} environmentName;
-		union{null,long} authorizationExpiration;
+		union{null, string} xId = null;   // ID provided by X.commerce
+		union{null, string} userMarketplaceId = null;
+		union{null, string} siteCode = null;
+		union{null, string} environmentName = null;
+		union{null, long} authorizationExpiration = null;
 	}
+
+    /*
+        Defines a marketplace store.
+    */
+    record MarketplaceStore {
+        string name;
+        union{null, array<CustomCategory>} categories = null;
+    }
 
 
 	//###########################################################
@@ -459,6 +459,36 @@ protocol Marketplace {
 		string marketplace;
 		array<Error> errors;
 	}
+
+    @topic("/marketplace/store/get")
+    @version("1.0.0")
+    record GetStore {
+        union{null, string} xAccountId = null;
+        union{null, string} userMarketplaceId = null;
+		union{null, string} siteCode = null;
+		union{null, string} environmentName = null;
+    }
+
+    @topic("/marketplace/store/getSucceeded")
+    @version("1.0.0")
+    record GetStoreSucceeded {
+        MarketplaceStore store;
+        string userMarketplaceId;
+		string siteCode;
+		string environmentName;
+        string marketplace;
+    }
+
+    @topic("/marketplace/store/getFailed")
+    @version("1.0.0")
+    record GetStoreFailed {
+        union{null, string} xAccountId = null;
+        union{null, string} userMarketplaceId = null;
+		string siteCode;
+		string environmentName;
+        string marketplace;
+		array<Error> errors;
+    }
 
 	@topic("/marketplace/environment/search")
 	@version("1.0.0")
@@ -486,7 +516,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record GetReturnPolicy {
 		string siteCode;
-		union{null,string} environmentName;
+		union{null, string} environmentName = null;
 	}
 
 	@topic("/marketplace/returnPolicy/getSucceeded")
@@ -511,7 +541,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record SearchShippingService {
 		string siteCode;
-		union{null,string} environmentName;
+		union{null, string} environmentName = null;
 	}
 
 	@topic("/marketplace/shippingService/searchSucceeded")
@@ -536,7 +566,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record SearchCountry {
 		string siteCode;
-		union{null,string} environmentName;
+		union{null, string} environmentName = null;
 	}
 
 	@topic("/marketplace/country/searchSucceeded")
@@ -583,7 +613,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record SearchHandlingTime {
 		string siteCode;
-		union{null,string} environmentName;
+		union{null, string} environmentName = null;
 	}
 
 	@topic("/marketplace/handlingTime/searchSucceeded")
@@ -608,7 +638,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record SearchPaymentMethod {
 		string siteCode;
-		union{null,string} environmentName;
+		union{null, string} environmentName = null;
 	}
 
 	@topic("/marketplace/paymentMethod/searchSucceeded")
@@ -633,7 +663,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record SearchCategories {
 		string siteCode;
-		union{null,string} environmentName;
+		union{null, string} environmentName = null;
 	}
 
 	@topic("/marketplace/category/searchSucceeded")
@@ -648,6 +678,34 @@ protocol Marketplace {
 	@topic("/marketplace/category/searchFailed")
 	@version("1.0.0")
 	record SearchCategoriesFailed {
+		string marketplace;
+		string siteCode;
+		string environmentName;
+		array<Error> errors;
+	}
+
+	@topic("/marketplace/categoryForProductType/search")
+	@version("1.0.0")
+	record SearchCategoriesForProductType {
+		string xProductTypeId;  // Taxonomy product type id
+		string siteCode;
+		union{null, string} environmentName = null;
+	}
+
+	@topic("/marketplace/categoryForProductType/searchSucceeded")
+	@version("1.0.0")
+	record SearchCategoriesForProductTypeSucceeded {
+		string xProductTypeId;
+		array<Category> categories;
+		string marketplace;
+		string siteCode;
+		string environmentName;
+	}
+
+	@topic("/marketplace/categoryForProductType/searchFailed")
+	@version("1.0.0")
+	record SearchCategoriesForProductTypeFailed {
+		string xProductTypeId;
 		string marketplace;
 		string siteCode;
 		string environmentName;
@@ -694,10 +752,10 @@ protocol Marketplace {
 	@version("1.0.0")
 	record InitAuthorization {
 		//Only used if marketplace web-auth flow supports it
-		union{null,string} returnURL;
-		union{null,string} cancelURL;
-		union{null,string} environmentName;
-		union{null,string} userMarketplaceId;
+		union{null, string} returnURL = null;
+		union{null, string} cancelURL = null;
+		union{null, string} environmentName = null;
+		union{null, string} userMarketplaceId = null;
 
 		/*
 		   This guid is use to correlate between this message and AuthorizationPending.
@@ -719,15 +777,25 @@ protocol Marketplace {
 		/*
 		 * Any extra credentials needed to proceed with the auth
 		 */
-		union{null,Credential} cred;
+		union{null, Credential} cred = null;
 	}
+
+    @topic("/marketplace/authorization/initFailed")
+    @version("1.0.0")
+    record InitAuthorizationFailed {
+        //Only used if marketplace web-auth flow supports it
+        union{null, string} environmentName = null;
+        union{null, string} userMarketplaceId = null;
+
+        array<Error> errors;
+    }
 
 	@topic("/marketplace/authorization/userCompleted")
 	@version("1.0.0")
 	record AuthorizationUserCompleted {
 		string authId;
 		//any extra credentials needed to complete the process
-		union{null,Credential} cred;
+		union{null, Credential} cred = null;
 	}
 
 	@topic("/marketplace/authorization/completed")
@@ -735,9 +803,19 @@ protocol Marketplace {
 	record AuthorizationCompleted {
 		string authId;
 		string xAccountId;
-		union{null,string} userMarketplaceId;
-		union{null,long} authorizationExpiration;
+		union{null, string} userMarketplaceId = null;
+		union{null, long} authorizationExpiration = null;
 	}
+
+    @topic("/marketplace/authorization/failed")
+    @version("1.0.0")
+    record AuthorizationFailed {
+        union{null, string} authId = null;
+        //any extra credentials needed to complete the process
+        union{null, Credential} cred = null;
+
+        array<Error> errors;
+    }
 
 	@topic("/marketplace/profile/create")
 	@version("1.0.0")

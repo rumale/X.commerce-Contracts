@@ -23,6 +23,7 @@ protocol eBay {
 		union{null,string} imageVariationName;
 	}
 
+	@version("1.0.0")
 	record ListingSpecifics {
 		string listingFormat;
 		string duration;
@@ -41,6 +42,7 @@ protocol eBay {
 		union{ListingVariations,null} listingVariations;
 	}
 	
+	@version("1.0.0")
 	record MarketplaceProfileSpecifics {
 		union{null,string} location;
 		union{null,string} postalCode;
