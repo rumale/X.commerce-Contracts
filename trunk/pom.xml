@@ -43,6 +43,7 @@
 
 	<modules>
 		<module>superpom</module>
+		<module>core</module>
 		<module>marketplace</module>
 		<module>producttaxonomy</module>
 		<module>emailmarketing</module>

@@ -1,3 +1,7 @@
+@namespace("com.x.contract.core.v0")
+
+protocol Core {
+
     /**
      * Range of dates
      */
@@ -26,7 +30,7 @@
         GREATER_THAN,
         GREATER_THAN_EQUALS,
         LESS_THAN,
-        LESS_THAN_EQUALS,
+        LESS_THAN_EQUALS
     }
     
     /**
@@ -118,6 +122,7 @@
      */
     record QueryResult
     {
-        union {null, array<array<union{string}>>};
+        union {null, array<array<union{string}>>} data;
     }
 
+}
