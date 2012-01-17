@@ -48,8 +48,8 @@ protocol ProductInformationManagementCapability
  
     record ProductAttributeValue
     {
-        String attributeId;
-        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue};
+        string attributeId;
+        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
     }
  
     enum ProductFilter 
@@ -92,7 +92,7 @@ protocol ProductInformationManagementCapability
         GREATER_THAN,
         GREATER_THAN_EQUALS,
         LESS_THAN,
-        LESS_THAN_EQUALS,
+        LESS_THAN_EQUALS
     }
     
     /**
@@ -194,7 +194,7 @@ protocol ProductInformationManagementCapability
      */
     record QueryResult
     {
-        union {null, array<array<union{string}>>};
+        union {null, array<array<union{string}>>} data;
     }
 
     record ProductImage
@@ -211,7 +211,7 @@ protocol ProductInformationManagementCapability
         /** ID of the product type */
         union {null, string} productTypeId;
         /** product images */
-        union {null, array<ProductImage> images = null;
+        union {null, array<ProductImage>} images = null;
         /** product attributes */
         union {null, array<ProductAttributeValue>} attributes;
     }
@@ -515,5 +515,4 @@ protocol ProductInformationManagementCapability
         SKU sku;
         array<Error> errors;
     }
-}
 }

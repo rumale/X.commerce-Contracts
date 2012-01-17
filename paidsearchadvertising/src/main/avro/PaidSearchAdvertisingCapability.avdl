@@ -73,7 +73,7 @@ protocol PaidSearchAdvertisingCapability
          * Additional AdExtensions needed can be introduced by adding to the
          * union here
          */
-        union {OfferListAdExtension};
+        union {OfferListAdExtension} extension;
     }
 
     /** This record is used to return error information */
@@ -121,7 +121,7 @@ protocol PaidSearchAdvertisingCapability
      */
     record CampaignAdExtension
     {
-        String campaignId;
+        string campaignId;
 
         /**
          * Additional context information included in the campain and which is
@@ -216,7 +216,7 @@ protocol PaidSearchAdvertisingCapability
         GREATER_THAN,
         GREATER_THAN_EQUALS,
         LESS_THAN,
-        LESS_THAN_EQUALS,
+        LESS_THAN_EQUALS
     }
     
     /**
