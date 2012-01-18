@@ -2,21 +2,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.cap</groupId>
-		<artifactId>ontology-superpom</artifactId>
+		<artifactId>ontology</artifactId>
 		<version>0.0.1</version>
-
-		<relativePath>../superpom</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
-	<artifactId>producttaxonomy-contract</artifactId>
-	<version>0.0.1</version>
-	<name>Product Taxonomy Contract</name>
+	<artifactId>emailmarketing-contract</artifactId>
+	<name>Email Marketing Contract</name>
 	<description>
-		This artifact contains the Product Taxonomy contract
+		This artifact contains the email marketing contract.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/trunk/producttaxonomy</connection>
-	</scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/emailmarketing</connection>
+	  <url>https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/emailmarketing-contract</url>
+  </scm>
 
 	<repositories>
 		<repository>
@@ -37,14 +36,14 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>producttaxonomydeploy</id>
-			<name>Product Taxonomy release repository</name>
+			<id>emailmarketingdeploy</id>
+			<name>Email Marketing release repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>producttaxonomydeploy</id>
-			<name>Product Taxonomy snapshot repository</name>
+			<id>emailmarketingdeploy</id>
+			<name>Email Marketing snapshot repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>

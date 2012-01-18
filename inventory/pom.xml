@@ -2,21 +2,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.cap</groupId>
-		<artifactId>ontology-superpom</artifactId>
+		<artifactId>ontology</artifactId>
 		<version>0.0.1</version>
-
-		<relativePath>../superpom</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
-	<artifactId>productinformationmanagement-contract</artifactId>
-	<version>0.0.1</version>
-	<name>Product Information Management Contract</name>
+	<artifactId>inventory-contract</artifactId>
+	<name>Inventory Contract</name>
 	<description>
-		This artifact contains the Product Information Management contract.
+		This artifact contains the Inventory contract.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/trunk/productinformationmanagement</connection>
-	</scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/inventory</connection>
+	  <url>https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/inventory-contract</url>
+  </scm>
 
 	<repositories>
 		<repository>
@@ -37,14 +36,14 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>productinformationmanagementdeploy</id>
-			<name>Product Information Management release repository</name>
+			<id>inventorydeploy</id>
+			<name>Inventory release repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>productinformationmanagementdeploy</id>
-			<name>Product Information Management snapshot repository</name>
+			<id>inventorydeploy</id>
+			<name>Inventory snapshot repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>

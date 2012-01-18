@@ -2,21 +2,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.cap</groupId>
-		<artifactId>ontology-superpom</artifactId>
+		<artifactId>ontology</artifactId>
 		<version>0.0.1</version>
-
-		<relativePath>../superpom</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
-	<artifactId>emailmarketing-contract</artifactId>
-	<version>0.0.1</version>
-	<name>Email Marketing Contract</name>
+	<artifactId>core-contract</artifactId>
+	<name>Core Contract</name>
 	<description>
-		This artifact contains the email marketing contract.
+		This artifact contains the core types that are common across all contracts.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/trunk/emailmarketing</connection>
-	</scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/core</connection>
+	  <url>https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/core-contract</url>
+  </scm>
 
 	<repositories>
 		<repository>
@@ -37,14 +36,14 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>emailmarketingdeploy</id>
-			<name>Email Marketing release repository</name>
+			<id>coredeploy</id>
+			<name>Core release repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>emailmarketingdeploy</id>
-			<name>Email Marketing snapshot repository</name>
+			<id>coredeploy</id>
+			<name>Core snapshot repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>

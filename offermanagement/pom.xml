@@ -2,21 +2,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.cap</groupId>
-		<artifactId>ontology-superpom</artifactId>
+		<artifactId>ontology</artifactId>
 		<version>0.0.1</version>
-
-		<relativePath>../superpom</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
 	<artifactId>offermanagement-contract</artifactId>
-	<version>0.0.1</version>
 	<name>Offer Management Contract</name>
 	<description>
 		This artifact contains the Offer Management contract.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/trunk/offermanagement</connection>
-	</scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/offermanagement</connection>
+	  <url>https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/offermanagement-contract</url>
+  </scm>
 
 	<repositories>
 		<repository>
