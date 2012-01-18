@@ -2,14 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.cap</groupId>
-		<artifactId>ontology-superpom</artifactId>
+		<artifactId>ontology</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
-
-		<relativePath>../superpom</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.cap</groupId>
 	<artifactId>offermanagement-contract</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
 	<name>Offer Management Contract</name>
 	<description>
 		This artifact contains the Offer Management contract.

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.x.cap</groupId>
 	<artifactId>ontology</artifactId>
@@ -9,6 +10,10 @@
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk</connection>
 		<url>https://svn.corp.x.com:8080/svn/x/Ontology/trunk</url>
 	</scm>
+
+	<properties>
+		<avro.version>1.6.1</avro.version>
+	</properties>
 
 	<repositories>
 		<repository>
@@ -40,9 +45,8 @@
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
-	
+
 	<modules>
-		<module>superpom</module>
 		<module>core</module>
 		<module>marketplace</module>
 		<module>producttaxonomy</module>
@@ -52,5 +56,77 @@
 		<module>offermanagement</module>
 		<module>paidsearchadvertising</module>
 		<module>productinformationmanagement</module>
+		<module>all</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>core-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>emailmarketing-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>inventory-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>marketplace-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>offermanagement-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>paidsearchadvertising-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>payment-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>productinformationmanagement-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>producttaxonomy-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro</artifactId>
+				<version>${avro.version}</version>
+				<scope>compile</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

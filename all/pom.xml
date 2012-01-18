@@ -2,9 +2,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.cap</groupId>
-		<artifactId>ontology-superpom</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../superpom</relativePath>
+		<artifactId>ontology</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<groupId>com.x.cap</groupId>
@@ -52,50 +52,41 @@
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>core-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>emailmarketing-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>inventory-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>marketplace-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>offermanagement-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>paidsearchadvertising-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>payment-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>productinformationmanagement-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.x.cap</groupId>
 			<artifactId>producttaxonomy-contract</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
     </dependencies>
-    
+
 	<build>
 		<resources>
 			<resource>
