@@ -7,6 +7,7 @@
 	<name>Ontology</name>
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk</connection>
+		<url>https://svn.corp.x.com:8080/svn/x/Ontology/trunk</url>
 	</scm>
 
 	<repositories>
