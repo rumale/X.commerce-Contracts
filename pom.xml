@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 	<name>Ontology</name>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk</connection>
 		<url>https://svn.corp.x.com:8080/svn/x/Ontology/trunk</url>
 	</scm>
 
@@ -41,16 +41,4 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-	<modules>
-		<module>superpom</module>
-		<module>core</module>
-		<module>marketplace</module>
-		<module>producttaxonomy</module>
-		<module>emailmarketing</module>
-		<module>payment</module>
-		<module>inventory</module>
-		<module>offermanagement</module>
-		<module>paidsearchadvertising</module>
-		<module>productinformationmanagement</module>
-	</modules>
 </project>
