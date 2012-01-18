@@ -40,5 +40,17 @@
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
-
+	
+	<modules>
+		<module>superpom</module>
+		<module>core</module>
+		<module>marketplace</module>
+		<module>producttaxonomy</module>
+		<module>emailmarketing</module>
+		<module>payment</module>
+		<module>inventory</module>
+		<module>offermanagement</module>
+		<module>paidsearchadvertising</module>
+		<module>productinformationmanagement</module>
+	</modules>
 </project>
