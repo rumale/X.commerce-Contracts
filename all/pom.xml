@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.cap</groupId>
 		<artifactId>ontology</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.1</version>
 		<relativePath>..</relativePath>
 	</parent>
 
@@ -13,8 +13,9 @@
 	<name>All X.commerce Contracts</name>
 
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/all</connection>
-	</scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/all</connection>
+	  <url>https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.1/ontology-contracts</url>
+  </scm>
 
 	<repositories>
 		<repository>
