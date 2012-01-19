@@ -1,0 +1,108 @@
+@namespace("com.x.cse.v0")
+
+/**
+	The comparison shopping engine (CSE) protocol defines the schema for all
+	the messages that are part of the CSE domain.
+*/
+protocol ComparisonShoppingEngine {
+	enum ImagePurpose {
+		Hero,
+		Gallery,
+		Thumbnail
+	}
+	
+	enum AvailabilityType {
+		InStock,
+		AvailableForOrder
+	}
+	
+	enum ConditionType {
+		New,
+		Refurbished,
+		VeryGood,
+		Good,
+		Used
+	}
+	
+	enum ProductFeedType {
+		Full,
+		Incrmental
+	}
+	
+	record ProductAttribute {
+		string id;
+		string label;
+		string value;
+	}
+	
+	record CurrencyAmount {
+		double amount;
+		string code;
+	}
+	
+	record ProductImage {
+		string imageUrl;
+		ImagePurpose imagePurpose;
+		boolean hasBackground;
+	}
+	
+	record TaxRate {
+		string country;
+		string region;
+		double rate;
+		boolean taxShipping;
+	}
+	
+	record Shipping {
+	 	string country;
+	 	string region;
+	 	string service;
+	 	CurrencyAmount price;
+	 }
+
+	
+	record VariationValue {
+		CurrencyAmount price;
+		string sku;
+		array<ProductImage> imageUrls;
+		string value;
+	}
+	
+	record Variation {
+		string id;
+		array<VariationValue> values;
+	}
+		
+	record ProductDetails {
+   		string sku;
+   		string tile;
+   		string description;
+   		string manufacturer;
+   		string MPN;
+   		string GTIN;
+   		string brand;
+   		string category;
+   		array<ProductImage> images;
+   		string link;
+   		ConditionType condition;
+   		CurrencyAmount salePrice;
+   		CurrencyAmount originalPrice;
+   		AvailabilityType availability;
+   		TaxRate taxRate;
+   		Shipping shipping;
+   		double shippingWeight;
+   		array<ProductAttribute> attributes;
+   		array<Variation> variations;
+   		string offerId;
+   		CurrencyAmount cpc;
+	}
+	
+	@topic("/cse/offer/create, /cse/offer/created")
+	record ProductFeed {
+		array<ProductDetails> products;
+		ProductFeedType productFeedType;
+	}
+}
+
+
+
