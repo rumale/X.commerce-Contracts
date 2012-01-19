@@ -41,7 +41,7 @@ protocol InventoryCapability
     record InventoryError
     {
 	StockItem stockItem;
-	Error error;
+	array<Error> errors;
     }
  
     /*-------------------------------------------------------------------
