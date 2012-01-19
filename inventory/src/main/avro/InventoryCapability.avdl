@@ -24,6 +24,7 @@ protocol InventoryCapability
     // TODO: Model location (warehouse)
     record Location
     {
+	string name
     }
 
     record StockItem 
@@ -32,44 +33,20 @@ protocol InventoryCapability
         int quantity;
         Location location;
     }
- 
+
     enum Filter 
     {
     }
- 
-    // TODO: Include the common definition from core
-    record Query 
+
+    record InventoryError
     {
+	StockItem stockItem;
+	Error error;
     }
  
     /*-------------------------------------------------------------------
     /* Message definitions
     /*-------------------------------------------------------------------
-    /**
-     * Create stock item
-     */
-    @topic("/inventory/stockitem/create")
-    @version("1.0.0")
-    record CreateStockItem
-    {
-        array<StockItem> stockItems;
-    }
- 
-    @topic("/inventory/stockitem/created")
-    @version("1.0.0")
-    record StockItemCreated
-    {
-        array<StockItem> stockItems;
-    }
- 
-    @topic("/inventory/stockItem/createFailed")
-    @version("1.0.0")
-    record CreateStockItemFailed
-    {
-        array<StockItem> stockItems;
-        array<Error> errors;
-    }
- 
     @topic("/inventory/stockItem/get")
     @version("1.0.0")
     record GetStockItem
@@ -90,77 +67,50 @@ protocol InventoryCapability
     @version("1.0.0")
     record GetStockItemFailed
     {
-        array<string> stockItemIds;
         union {null, Filter} filter; 
-        array<Error> errors;
-    }
- 
-    // TODO: Search pattern based on report in paid search advertising
-    @topic("/inventory/stockItem/search")
-    @version("1.0.0")
-    record SearchStockItem
-    {
-        Query query;
-    }
- 
-    @topic("/inventory/stockItem/searchSucceeded")
-    @version("1.0.0")
-    record SearchStockItemSucceeded
-    {
-        Query query;
-        union {null, array<StockItem>} stockItems;
-    }
- 
-    @topic("/inventory/stockItem/searchFailed")
-    @version("1.0.0")
-    record SearchStockItemFailed
-    {
-        Query query;
-        array<Error> errors;
+        array<InventoryError> getErrors;
     }
  
     @topic("/inventory/stockItem/update")
     @version("1.0.0")
     record UpdateStockItem
     {
-        StockItem stockItem;
+        array<StockItem> stockItems;
     }
  
     @topic("/inventory/stockItem/updated")
     @version("1.0.0")
     record StockItemUpdated
     {
-        StockItem stockItem;
+        array<StockItem> stockItems;
     }
  
     @topic("/inventory/stockItem/updateFailed")
     @version("1.0.0")
     record UpdateStockItemFailed
     {
-        StockItem stockItem;
-        array<Error> errors;
+        array<InventoryError> updateErrors;
     }
  
     @topic("/inventory/stockItem/delete")
     @version("1.0.0")
     record DeleteStockItem
     {
-        StockItem stockItem;
+        array<StockItem> stockItems;
     }
  
     @topic("/inventory/stockItem/deleted")
     @version("1.0.0")
     record StockItemDeleted
     {
-        StockItem stockItem;
+        array<StockItem> stockItems;
     }
  
     @topic("/inventory/stockItem/deleteFailed")
     @version("1.0.0")
     record DeleteStockItemFailed
     {
-        StockItem stockItem;
-        array<Error> errors;
+        array<InventoryError> deleteErrors;
     }
 
     @topic("/inventory/stockItem/outOfStock")
