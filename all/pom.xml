@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.x.cap</groupId>
+		<groupId>com.x.ocl</groupId>
 		<artifactId>ontology</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 
-	<groupId>com.x.cap</groupId>
+	<groupId>com.x.ocl</groupId>
 	<artifactId>ontology-contracts</artifactId>
 	<packaging>jar</packaging>
 	<name>All X.commerce Contracts</name>
@@ -51,44 +51,40 @@
 	<dependencies>
 		<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>core-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>emailmarketing-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>inventory-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>marketplace-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>offermanagement-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>paidsearchadvertising-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>payment-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>productinformationmanagement-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.cap</groupId>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>producttaxonomy-contract</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.x.cap</groupId>
-			<artifactId>shipping-contract</artifactId>
 		</dependency>
     </dependencies>
 
@@ -110,7 +106,7 @@
 							<goal>unpack-dependencies</goal>
 						</goals>
 						<configuration>
-							<includeGroupIds>com.x.cap</includeGroupIds>
+							<includeGroupIds>com.x.ocl</includeGroupIds>
 							<!-- <includeArtifactIds>marketplace-contract</includeArtifactIds> -->
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**\/*.avdl</includes>
