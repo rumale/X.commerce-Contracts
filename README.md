@@ -8,7 +8,7 @@ By downloading any files from this repository, you are agreeing to the terms and
 
 ## What's a Contract?
 
-First, another term: ontology.  The X.commerce Ontology is the mechanism for specifying the common language, interaction standards and integration model for users of the X.commerce Fabric. The ontology is comprised of:
+First, another term: Open Commerce Language.  The X.commerce Open Commerce Language is the mechanism for specifying the common language, interaction standards and integration model for users of the X.commerce Fabric. It is comprised of:
 
 * Entities - e.g. Customer, Merchant, Order, Product
   * Attributes - e.g. Customer-ID, Product-SKU
@@ -17,14 +17,14 @@ First, another term: ontology.  The X.commerce Ontology is the mechanism for spe
 * Events - e.g. Order Approved Event
 * Domain description and glossary - e.g. The words of the language
 
-Contracts are the _machine readable_ realization of the ontology that governs the message-based interactions between capabilities via the X.commerce Fabric.  Contracts are defined using the [Avro](http://avro.apache.org/) Interface Description Language (IDL), in ".avdl" files.  You'll see that we also use Java-style annotations in the AVDL files to, for example, associate message topics on the Fabric to message schemas. Messages that travel across the Fabric are serialized using Avro, typically using its binary format.
+Contracts are the _machine readable_ realization of the X.commerce Open Commerce Language that governs the message-based interactions between capabilities via the X.commerce Fabric.  Contracts are defined using the [Avro](http://avro.apache.org/) Interface Description Language (IDL), in ".avdl" files.  You'll see that we also use Java-style annotations in the AVDL files to, for example, associate message topics on the Fabric to message schemas. Messages that travel across the Fabric are serialized using Avro, typically using its binary format.
 
 ## The Approach
 
-Definition and evolution of the X.commerce Ontology, including the contracts, will be done in a community setting with X.commerce providing guiding principles and sponsorship.  The approach:
+Definition and evolution of the X.commerce Open Commerce Language, including the contracts, will be done in a community setting with X.commerce providing guiding principles and sponsorship.  The approach:
 
-* The ontology will be maintained in this GitHub repository
-* An officially published version of the ontology will be available in sandbox and production environments so capabilities compliant with this version can be deployed to those environments
+* The X.commerce Open Commerce Language will be maintained in this GitHub repository
+* An officially published version of the X.commerce Open Commerce Language will be available in sandbox and production environments so capabilities compliant with this version can be deployed to those environments
 * Anyone in the community (including partners, developers and eBay, Inc. employees) can fork this repository, work on changes and make a pull request to propose merging them back into the official version
 * Initially X.commerce will have a core team of committers
 * Over time, X.commerce will support domain-specific committers and expand the pool of committers to others in the community based on their contributions
@@ -53,7 +53,7 @@ Other flaws are more superficial, but should be addressed.  These include incons
 
 The Eclipse plug-in in the [X.commerce Developer Package](https://www.x.com/fabric-download) lets you create capabilities directly from AVDL files.  However, if you're using a dynamic language with Avro - there are bindings for Python, Ruby, PHP - you'll want to compile an AVDL to an AVPR file that can be parsed by the AvroProtocol (or similarly-named) class in your language of choice.  To compile, you will need the the Avro tools jar built from the [Java Avro package](http://www.apache.org/dyn/closer.cgi/avro/).  Then you can compile like so:
 
-    java -jar ~/packages/avro-src-1.5.1/lang/java/tools/target/avro-tools-1.5.1.jar idl <idl file>
+    java -jar ~/packages/avro-src-1.6.1/lang/java/tools/target/avro-tools-1.6.1.jar idl <idl file>
 
 ### Language-specific Tweaks
 
