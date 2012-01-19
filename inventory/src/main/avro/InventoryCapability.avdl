@@ -24,7 +24,7 @@ protocol InventoryCapability
     // TODO: Model location (warehouse)
     record Location
     {
-	string name
+	string name;
     }
 
     record StockItem 
