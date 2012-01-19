@@ -1,0 +1,204 @@
+@namespace("com.x.shipping.v0")
+
+/**
+	The shipping protocol defines the schema for all messages 
+	that are part of the shipping domain.
+*/
+protocol Shipping {
+
+	enum DimensionUnitType {
+	    Inches,
+   	 	Centimeters
+	}
+	
+	enum WeightUnitType {
+	    Pounds,
+    	Kilograms
+    }
+
+	enum PackagingMethodType {
+    	Together,
+    	Separately
+	}
+	
+	enum SignatureOptionType {
+    	SignatureRequired,
+    	NoSignatureRequired,
+    	Direct,
+    	Indirect
+	}
+	
+	enum PackageType {
+    	Box,
+    	Envelope,
+    	Tube,
+    	Other
+    }
+
+	enum PackageSizeType {
+    	Regular,
+    	Large,
+    	Oversize
+	}
+	
+	enum HandoffModeType {
+	    Pickup,
+   	 	DropOff
+	}
+	
+	enum ServiceClassType {
+	    NextDayAir,
+   		SecondaryDayAir,
+    	ThirdDay,
+    	StandardAir,
+    	Ground
+    }
+    
+    enum PrinterType {
+    	Thermal,
+    	InkJet,
+    	Laser
+    }
+
+	enum LabelImageType {
+		EcondedString,
+		Url
+	}
+	
+	record CurrencyValue {
+		double amount;
+		string code;
+	}
+
+	record Name {
+   		string firstName;
+   		string middleName;
+   		string lastName;
+   		string suffix;
+	}
+
+	record Address {
+   		string addressLine1;
+   		string addressLine2;
+   		string city;
+   		string state;
+   		string postalCode;
+   		string country;
+	}
+
+	record Contact {
+		Name fullName;
+		Address address;
+		string emailAddress;
+		string homePhone;
+		string workPhone;
+		string mobilePhone;
+	}
+	
+	record Package {
+		string description;
+		double weight;
+		WeightUnitType weightUnit;
+		double length;
+		double width;
+		double height;
+		DimensionUnitType dimensionUnit;
+		CurrencyValue declaredValue;
+		PackageType type;
+		PackageSizeType sizeClassification;
+	}
+
+	record Recipient {
+		Name name;
+		string title;
+		Address address;
+		boolean isResidential;
+		string phoneNumber;
+		string phoneExtension;
+		string emailAddress;
+	}
+	
+	record CustomsForm {
+	  /* TBD */
+	}
+	
+	record ShippingService {
+		string name;
+		string code;
+		ServiceClassType serviceClass;
+		double maxPackageWeight;
+	}
+	
+	record ShippingServices {
+		array<ShippingService> services;
+	}
+	
+	record SpecialService {
+		string name;
+		string description;
+		CurrencyValue fee;
+	}
+	
+	record SpecialServices {
+		array<SpecialService> services;
+	}
+	
+	record CarrierHandoffMode {
+		string Code;
+		string Description;
+		HandoffModeType handoffMode;
+	}
+	
+	record Carrier {
+		string name;
+		string code;
+		array<ShippingService> shippingServices;
+		array<CarrierHandoffMode> handoffModes;
+		array<SpecialService> specialServices;
+	}
+
+	record Shipment {
+		array<Package> packages;
+		Address address;
+		Recipient recipient;
+		int lotSize;
+		PackagingMethodType packagingMethod;
+		double totalWeight;
+		CurrencyValue totalInsuredValue;
+		string shippingInstructions;
+		HandoffModeType carrierHandoffMode;
+		ShippingServices shippingServices;
+		array<SpecialService> specialServices;
+		string carrierCode;		
+	}
+	
+	record ShippingLabelParameters {
+		Shipment shipment;
+		long shipDate;
+		string referenceCode;
+		LabelImageType imageType;
+		PrinterType printer;
+		boolean showPostage;
+		boolean receipt;
+		CustomsForm customs;
+	}
+		
+	record TrackingNumber {
+		string trackingNumber;
+	}
+
+	record ShippingLabel {
+		TrackingNumber trackingNumber;
+		LabelImageType imageType;
+		string encodedImage;
+		string imageUrl;
+		CurrencyValue cost;
+	}
+	
+	record ShippingLabels {
+		array<ShippingLabel> labels;
+	}	
+}
+
+
+
