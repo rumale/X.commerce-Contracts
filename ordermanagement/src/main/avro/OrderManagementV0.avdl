@@ -1,0 +1,194 @@
+@namespace("com.x.ordermanagement.v0")
+
+/**
+	The order management protocol defines the schema for all
+	the messages that are part of the orer mangaement domain.
+*/
+protocol OrderManagement {
+	record CurrencyAmount {
+		double amount;
+		string code;
+	}
+
+	record Name {
+   		string firstName;
+   		string middleName;
+   		string lastName;
+   		string suffix;
+	}
+
+	record Address {
+   		string addressLine1;
+   		string addressLine2;
+   		string city;
+   		string state;
+   		string postalCode;
+   		string country;
+	}
+
+	record Contact {
+		Name fullName;
+		Address address;
+		string emailAddress;
+		string homePhone;
+		string workPhone;
+		string mobilePhone;
+	}
+
+	record Customer {
+		string id;
+		Name name;
+		string emailAddress;
+	}
+
+	record Billing {
+		Contact billingContact;
+		string companyName;
+	}
+
+	record DateRange {
+		long fromDate;
+		long toDate;
+	}
+
+	record GiftTag {
+   		string From;
+   		string To;
+   		string message;
+	}
+
+	@topic("/order/payment/captured")
+	record PaymentTransaction {
+		string paymentType;
+		string paymentTypeId;
+		string paymentReferenceNumber;
+		long transacationDate;
+		string transacationStatus;
+	}
+	
+	record PromotionalDiscount {
+		string id;
+		string code;
+		string Description;
+		CurrencyAmount amount;
+	}
+
+	enum ShippingServiceType {
+		MerchantShipped,
+		DropShipped,
+		ShippingService
+	}
+
+	record Shipping {
+		ShippingServiceType serviceType;
+		string serviceProviderId;
+		string shippingMethod;
+		DateRange deliveryWindow;
+		DateRange shippingWindow;
+		string message;
+		array<PromotionalDiscount> discounts;
+		CurrencyAmount fee;
+		string trackingNumber;
+	}
+
+	enum TaxabilityType {
+		Taxable,
+		NonTaxable,
+		Exempt,
+		Deferred
+	}
+
+	@topic("/order/tax/calculated")
+	record Tax {
+		TaxabilityType taxability;
+		string taxType;
+		CurrencyAmount taxableAmount;
+		CurrencyAmount calcualtedTax;
+		double effectiveRate;
+	}
+
+	record OrderItemPrice {
+		CurrencyAmount amount;
+		CurrencyAmount originalAmount;
+		array<PromotionalDiscount> discounts;
+	}
+
+	enum OrderStatus {
+		New,
+		OnHold,
+		Backordered,
+		ReadyToShip,
+		Shipped,
+		ProcessingReturn,
+		Exhcanged,
+		Canceled
+	}
+
+	record ProductAttribute {
+		string label;
+		string value;
+	}
+
+	record OrderShippingStatus {
+		string OrderId;
+		string Status;
+	}
+
+	record OrderItem {
+		string ItemId;
+		string productSku;
+		string description;
+		array<ProductAttribute> productAttributes;	
+		int quatity;
+		OrderItemPrice unitPrice;
+		Tax tax;
+		GiftTag giftTag;
+		Contact destination;
+		Shipping shipping;
+		string Message;
+	}
+
+	@topic("/order/create, /order/created, /order/update, /order/updated, /order/deleted, /order/shipped")
+	record Order {
+   		string orderNumber;
+    	string dateOrdered;
+    	string source;
+    	string sourceId;
+    	OrderStatus status;
+		Customer customer;
+		Billing billTo;
+		string purchaseOrder;
+		array<OrderItem> orderItems;
+		Tax tax;
+		PaymentTransaction transaction;
+	}
+
+	@topic("/order/searchSucceeded")
+	record Orders {
+		array<Order> orders;
+	}
+
+	@topic("/order/cancel")
+	record OrderCancel {
+		array<string> orderIds;
+	}
+
+	@topic("/order/search")
+	record OrderFilter {
+		string filter;
+	}
+
+	@topic ("/order/inventoryUpdated")
+	record OrderInventoryChanged {
+		string productId;
+		int change;
+	}
+
+	record OrderSearchFilter {
+		string customerId;
+		string orderId;
+	}
+}
+
+
+
