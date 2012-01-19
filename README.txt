@@ -17,6 +17,7 @@ INTERNAL DRAFT:
  -inventory
  -offermanagement
  -productinformationmanagement
+ -shipping
  
 WORKING DRAFT:
  -payment

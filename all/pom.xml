@@ -86,6 +86,10 @@
 			<groupId>com.x.cap</groupId>
 			<artifactId>producttaxonomy-contract</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.x.cap</groupId>
+			<artifactId>shipping-contract</artifactId>
+		</dependency>
     </dependencies>
 
 	<build>
