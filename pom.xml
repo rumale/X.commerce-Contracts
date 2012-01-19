@@ -55,6 +55,7 @@
 		<module>offermanagement</module>
 		<module>paidsearchadvertising</module>
 		<module>productinformationmanagement</module>
+		<module>shipping</module>
 		<module>all</module>
 	</modules>
 
@@ -104,6 +105,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>producttaxonomy-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>shipping-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

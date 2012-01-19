@@ -76,7 +76,6 @@ protocol InventoryCapability
     {
         array<string> stockItemIds;
         union {null, Filter} filter; 
-        // TODO: locale
     }
  
     @topic("/inventory/stockItem/getSucceeded")
@@ -85,7 +84,6 @@ protocol InventoryCapability
     {
         array<StockItem> stockItems;
         union {null, Filter} filter; 
-        // TODO: locale
     }
  
     @topic("/inventory/stockItem/getFailed")
@@ -94,7 +92,6 @@ protocol InventoryCapability
     {
         array<string> stockItemIds;
         union {null, Filter} filter; 
-        // TODO: locale
         array<Error> errors;
     }
  
@@ -104,7 +101,6 @@ protocol InventoryCapability
     record SearchStockItem
     {
         Query query;
-        // TODO: locale
     }
  
     @topic("/inventory/stockItem/searchSucceeded")
@@ -112,7 +108,6 @@ protocol InventoryCapability
     record SearchStockItemSucceeded
     {
         Query query;
-        // TODO: locale
         union {null, array<StockItem>} stockItems;
     }
  
@@ -121,7 +116,6 @@ protocol InventoryCapability
     record SearchStockItemFailed
     {
         Query query;
-        // TODO: locale
         array<Error> errors;
     }
  
