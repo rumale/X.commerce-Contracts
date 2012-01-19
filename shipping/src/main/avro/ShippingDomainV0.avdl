@@ -118,8 +118,26 @@ protocol Shipping {
 		string emailAddress;
 	}
 	
+	record CustomsItem {
+		Country originCountry;
+		double weightMajor;
+		double weightMinor;
+		WeightUnitType weightUnit;
+		Currency eachValue;
+		String tariffCode;
+		int quantity;
+		String description;
+	}
+	
 	record CustomsForm {
-	  /* TBD */
+		String licenseNumber;
+		String itemDetail;
+		String itemType;
+		String comments;
+		String orderNumber;
+		String certificateNumber;
+		String eelpfc;
+		array<CustomsItem> items;
 	}
 	
 	record ShippingService {
