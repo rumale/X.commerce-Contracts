@@ -2,7 +2,7 @@
 
 /**
 	The order management protocol defines the schema for all
-	the messages that are part of the orer mangaement domain.
+	the messages that are part of the order management domain.
 */
 protocol OrderManagement {
 	record CurrencyAmount {
@@ -62,14 +62,14 @@ protocol OrderManagement {
 		string paymentType;
 		string paymentTypeId;
 		string paymentReferenceNumber;
-		long transacationDate;
-		string transacationStatus;
+		long transactionDate;
+		string transactionStatus;
 	}
 	
 	record PromotionalDiscount {
 		string id;
 		string code;
-		string Description;
+		string description;
 		CurrencyAmount amount;
 	}
 
@@ -103,7 +103,7 @@ protocol OrderManagement {
 		TaxabilityType taxability;
 		string taxType;
 		CurrencyAmount taxableAmount;
-		CurrencyAmount calcualtedTax;
+		CurrencyAmount calculatedTax;
 		double effectiveRate;
 	}
 
@@ -120,7 +120,7 @@ protocol OrderManagement {
 		ReadyToShip,
 		Shipped,
 		ProcessingReturn,
-		Exhcanged,
+		Exchanged,
 		Canceled
 	}
 
@@ -139,13 +139,13 @@ protocol OrderManagement {
 		string productSku;
 		string description;
 		array<ProductAttribute> productAttributes;	
-		int quatity;
+		int quantity;
 		OrderItemPrice unitPrice;
 		Tax tax;
 		GiftTag giftTag;
 		Contact destination;
 		Shipping shipping;
-		string Message;
+		string message;
 	}
 
 	@topic("/order/create, /order/created, /order/update, /order/updated, /order/deleted, /order/shipped")
