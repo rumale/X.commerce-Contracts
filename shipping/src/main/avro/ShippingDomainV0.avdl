@@ -119,7 +119,7 @@ protocol Shipping {
 	}
 	
 	record CustomsItem {
-		Country originCountry;
+		string originCountry;
 		double weightMajor;
 		double weightMinor;
 		WeightUnitType weightUnit;

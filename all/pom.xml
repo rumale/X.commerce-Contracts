@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.ocl</groupId>
@@ -14,8 +15,7 @@
 
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/all</connection>
-	  <url>https://svn.corp.x.com:8080/svn/x/Ontology/trunk/ontology-contracts</url>
-  </scm>
+	</scm>
 
 	<repositories>
 		<repository>
@@ -86,7 +86,7 @@
 			<groupId>com.x.ocl</groupId>
 			<artifactId>producttaxonomy-contract</artifactId>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<resources>
