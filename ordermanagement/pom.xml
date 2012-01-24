@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.x.ocl</groupId>
+		<artifactId>ontology</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>com.x.ocl</groupId>
+	<artifactId>ordermanagement-contract</artifactId>
+	<name>Order Management Contract</name>
+	<description>
+		This artifact contains the order management contract.
+	</description>
+	<scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/ordermanagement</connection>
+	</scm>
+
+	<repositories>
+		<repository>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</snapshots>
+			<id>xcommerce</id>
+			<name>x.commerce</name>
+			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>ontologydeploy</id>
+			<name>Email Marketing release repository</name>
+			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>ontologydeploy</id>
+			<name>Email Marketing snapshot repository</name>
+			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>${avro.version}</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/avro</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>${avro.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>protocol</goal>
+							<goal>idl-protocol</goal>
+							<goal>schema</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
