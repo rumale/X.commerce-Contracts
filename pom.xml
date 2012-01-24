@@ -47,26 +47,37 @@
 
 	<modules>
 		<module>core</module>
+		<module>comparisonshoppingengine</module>
 		<module>marketplace</module>
 		<module>producttaxonomy</module>
 		<module>emailmarketing</module>
 		<module>payment</module>
 		<module>inventory</module>
 		<module>offermanagement</module>
+		<module>ordermanagement</module>
 		<module>paidsearchadvertising</module>
 		<module>productinformationmanagement</module>
-		<module>comparisonshoppingengine</module>
-		<module>ordermanagement</module>
 		<module>shipping</module>
 		<module>all</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro</artifactId>
+				<version>${avro.version}</version>
+				<scope>compile</scope>
+			</dependency>
 			<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>core-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>comparisonshoppingengine-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -91,6 +102,11 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>ordermanagement-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>paidsearchadvertising-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -111,24 +127,8 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>comparisonshoppingengine-contract</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>ordermanagement-contract</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
 				<artifactId>shipping-contract</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.avro</groupId>
-				<artifactId>avro</artifactId>
-				<version>${avro.version}</version>
-				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -51,40 +51,52 @@
 	<dependencies>
 		<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>core-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>comparisonshoppingengine-contract</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>emailmarketing-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>inventory-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>marketplace-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>offermanagement-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ordermanagement-contract</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>paidsearchadvertising-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>payment-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>productinformationmanagement-contract</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.x.ocl</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>producttaxonomy-contract</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>shipping-contract</artifactId>
 		</dependency>
 	</dependencies>
 
