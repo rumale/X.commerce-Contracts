@@ -6,6 +6,11 @@
 */
 protocol Shipping {
 
+	record CurrencyAmount {
+		double amount;
+		string code;
+	}
+
 	enum DimensionUnitType {
 	    Inches,
    	 	Centimeters
@@ -123,20 +128,20 @@ protocol Shipping {
 		double weightMajor;
 		double weightMinor;
 		WeightUnitType weightUnit;
-		Currency eachValue;
-		String tariffCode;
+		CurrencyAmount eachValue;
+		string tariffCode;
 		int quantity;
-		String description;
+		string description;
 	}
 	
 	record CustomsForm {
-		String licenseNumber;
-		String itemDetail;
-		String itemType;
-		String comments;
-		String orderNumber;
-		String certificateNumber;
-		String eelpfc;
+		string licenseNumber;
+		string itemDetail;
+		string itemType;
+		string comments;
+		string orderNumber;
+		string certificateNumber;
+		string eelpfc;
 		array<CustomsItem> items;
 	}
 	
