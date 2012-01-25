@@ -31,25 +31,56 @@ protocol ProductInformationManagementCapability
         union {null, string} variant;
     }
 
+ 	record LocalizedNameValue {
+ 		Locale locale;
+ 		string name;
+ 		string value;
+ 	}
+ 	
+ 	record LocalizedString {
+ 		Locale locale;
+  		string stringValue;
+ 	}
+ 	
     record BooleanAttributeValue
     {
         boolean value;
+        /** attributeName will be populated by capability */
+        union{null, array<LocalizedString>} attributeName;
     }
  
     record StringEnumerationAttributeValue
     {
-        union {string, array<string>} value;
+    	/** valueId is the id of the value defined in XPT StringEnumeration */
+        union {string, array<string>} valueId;
+        /** this localized value will be populated by capability */
+        union {null, array<array<LocalizedNameValue>>} attributeValues;
     }
  
     record StringAttributeValue
     {
-        string value;
+    	/** a string attribute value can optionally refer to */
+    	/** a predefined value in XPT, or it can be localized name/value pair */
+        union {null, string} valueId;
+        /** this localized value can be populated by capability if valueId is present */
+        /** if valueId is not present, the localized values can be populated by requester */
+        union {null, array<LocalizedNameValue>} attributeValue;
+    }
+ 
+    record CustomAttributeValue {
+ 	string attributeId;
+ 	union {null, array<LocalizedNameValue>} attributeValue;
+    }
+ 	
+    record XPTAttributeValue
+    {
+        string attributeId;
+        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
     }
  
     record ProductAttributeValue
     {
-        string attributeId;
-        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
+        union {XPTAttributeValue, CustomAttributeValue} value;
     }
  
     enum ProductFilter 
@@ -214,6 +245,8 @@ protocol ProductInformationManagementCapability
         union {null, array<ProductImage>} images = null;
         /** product attributes */
         union {null, array<ProductAttributeValue>} attributes;
+        /** defines the ids of variation variables */
+        union {null, array<string>} variationVariableIds;
     }
 
     /**
@@ -227,7 +260,7 @@ protocol ProductInformationManagementCapability
         union {null, string} productId;
         /** ID for the SKU provided by merchant  */
         union {null, string} skuMerchantId;
-        /** variation attributes */
+        /** variation attributes, the list must match the variationnVariableIds */
         union {null, array<ProductAttributeValue>} attributes;
     }
 
@@ -295,7 +328,7 @@ protocol ProductInformationManagementCapability
         union {null, ProductFilter} filter; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
     }
  
     @topic("/productinformationmanagement/product/getSucceeded")
@@ -306,7 +339,7 @@ protocol ProductInformationManagementCapability
         union {null, ProductFilter} filter; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
     }
  
     @topic("/productinformationmanagement/product/getFailed")
@@ -317,7 +350,7 @@ protocol ProductInformationManagementCapability
         union {null, ProductFilter} filter; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
         array<Error> errors;
     }
  
@@ -332,7 +365,7 @@ protocol ProductInformationManagementCapability
         union {null, SKUFilter} filter; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
     }
  
     @topic("/productinformationmanagement/sku/getSucceeded")
@@ -343,7 +376,7 @@ protocol ProductInformationManagementCapability
         union {null, SKUFilter} filter; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
     }
  
     @topic("/productinformationmanagement/SKU/getFailed")
@@ -354,7 +387,7 @@ protocol ProductInformationManagementCapability
         union {null, SKUFilter} filter; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
         array<Error> errors;
     }
  
@@ -366,7 +399,7 @@ protocol ProductInformationManagementCapability
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
     }
  
     @topic("/productinformationmanagement/product/searchSucceeded")
@@ -376,7 +409,7 @@ protocol ProductInformationManagementCapability
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
         QueryResult queryResult;
     }
  
@@ -387,7 +420,7 @@ protocol ProductInformationManagementCapability
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
         array<Error> errors;
     }
  
@@ -399,7 +432,7 @@ protocol ProductInformationManagementCapability
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
     }
  
     @topic("/productinformationmanagement/sku/searchSucceeded")
@@ -409,7 +442,7 @@ protocol ProductInformationManagementCapability
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
         QueryResult queryResult;
     }
  
@@ -420,7 +453,7 @@ protocol ProductInformationManagementCapability
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, Locale } locale;
+        union { null, array<Locale> } locales;
         array<Error> errors;
     }
  
