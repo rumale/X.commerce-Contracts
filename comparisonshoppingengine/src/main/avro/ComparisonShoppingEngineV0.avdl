@@ -75,7 +75,7 @@ protocol ComparisonShoppingEngine {
 		
 	record ProductDetails {
    		string sku;
-   		string tile;
+   		string title;
    		string description;
    		string manufacturer;
    		string MPN;
