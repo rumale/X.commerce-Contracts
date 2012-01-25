@@ -58,6 +58,7 @@
 		<module>paidsearchadvertising</module>
 		<module>productinformationmanagement</module>
 		<module>shipping</module>
+		<module>customer</module>
 		<module>all</module>
 	</modules>
 
@@ -128,6 +129,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>shipping-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>customer-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
