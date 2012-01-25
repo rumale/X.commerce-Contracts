@@ -1,0 +1,162 @@
+@namespace("com.x.customer.v0")
+
+/**
+        The customer protocol defines the schema for all messages that are part of the customer domain.
+*/
+protocol Customer {
+        record CurrencyAmount {
+                double amount;
+                string code;
+        }
+
+        record Name {
+                 string firstName;
+                 union {null, string} middleName;
+                 string lastName;
+                 union {null, string} prefix;
+                 union {null, string} suffix;
+        }
+
+        record Address {
+                 string addressLine1;
+                 union {null, string} addressLine2;
+                 union {null, string} addressLine3;
+                 union {null, string} addressLine4;
+                 string city;
+                 union {null, string} county;
+                 union {null, string} state;
+                 union {null, string} postalCode;
+                 string country;   // 2 character ISO value
+        }
+        
+        enum PhoneType {
+                Home,
+                Mobile,
+                Work,
+                Fax
+        }
+        
+        record Phone {
+                string Number;
+                PhoneType Type;
+        }
+
+        enum Gender {
+                Male,
+                Female,
+                Unknown
+        }
+
+        enum ContactStatus {
+                New,
+                Warm,
+                Active,
+                Cold
+        }
+
+        record Contact {
+                Name fullName;
+                Address address;
+                string emailAddress;
+                union {null, Phone} PrimaryPhone;
+                union {null, Phone} SecondaryPhone;
+                union {null, string} Company;
+                boolean DoNotCall;
+                boolean EmailOptOut;
+                Gender Gender;
+                long DateCreated;
+                long LastActivityDate;
+                string SourceId;
+                ContactStatus Status;
+        }
+
+        record BillingContact {
+                Name fullName;
+                string Company;
+                Address address;
+                string emailAddress;
+                Phone Phone;
+        }
+
+        record ShippingContact {
+                Name fullName;
+                Address address;
+                string emailAddress;
+                Phone Phone;
+        }
+        
+        enum PaymentType {
+                Visa,
+                Mastercard,
+                AmericanExpress,
+                PayPal,
+                PurchaseOrder,
+                Check,
+                Cash,
+                MoneyOrder,
+                InternalGiftCard,
+                ExternalGiftCard,
+                ElectronicCheck,
+                BillMeLater,
+                Free
+        }
+        
+        record PaymentMethod {
+                PaymentType PaymentType;
+                string Reference;
+        }
+
+        
+        @topic("/customer/delete")
+        record CustomerDelete {
+                string CustomerId;
+        }
+        
+        @topic("/customer/create, /customer/created, /customer/update, /customer/updated")
+        record Customer {
+                string CustomerId;
+                string ExternalCustomerId;
+                Contact PrimaryContact;
+                array<ShippingContact> ShippingAddresses;
+                array<BillingContact> BillingAddresses;
+                union {null, string} TaxGroup;
+                union {null, string} TaxNumber;
+                array<PaymentMethod> PaymentMethods;
+        }
+
+
+        @topic("/customer/deleted")
+        record CustomerDeleted {
+                string CustomerId;
+        }
+
+
+        @topic("/customer/search")
+        record CustomerSearchFilter {
+                union {null, string} CustomerId;
+                union {null, Name} CustomerName;
+        }
+        
+        @topic("/customer/searchSucceeded")
+        record Customers {
+                CustomerSearchFilter filter;
+                array <Customer> Customers;
+        }
+
+        enum SeverityType {
+                ERROR,
+                WARNING
+        }
+
+        record Error {
+                SeverityType severity;
+                string code;
+                string message;
+        }
+
+        @topic("/customer/searchFailed")
+        record CustomerSearchFailure {
+                CustomerSearchFilter filter;
+                array<Error> errors;
+        }
+}
