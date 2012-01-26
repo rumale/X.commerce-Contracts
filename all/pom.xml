@@ -56,6 +56,10 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>customer-contract</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>comparisonshoppingengine-contract</artifactId>
 		</dependency>
 		<dependency>
