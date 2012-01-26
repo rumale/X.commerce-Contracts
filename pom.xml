@@ -48,18 +48,19 @@
 	<modules>
 		<module>core</module>
 		<module>comparisonshoppingengine</module>
-		<module>marketplace</module>
-		<module>producttaxonomy</module>
+		<module>customer</module>
 		<module>emailmarketing</module>
-		<module>payment</module>
 		<module>inventory</module>
+		<module>marketplace</module>
 		<module>offermanagement</module>
 		<module>ordermanagement</module>
 		<module>paidsearchadvertising</module>
+		<module>payment</module>
 		<module>productinformationmanagement</module>
+		<module>producttaxonomy</module>
 		<module>shipping</module>
-		<module>customer</module>
 		<module>all</module>
+		<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
 	</modules>
 
 	<dependencyManagement>
@@ -79,6 +80,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>comparisonshoppingengine-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>customer-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -131,11 +137,7 @@
 				<artifactId>shipping-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>customer-contract</artifactId>
-				<version>${project.version}</version>
-			</dependency>
+			<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
 		</dependencies>
 	</dependencyManagement>
 
