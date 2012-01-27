@@ -31,16 +31,29 @@ protocol ProductInformationManagementCapability
         union {null, string} variant;
     }
 
- 	record LocalizedNameValue {
- 		Locale locale;
- 		string name;
- 		string value;
- 	}
+    record UOM {
+	string unit;
+	double value;
+    }	
+
+    record LocalizedNameValue {
+	// if the locale is null, default to en_US
+	// there should be only one element with default locale in an array
+	union {null, Locale} locale = null;
+	string name;
+	string value;
+    }
  	
- 	record LocalizedString {
- 		Locale locale;
-  		string stringValue;
- 	}
+    record LocalizedString {
+	union {null, Locale} locale = null;
+	string stringValue;
+    }
+ 	
+    record LocalizedUOM {
+	union {null, Locale} locale = null;
+	UOM uom;
+    }
+	
  	
     record BooleanAttributeValue
     {
@@ -69,7 +82,7 @@ protocol ProductInformationManagementCapability
  
     record CustomAttributeValue {
  	string attributeId;
- 	union {null, array<LocalizedNameValue>} attributeValue;
+ 	union {null, array<LocalizedNameValue>, boolean, LocalizedUOM} attributeValue;
     }
  	
     record XPTAttributeValue
