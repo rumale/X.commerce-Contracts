@@ -47,6 +47,27 @@ protocol InventoryCapability
     /*-------------------------------------------------------------------*/
     /* Message definitions                                               */
     /*-------------------------------------------------------------------*/
+    @topic("/inventory/stockItem/create")
+    @version("1.0.0")
+    record CreateStockItem
+    {
+        array<StockItem> stockItems;
+    }
+ 
+    @topic("/inventory/stockItem/created")
+    @version("1.0.0")
+    record StockItemUpdated
+    {
+        array<StockItem> stockItems;
+    }
+ 
+    @topic("/inventory/stockItem/createFailed")
+    @version("1.0.0")
+    record CreateStockItemFailed
+    {
+        array<InventoryError> updateErrors;
+    }
+
     @topic("/inventory/stockItem/get")
     @version("1.0.0")
     record GetStockItem
