@@ -30,7 +30,7 @@ protocol InventoryCapability
     record StockItem 
     {
         string skuId;
-        int quantity;
+        int quantity;  // note: this is a "read only" field due to serialization issues.
         Location location;
     }
 
@@ -65,7 +65,7 @@ protocol InventoryCapability
     @version("1.0.0")
     record CreateStockItemFailed
     {
-        array<InventoryError> updateErrors;
+        array<InventoryError> createErrors;
     }
 
     @topic("/inventory/stockItem/get")
@@ -92,6 +92,8 @@ protocol InventoryCapability
         array<InventoryError> getErrors;
     }
  
+    //Note: this update command will update all fields of the StockItem except the quantity field.
+    //Use the updateQuantity message to update that field.
     @topic("/inventory/stockItem/update")
     @version("1.0.0")
     record UpdateStockItem
@@ -111,6 +113,33 @@ protocol InventoryCapability
     record UpdateStockItemFailed
     {
         array<InventoryError> updateErrors;
+    }
+
+    //This is a relative assignment (+3 or -1), not an absolute assignment of quantity.
+    //If you want an absolute assignment, first do a get, compute the delta from that
+    //amount to your target amount and send an updateQuantity message with that delta.
+    //Then listen for the quantityUpdated response (and compare that quantity to your 
+    //desired absolute amount).
+    @topic("/inventory/stockItem/updateQuantity")
+    @version("1.0.0")
+    record UpdateQuantity
+    {
+        string skuId;
+	int quantity;
+    }
+
+    @topic("/inventory/stockItem/quantityUpdated")
+    @version("1.0.0")
+    record QuantityUpdated
+    {
+        StockItem stockItem;
+    }
+ 
+    @topic("/inventory/stockItem/updateQuantityFailed")
+    @version("1.0.0")
+    record UpdateQuantityFailed
+    {
+        Error quantityUpdateError;
     }
  
     @topic("/inventory/stockItem/delete")
