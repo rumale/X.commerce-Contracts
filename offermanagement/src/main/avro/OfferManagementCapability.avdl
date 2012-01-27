@@ -6,6 +6,15 @@ protocol OfferManagementCapability
 	import idl "Query.avdl";
 	import idl "Offer.avdl";
 
+	@extends("com.x.ocl.Offer")
+	record MarketplaceOffer {
+		//TODO: merge the remaining fields from Marketplace.avdl Listing type.
+		
+		//Shipping policy
+		//Payment policy
+		//Return policy
+	}
+
 	record OfferError {
 		com.x.ocl.Offer offer;
 		array<com.x.ocl.Error> errors;
@@ -21,6 +30,9 @@ protocol OfferManagementCapability
 	record CreateOffer
 	{
 		array<com.x.ocl.Offer> offers;
+		
+		/** Id of the Policy Group defined at the channel to use. */
+		union{null,string} channelPolicyGroupId;
 	}
  
 	@topic("/offer/created")
@@ -28,6 +40,9 @@ protocol OfferManagementCapability
 	record OfferCreated
 	{
 		array<com.x.ocl.Offer> offers;
+
+		/** Id of the Policy Group defined at the channel to use. */
+		union{null,string} channelPolicyGroupId;
 	}
  
 	@topic("/offer/createFailed")
@@ -35,6 +50,9 @@ protocol OfferManagementCapability
 	record CreateOfferFailed
 	{
 		array<OfferError> errors;
+
+		/** Id of the Policy Group defined at the channel to use. */
+		union{null,string} channelPolicyGroupId;
 	}
  
 	@topic("/offer/search")
