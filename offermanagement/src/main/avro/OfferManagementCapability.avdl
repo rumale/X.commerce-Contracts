@@ -2,191 +2,104 @@
  
 protocol OfferManagementCapability 
 {
-	record CurrencyAmount {
-		double amount;
-		string code;
+	import idl "Error.avdl";
+	import idl "Query.avdl";
+	import idl "Offer.avdl";
+
+	record OfferError {
+		com.x.ocl.Offer offer;
+		array<com.x.ocl.Error> errors;
+	}
+ 
+	record OfferIdError {
+		string offerId;
+		array<com.x.ocl.Error> errors;
 	}
 
-    /** This record is used to return error information */
-    record Error
-    {
-        /** Numeric value that indicates the type of error */
-        string code;
+	@topic("/offer/create")
+	@version("1.0.0")
+	record CreateOffer
+	{
+		array<com.x.ocl.Offer> offers;
+	}
  
-        /**  Key whose value is a human displayable version of this error */
-        union {null, string} message = null;
+	@topic("/offer/created")
+	@version("1.0.0")
+	record OfferCreated
+	{
+		array<com.x.ocl.Offer> offers;
+	}
  
-        /** 
-         * Parameters for the message. Parameter place holders identified 
-         * using the format in java.text.MessageFormat. The key of the map is
-         * the placeholder string, and the value is the string that replaces it. 
-         */
-        union {null, map<string>} parameters = null;
-    }
-
-    record State
-    {
-        // TODO: States of an offer
-    }
+	@topic("/offer/createFailed")
+	@version("1.0.0")
+	record CreateOfferFailed
+	{
+		array<OfferError> errors;
+	}
  
-    /**
-     * What the offer is about
-     */
-    record ProductOffer
-    {
-        // TODO: How would this look for variable products?
-        string productId;
-        CurrencyAmount price;
-        int quantity;
-        // TODO: Include all other attributes from Marketplace/Listing
-    }
-
-    record Offer 
-    {
-        /** Unique ID */
-        union {null, string} id;
-        /** State of the offer */
-        union {null, State} state;
-        /** The channel this offer is for */
-        union {null, string} channelId;
-        // Helps with creation of other types of offers (e.g. promotions)
-        // in the future
-        union {null, ProductOffer} about;
-    }
+	@topic("/offer/search")
+	@version("1.0.0")
+	record SearchOffer
+	{
+		com.x.ocl.Query query;
+	}
  
-    enum Filter 
-    {
-    }
+	@topic("/offer/searchSucceeded")
+	@version("1.0.0")
+	record SearchOfferSucceeded
+	{
+		com.x.ocl.Query query;
+		union {null, array<com.x.ocl.Offer>} offers = null;
+	}
  
-    record Query 
-    {
-        //Selector selector;
-    }
+	@topic("/offer/searchFailed")
+	@version("1.0.0")
+	record SearchOfferFailed
+	{
+		com.x.ocl.Query query;
+		array<com.x.ocl.Error> errors;
+	}
  
-    /*-------------------------------------------------------------------
-    /* Message definitions
-    /*-------------------------------------------------------------------
-    /**
-     * Create offers
-     */
-    @topic("/offermanagement/offer/create")
-    @version("1.0.0")
-    record CreateOffer
-    {
-        array<Offer> offers;
-    }
+	@topic("/offer/update")
+	@version("1.0.0")
+	record UpdateOffer
+	{
+		array<com.x.ocl.Offer> offers;
+	}
  
-    @topic("/offermanagement/offer/created")
-    @version("1.0.0")
-    record OfferCreated
-    {
-        array<Offer> offers;
-    }
+	@topic("/offer/updated")
+	@version("1.0.0")
+	record OfferUpdated
+	{
+		array<com.x.ocl.Offer> offers;
+	}
  
-    @topic("/offermanagement/offer/createFailed")
-    @version("1.0.0")
-    record CreateOfferFailed
-    {
-        array<Offer> offers;
-        array<Error> errors;
-    }
+	@topic("/offer/updateFailed")
+	@version("1.0.0")
+	record UpdateOfferFailed
+	{
+		array<OfferError> errors;
+	}
  
-    @topic("/offermanagement/offer/get")
-    @version("1.0.0")
-    record GetOffer
-    {
-        array<string> offerIds;
-        union {null, Filter} filter; 
-        // TODO: locale
-    }
+	@topic("/offer/delete")
+	@version("1.0.0")
+	record DeleteOffer
+	{
+		array<string> offerIds;
+	}
  
-    @topic("/offermanagement/offer/getSucceeded")
-    @version("1.0.0")
-    record GetOfferSucceeded
-    {
-        array<Offer> offers;
-        union {null, Filter} filter; 
-        // TODO: locale
-    }
+	@topic("/offer/deleted")
+	@version("1.0.0")
+	record OfferDeleted
+	{
+		array<string> offers;
+	}
  
-    @topic("/offermanagement/offer/getFailed")
-    @version("1.0.0")
-    record GetOfferFailed
-    {
-        array<string> offerIds;
-        union {null, Filter} filter; 
-        // TODO: locale
-        array<Error> errors;
-    }
- 
-    // TODO: Search pattern based on report in paid search advertising
-    @topic("/offermanagement/offer/search")
-    @version("1.0.0")
-    record SearchOffer
-    {
-        Query query;
-        // TODO: locale
-    }
- 
-    @topic("/offermanagement/offer/searchSucceeded")
-    @version("1.0.0")
-    record SearchOfferSucceeded
-    {
-        Query query;
-        // TODO: locale
-        union {null, array<Offer>} offers;
-    }
- 
-    @topic("/offermanagement/offer/searchFailed")
-    @version("1.0.0")
-    record SearchOfferFailed
-    {
-        Query query;
-        // TODO: locale
-        array<Error> errors;
-    }
- 
-    @topic("/offermanagement/offer/update")
-    @version("1.0.0")
-    record UpdateOffer
-    {
-        array<Offer> offers;
-    }
- 
-    @topic("/offermanagement/offer/updated")
-    @version("1.0.0")
-    record OfferUpdated
-    {
-        array<Offer> offers;
-    }
- 
-    @topic("/offermanagement/offer/updateFailed")
-    @version("1.0.0")
-    record UpdateOfferFailed
-    {
-        array<Offer> offers;
-        array<Error> errors;
-    }
- 
-    @topic("/offermanagement/offer/delete")
-    @version("1.0.0")
-    record DeleteOffer
-    {
-        array<Offer> offers;
-    }
- 
-    @topic("/offermanagement/offer/deleted")
-    @version("1.0.0")
-    record OfferDeleted
-    {
-        array<Offer> offers;
-    }
- 
-    @topic("/offermanagement/offer/deleteFailed")
-    @version("1.0.0")
-    record DeleteOfferFailed
-    {
-        array<Offer> offers;
-        array<Error> errors;
-    }
+	@topic("/offer/deleteFailed")
+	@version("1.0.0")
+	record DeleteOfferFailed
+	{
+		array<string> offerIds;
+		array<OfferIdError> errors;
+	}
 }

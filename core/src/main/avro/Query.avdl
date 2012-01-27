@@ -1,128 +1,105 @@
-@namespace("com.x.contract.core.v0")
+@namespace("com.x.ocl")
 
 protocol Core {
 
-    /**
-     * Range of dates
-     */
-    record DateRange
-    {
-        /**
-         * Start date
-         * Format: ISO 8601 YYYYMMDD
-         */
-        union {null, string} startDate;
+	/**
+	 * Operator
+	 */
+	enum Operator
+	{
+		EQUALS,
+		NOT_EQUALS,
+		GREATER_THAN,
+		GREATER_THAN_EQUALS,
+		LESS_THAN,
+		LESS_THAN_EQUALS
+	}
+	
+	/**
+	 * Predicate
+	 */
+	record Predicate
+	{
+		string field;
 
-        /**
-         * End date
-         * Format: ISO 8601 YYYYMMDD
-         */
-        union {null, string} endDate;
-    }
+		Operator operator;
 
-    /**
-     * Operator
-     */
-    enum Operator
-    {
-        EQUALS,
-        NOT_EQUALS,
-        GREATER_THAN,
-        GREATER_THAN_EQUALS,
-        LESS_THAN,
-        LESS_THAN_EQUALS
-    }
-    
-    /**
-     * Predicate
-     */
-    record Predicate
-    {
-        string field;
+		array<string> values;
+	}
 
-        Operator operator;
+	/**
+	 * Sort order
+	 */
+	enum SortOrder
+	{
+		ASCENDING,
+		DESCENDING
+	}
 
-        array<string> values;
-    }
+	/**
+	 * Order by
+	 */
+	record OrderBy
+	{
+		string field;
 
-    /**
-     * Sort order
-     */
-    enum SortOrder
-    {
-        ASCENDING,
-        DESCENDING
-    }
+		SortOrder sortOrder;
+	}
 
-    /**
-     * Order by
-     */
-    record OrderBy
-    {
-        string field;
-
-        SortOrder sortOrder;
-    }
-
-    /**
-     * Specifies the page of results to return in the response
-     */
-    record Paging
-    {
-        int startIndex;
+	/**
+	 * Specifies the page of results to return in the response
+	 */
+	record Paging
+	{
+		int startIndex;
  
-        int numberResults;
-    }
+ 		/** Number of items to return per page */
+		int pageSize;
+	}
 
-    /**
-     * Query that corresponds to the report
-     */
-    record Query
-    {
-        /**
-         * Fields to be selected. These will be 'columns' in the report
-         */
-        array<string> fields;
-        
-        /**
-         * Specifies how an entity should be filtered. Essentially, the WHERE
-         * clause
-         */
-        array<Predicate> predicates;
+	/**
+	 * Query that corresponds to the report
+	 */
+	record Query
+	{
+		/**
+		 * Fields to be selected. These will be 'columns' in the report
+		 */
+		array<string> fields;
+		
+		/**
+		 * Specifies how an entity should be filtered. Essentially, the WHERE
+		 * clause
+		 */
+		array<Predicate> predicates;
 
-        /**
-         * Range of dates for which the report data should be included
-         * TODO: Can this be replaced by the startDate and endDate fields in
-         * predicate
-         */
-        DateRange dateRange;
+		/**
+		 * Fields on which the report should be sorted. The order is significant -
+		 * first field determines primary sort order, the next determines
+		 * secondary sort order, etc.
+		 */
+		array<OrderBy> ordering;
 
-        /**
-         * Fields on which the report should be sorted. The order is significant -
-         * first field determines primary sort order, the next determines
-         * secondary sort order, etc.
-         */
-        array<OrderBy> ordering;
+		/**
+		 * Pagination information
+		 */
+		Paging paging;
+	}
 
-        /**
-         * Pagination information
-         */
-        Paging paging;
-    }
-
-    /**
-     * Query Result
-     * The result of a query can be null, in which case the Error structure
-     * will indicate the error.
-     * In the successful case, the result is zero or more rows, each containing
-     * one or more columns. The order of the columns would correspond to the
-     * order of the fields in the Query record.
-     * While the type of column supported is a string now, this can be enhanced
-     * by adding additional types to the inner union.
-     */
-    record QueryResult
-    {
-        union {null, array<array<union{string}>>} data;
-    }
+	/**
+	 * Query Result
+	 * The result of a query can be null, in which case the Error structure
+	 * will indicate the error.
+	 * In the successful case, the result is zero or more rows, each containing
+	 * one or more columns. The order of the columns would correspond to the
+	 * order of the fields in the Query record.
+	 * While the type of column supported is a string now, this can be enhanced
+	 * by adding additional types to the inner union.
+	 */
+	record QueryResult
+	{
+		//TODO: this needs to be fixed to support named types.
+		union {null, array<array<union{string}>>} data;
+	}
 
 }

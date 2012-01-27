@@ -1,0 +1,38 @@
+@namespace("com.x.ocl")
+
+protocol Common {
+	import idl "CurrencyAmount.avdl";
+	import idl "EmbeddedObject.avdl";
+
+    enum OfferState
+    {
+        DRAFT, //has not been published to the channel
+        ACTIVE, //published to the channel
+        SUSPENDED //removed from the channel
+    }
+ 
+	record Offer 
+	{
+		/** Unique ID */
+		union{null, string} id = null;
+		/** State of the offer */
+		OfferState state;
+		
+		/** The channel this offer is for */
+		string channelId;
+		union{null,string} channelAssignedId = null;
+		union{null,string} channelStatus = null;		
+
+		/** Reference to an object of type com.x.ocl.Product
+		string productId;
+		
+		CurrencyAmount price;
+		int quantity;
+
+		/** Date Time Format: ISO 8601 */
+		union{null, string} startTime = null;
+		
+		/** The map key is the fully qualified type name of the object. */
+		map<EmbeddedObject> extensions;
+	}
+}
