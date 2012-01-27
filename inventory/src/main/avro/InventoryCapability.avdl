@@ -125,6 +125,7 @@ protocol InventoryCapability
     record UpdateQuantity
     {
         string skuId;
+        Location location;
 	int quantity;
     }
 
