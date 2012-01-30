@@ -21,7 +21,120 @@ protocol InventoryCapability
         union {null, map<string>} parameters = null;
     }
 
-    // TODO: Model location (warehouse)
+    /**
+     * Range of dates
+     */
+    record DateRange
+    {
+        /**
+         * Start date
+         * Format: ISO 8601 YYYYMMDD
+         */
+        union {null, string} startDate;
+
+        /**
+         * End date
+         * Format: ISO 8601 YYYYMMDD
+         */
+        union {null, string} endDate;
+    }
+
+    /**
+     * Operator
+     */
+    enum Operator
+    {
+        EQUALS,
+        NOT_EQUALS,
+        GREATER_THAN,
+        GREATER_THAN_EQUALS,
+        LESS_THAN,
+        LESS_THAN_EQUALS
+    }
+    
+    /**
+     * Predicate
+     */
+    record Predicate
+    {
+        /** 
+         * The field by which to filter the returned data. The filterable
+         * fields for an entity are specified in the documentation.
+         */
+        string field;
+
+        Operator operator;
+
+        /**
+         * Must only contain single value. Support for multiple values defined
+         * for any future operations that may need it.
+         */
+        array<string> values;
+    }
+
+    /**
+     * Sort order
+     */
+    enum SortOrder
+    {
+        ASCENDING,
+        DESCENDING
+    }
+
+    /**
+     * Query that corresponds to the report
+     */
+    record Query
+    {
+        /**
+         * Fields whose values need to be returned in the results.  These 
+         * will be 'columns' in the report
+         */
+        array<string> fields;
+        
+        /**
+         * Specifies how an entity should be filtered. Essentially, the WHERE
+         * clause. This cannot be empty.
+         * Multiple Predicate elements are combined using AND logic.
+         */
+        array<Predicate> predicates;
+
+        /**
+         * Range of dates for which the report data should be included
+         * TODO: Can this be replaced by the startDate and endDate fields in
+         * predicate
+         */
+        DateRange dateRange;
+
+        /**
+         * Fields on which the report should be sorted. The order is significant -
+         * first field determines primary sort order, the next determines
+         * secondary sort order, etc.
+         */
+        array<OrderBy> ordering;
+
+        /**
+         * Pagination information
+         */
+        Paging paging;
+    }
+
+    /**
+     * Query Result
+     * The result of a query can be null, in which case the Error structure
+     * will indicate the error.
+     * In the successful case, the result is zero or more rows, each containing
+     * one or more columns. The order of the columns would correspond to the
+     * order of the fields in the Query record.
+     * While the type of column supported is a string now, this can be enhanced
+     * by adding additional types to the inner union.
+     */
+    record QueryResult
+    {
+        union {null, array<array<union{string}>>} data;
+    }
+
+    // TODO: Model location
     record Location
     {
 	string name;
@@ -92,8 +205,32 @@ protocol InventoryCapability
         array<InventoryError> getErrors;
     }
  
-    //Note: this update command will update all fields of the StockItem except the quantity field.
-    //Use the updateQuantity message to update that field.
+    // TODO: Use Query pattern
+    @topic("/inventory/stockItem/search")
+    @version("1.0.0")
+    record SearchStockItem
+    {
+        Query query;
+    }
+ 
+    @topic("/inventory/stockItem/searchSucceeded")
+    @version("1.0.0")
+    record SearchStockItemSucceeded
+    {
+        Query query;
+        QueryResult queryResult;
+    }
+ 
+    @topic("/inventory/stockItem/searchFailed")
+    @version("1.0.0")
+    record SearchStockItemFailed
+    {
+        Query query;
+        array<Error> errors;
+    }
+
+    //Note: this update command will update all fields of the StockItem including the quantity field.
+    //Use the updateQuantity message to update that field if you wish to perform relative value updates.
     @topic("/inventory/stockItem/update")
     @version("1.0.0")
     record UpdateStockItem
