@@ -17,6 +17,7 @@ protocol Customer {
                  union {null, string} suffix;
         }
 
+
         record Address {
                  string addressLine1;
                  union {null, string} addressLine2;
@@ -29,6 +30,7 @@ protocol Customer {
                  string country;   // 2 character ISO value
         }
         
+
         enum PhoneType {
                 Home,
                 Mobile,
@@ -70,64 +72,12 @@ protocol Customer {
                 ContactStatus Status;
         }
 
-        record BillingContact {
-                Name fullName;
-                string Company;
-                Address address;
-                string emailAddress;
-                Phone Phone;
-        }
-
-        record ShippingContact {
-                Name fullName;
-                Address address;
-                string emailAddress;
-                Phone Phone;
-        }
         
-        enum PaymentType {
-                Visa,
-                Mastercard,
-                AmericanExpress,
-                PayPal,
-                PurchaseOrder,
-                Check,
-                Cash,
-                MoneyOrder,
-                InternalGiftCard,
-                ExternalGiftCard,
-                ElectronicCheck,
-                BillMeLater,
-                Free
-        }
-        
-        record PaymentMethod {
-                PaymentType PaymentType;
-                string Reference;
-        }
-
-        
-        @topic("/customer/delete")
-        record CustomerDelete {
-                string CustomerId;
-        }
-        
-        @topic("/customer/create, /customer/created, /customer/update, /customer/updated")
+        @topic("/customer/create, /customer/created, /customer/update, /customer/updated, /customer/deactivate, /customer/deactivated, /customer/delete, /customer/deleted, /customer/activate, /customer/activated")
         record Customer {
                 string CustomerId;
                 string ExternalCustomerId;
                 Contact PrimaryContact;
-                array<ShippingContact> ShippingAddresses;
-                array<BillingContact> BillingAddresses;
-                union {null, string} TaxGroup;
-                union {null, string} TaxNumber;
-                array<PaymentMethod> PaymentMethods;
-        }
-
-
-        @topic("/customer/deleted")
-        record CustomerDeleted {
-                string CustomerId;
         }
 
 
@@ -136,12 +86,14 @@ protocol Customer {
                 union {null, string} CustomerId;
                 union {null, Name} CustomerName;
         }
+
         
         @topic("/customer/searchSucceeded")
         record Customers {
                 CustomerSearchFilter filter;
                 array <Customer> Customers;
         }
+
 
         enum SeverityType {
                 ERROR,
