@@ -82,6 +82,26 @@ protocol InventoryCapability
     }
 
     /**
+     * Order by
+     */
+    record OrderBy
+    {
+        string field;
+
+        SortOrder sortOrder;
+    }
+
+    /**
+     * Specifies the page of results to return in the response
+     */
+    record Paging
+    {
+        int startIndex;
+ 
+        int numberResults;
+    }
+
+    /**
      * Query that corresponds to the report
      */
     record Query
