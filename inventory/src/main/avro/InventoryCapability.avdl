@@ -189,7 +189,7 @@ protocol InventoryCapability
  
     @topic("/inventory/stockItem/created")
     @version("1.0.0")
-    record StockItemUpdated
+    record StockItemCreated
     {
         array<StockItem> stockItems;
     }
