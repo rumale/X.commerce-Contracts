@@ -163,8 +163,8 @@ protocol InventoryCapability
     record StockItem 
     {
         string skuId;
-        int quantity;  // note: this is a "read only" field due to serialization issues.
-        Location location;
+        int quantity;  // note: quantity is a high consistency field due to serialization issues.
+        union {null, Location} location;
     }
 
     enum Filter 
