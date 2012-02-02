@@ -13,7 +13,8 @@ protocol ComparisonShoppingEngine {
 	
 	enum AvailabilityType {
 		InStock,
-		AvailableForOrder
+		AvailableForOrder,
+		Unknown
 	}
 	
 	enum ConditionType {
