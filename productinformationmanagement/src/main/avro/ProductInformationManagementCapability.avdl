@@ -1,135 +1,26 @@
-@namespace("com.x.productinformationmanagement.v1")
+@namespace("com.x.pim.v1")
  
 protocol ProductInformationManagementCapability 
 {
-
-    /** This record is used to return error information */
-    record Error
-    {
-        /** Numeric value that indicates the type of error */
-        string code;
- 
-        /**  Key whose value is a human displayable version of this error */
-        union {null, string} message = null;
- 
-        /** 
-         * Parameters for the message. Parameter place holders identified 
-         * using the format in java.text.MessageFormat. The key of the map is
-         * the placeholder string, and the value is the string that replaces it. 
-         */
-        union {null, map<string>} parameters = null;
-    }
-
-    /**
-     * Locale contains a combination of ISO language code, country code and 
-     * optional variant
-     */
-    record Locale 
-    {
-        string language;
-        string country;
-        union {null, string} variant;
-    }
-
-    record UOM {
-	string unit;
-	double value;
-    }	
-
-    record LocalizedNameValue {
-	// if the locale is null, default to en_US
-	// there should be only one element with default locale in an array
-	union {null, Locale} locale = null;
-	string name;
-	string value;
-    }
- 	
-    record LocalizedString {
-	union {null, Locale} locale = null;
-	string stringValue;
-    }
- 	
-    record LocalizedUOM {
-	union {null, Locale} locale = null;
-	UOM uom;
-    }
-	
- 	
-    record BooleanAttributeValue
-    {
-        boolean value;
-        /** attributeName will be populated by capability */
-        union{null, array<LocalizedString>} attributeName;
-    }
- 
-    record StringEnumerationAttributeValue
-    {
-    	/** valueId is the id of the value defined in XPT StringEnumeration */
-        union {string, array<string>} valueId;
-        /** this localized value will be populated by capability */
-        union {null, array<array<LocalizedNameValue>>} attributeValues;
-    }
- 
-    record StringAttributeValue
-    {
-    	/** a string attribute value can optionally refer to */
-    	/** a predefined value in XPT, or it can be localized name/value pair */
-        union {null, string} valueId;
-        /** this localized value can be populated by capability if valueId is present */
-        /** if valueId is not present, the localized values can be populated by requester */
-        union {null, array<LocalizedNameValue>} attributeValue;
-    }
- 
-    record CustomAttributeValue {
- 	string attributeId;
- 	union {null, array<LocalizedNameValue>, boolean, LocalizedUOM} attributeValue;
-    }
- 	
-    record XPTAttributeValue
-    {
-        string attributeId;
-        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
-    }
- 
-    record ProductAttributeValue
-    {
-        union {XPTAttributeValue, CustomAttributeValue} value;
-    }
- 
-    enum ProductFilter 
+    enum ProductFilterType 
     {
         SUMMARY,
         FULL_DETAILS
     }
  
-    enum SKUFilter 
+    enum SKUFilterType
     {
         SUMMARY,
         FULL_DETAILS
     }
- 
-    /**
-     * Range of dates
-     */
-    record DateRange
+    
+    enum SortOrderType
     {
-        /**
-         * Start date
-         * Format: ISO 8601 YYYYMMDD
-         */
-        union {null, string} startDate;
-
-        /**
-         * End date
-         * Format: ISO 8601 YYYYMMDD
-         */
-        union {null, string} endDate;
+        ASCENDING,
+        DESCENDING
     }
-
-    /**
-     * Operator
-     */
-    enum Operator
+    
+    enum OperatorType
     {
         EQUALS,
         NOT_EQUALS,
@@ -139,48 +30,153 @@ protocol ProductInformationManagementCapability
         LESS_THAN_EQUALS
     }
     
-    /**
-     * Predicate
-     */
+    //This record is used to return error information
+    record Error
+    {
+        //Numeric value that indicates the type of error
+        string code;
+ 
+        // Key whose value is a human displayable version of this error 
+        union {null, string} message = null;
+ 
+        ///// 
+        // Parameters for the message. Parameter place holders identified 
+        // using the format in java.text.MessageFormat. The key of the map is
+        // the placeholder string, and the value is the string that replaces it. 
+        ////
+        union {null, map<string>} parameters = null;
+    }
+
+    ///
+    // Locale contains a combination of ISO language code, country code and 
+    // optional variant
+    //
+    record Locale 
+    {
+        string language;
+        string country;
+        union {null, string} variant = null;
+    }
+	
+	record LocalizedUOM {
+		union {null, Locale} locale = null;
+		string name;
+		string unit;
+		string value;
+	}
+	
+ 	record LocalizedNameValue {
+ 		union {null, Locale} locale = null;
+ 		string name;
+ 		string value;
+ 	}
+ 	
+ 	record LocalizedString {
+ 		union {null, Locale} locale = null;
+  		string stringValue;
+ 	}
+ 	
+    record BooleanAttributeValue
+    {
+        boolean value;
+        union {null, array<LocalizedString>} attributeName = null;
+    }
+ 
+ 	record StringAttributeValue {
+ 		array<LocalizedNameValue> attributeNameValue;
+ 	}
+ 	
+ 	record UOMAttributeValue {
+ 		array<LocalizedUOM> uomValue;
+ 	}
+ 	
+    record StringEnumerationAttributeValue
+    {
+    	// valueId is the id of the value defined in ProductTaxonomy StringEnumeration 
+    	array<string> valueId;
+        // this localized value will be populated by capability 
+        union {null, map<StringAttributeValue>} attributeValues = null;
+    }
+ 
+    record ProductTypeStringAttributeValue
+    {
+    	// a string attribute value can optionally refer to 
+    	// a predefined value in ProductTaxonomy, or it can be localized name/value pair 
+        union {null, string} valueId = null;
+        // this localized value can be populated by capability if valueId is present 
+        // if valueId is not present, the localized values can be populated by requester 
+        union {null, StringAttributeValue} attributeValue = null;
+    }
+ 	
+    record CustomAttributeValue {
+ 		string customAttributeId;
+ 		union {null, BooleanAttributeValue, StringAttributeValue, UOMAttributeValue} attributeValue = null;
+    }
+ 	
+    record ProductTypeAttributeValue
+    {
+    	// an attribute of a product type defined by producttaxonomy
+        string productTypeAttributeId;
+        union {ProductTypeStringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
+    }
+ 
+    record ProductAttributeValue
+    {
+        union {ProductTypeAttributeValue, CustomAttributeValue} value;
+    }
+  
+    //
+    // Range of dates
+    //
+    record DateRange
+    {
+        //
+        // Start date
+        // Format: ISO 8601 YYYYMMDD
+        //
+        union {null, string} startDate = null;
+
+        //
+        // End date
+        // Format: ISO 8601 YYYYMMDD
+        //
+        union {null, string} endDate = null;
+    }
+    
+    //
+    // Predicate
+    //
     record Predicate
     {
-        /** 
-         * The field by which to filter the returned data. The filterable
-         * fields for an entity are specified in the documentation.
-         */
+        // 
+        // The field by which to filter the returned data. The filterable
+        // fields for an entity are specified in the documentation.
+        //
         string field;
 
-        Operator operator;
+        OperatorType operator;
 
-        /**
-         * Must only contain single value. Support for multiple values defined
-         * for any future operations that may need it.
-         */
+        //
+        // Must only contain single value. Support for multiple values defined
+        // for any future operations that may need it.
+        //
         array<string> values;
     }
 
-    /**
-     * Sort order
-     */
-    enum SortOrder
-    {
-        ASCENDING,
-        DESCENDING
-    }
 
-    /**
-     * Order by
-     */
+    //
+    // Order by
+    //
     record OrderBy
     {
         string field;
 
-        SortOrder sortOrder;
+        SortOrderType sortOrder;
     }
 
-    /**
-     * Specifies the page of results to return in the response
-     */
+    //
+    // Specifies the page of results to return in the response
+    //
     record Paging
     {
         int startIndex;
@@ -188,57 +184,57 @@ protocol ProductInformationManagementCapability
         int numberResults;
     }
 
-    /**
-     * Query that corresponds to the report
-     */
+    //
+    // Query that corresponds to the report
+    //
     record Query
     {
-        /**
-         * Fields whose values need to be returned in the results.  These 
-         * will be 'columns' in the report
-         */
+        //
+        // Fields whose values need to be returned in the results.  These 
+        // will be 'columns' in the report
+        //
         array<string> fields;
         
-        /**
-         * Specifies how an entity should be filtered. Essentially, the WHERE
-         * clause. This cannot be empty.
-         * Multiple Predicate elements are combined using AND logic.
-         */
+        //
+        // Specifies how an entity should be filtered. Essentially, the WHERE
+        // clause. This cannot be empty.
+        // Multiple Predicate elements are combined using AND logic.
+        //
         array<Predicate> predicates;
 
-        /**
-         * Range of dates for which the report data should be included
-         * TODO: Can this be replaced by the startDate and endDate fields in
-         * predicate
-         */
+        //
+        // Range of dates for which the report data should be included
+        // TODO: Can this be replaced by the startDate and endDate fields in
+        // predicate
+        //
         DateRange dateRange;
 
-        /**
-         * Fields on which the report should be sorted. The order is significant -
-         * first field determines primary sort order, the next determines
-         * secondary sort order, etc.
-         */
+        //
+        // Fields on which the report should be sorted. The order is significant -
+        // first field determines primary sort order, the next determines
+        // secondary sort order, etc.
+        //
         array<OrderBy> ordering;
 
-        /**
-         * Pagination information
-         */
+        //
+        // Pagination information
+        //
         Paging paging;
     }
 
-    /**
-     * Query Result
-     * The result of a query can be null, in which case the Error structure
-     * will indicate the error.
-     * In the successful case, the result is zero or more rows, each containing
-     * one or more columns. The order of the columns would correspond to the
-     * order of the fields in the Query record.
-     * While the type of column supported is a string now, this can be enhanced
-     * by adding additional types to the inner union.
-     */
+    //
+    // Query Result
+    // The result of a query can be null, in which case the Error structure
+    // will indicate the error.
+    // In the successful case, the result is zero or more rows, each containing
+    // one or more columns. The order of the columns would correspond to the
+    // order of the fields in the Query record.
+    // While the type of column supported is a string now, this can be enhanced
+    // by adding additional types to the inner union.
+    //
     record QueryResult
     {
-        union {null, array<array<union{string}>>} data;
+        union {null, array<array<union{string}>>} data = null;
     }
 
     record ProductImage
@@ -250,54 +246,54 @@ protocol ProductInformationManagementCapability
     // TODO: Set of ProductAttributeValues
     record Product 
     {
-        /** product id */
-        union {null, string} id;
-        /** ID of the product type */
-        union {null, string} productTypeId;
-        /** product images */
+        // product id 
+        union {null, string} id = null;
+        // ID of the product type 
+        union {null, string} productTypeId = null;
+        // product images 
         union {null, array<ProductImage>} images = null;
-        /** product attributes */
-        union {null, array<ProductAttributeValue>} attributes;
-        /** defines the ids of variation variables */
-        union {null, array<string>} variationVariableIds;
+        // product attributes 
+        union {null, array<ProductAttributeValue>} attributes = null;
+        // defines the ids of variation variables 
+        union {null, array<string>} variationAttributeIds = null;
     }
 
-    /**
-     * Stock Keeping Unit
-     */
+    //
+    // Stock Keeping Unit
+    //
     record SKU
     {
-        /** ID for the SKU generated by X */
-        union {null, string} skuId;
-        /** ID of the product for this SKU */
-        union {null, string} productId;
-        /** ID for the SKU provided by merchant  */
-        union {null, string} skuMerchantId;
-        /** variation attributes, the list must match the variationnVariableIds */
-        union {null, array<ProductAttributeValue>} attributes;
+        // sku string for the SKU generated by capability
+        union {null, string} sku = null;
+        // sku provided by merchant
+        union {null, string} merchantSKU = null;
+        // ID of the product for this SKU 
+        union {null, string} productId = null;
+        // variation attributes, the list must match the variationAttributeIds in Product 
+        union {null, array<ProductAttributeValue>} attributes = null;
     }
 
-    /*-------------------------------------------------------------------
-    /* Message definitions
-    /*-------------------------------------------------------------------
-    /**
-     * Create products
-     */
-    @topic("/productinformationmanagement/product/create")
+    //-------------------------------------------------------------------
+    // Message definitions
+    //-------------------------------------------------------------------
+    //
+    // Create products
+    //
+    @topic("/pim/product/create")
     @version("1.0.0")
     record CreateProduct
     {
         array<Product> products;
     }
  
-    @topic("/productinformationmanagement/product/created")
+    @topic("/pim/product/created")
     @version("1.0.0")
     record ProductCreated
     {
         array<Product> products;
     }
  
-    @topic("/productinformationmanagement/product/createFailed")
+    @topic("/pim/product/createFailed")
     @version("1.0.0")
     record CreateProductFailed
     {
@@ -305,24 +301,24 @@ protocol ProductInformationManagementCapability
         array<Error> errors;
     }
  
-    /**
-     * Create SKUs
-     */
-    @topic("/productinformationmanagement/sku/create")
+    //
+    // Create SKUs
+    //
+    @topic("/pim/sku/create")
     @version("1.0.0")
     record CreateSKU
     {
         array<SKU> skus;
     }
  
-    @topic("/productinformationmanagement/sku/created")
+    @topic("/pim/sku/created")
     @version("1.0.0")
     record SKUCreated
     {
         array<SKU> skus;
     }
  
-    @topic("/productinformationmanagement/sku/createFailed")
+    @topic("/pim/sku/createFailed")
     @version("1.0.0")
     record CreateSKUFailed
     {
@@ -330,162 +326,162 @@ protocol ProductInformationManagementCapability
         array<Error> errors;
     }
  
-    /**
-     * Get Products
-     */
-    @topic("/productinformationmanagement/product/get")
+    //
+    // Get Products
+    //
+    @topic("/pim/product/get")
     @version("1.0.0")
     record GetProduct
     {
         array<string> productIds;
-        union {null, ProductFilter} filter; 
+        union {null, ProductFilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
     }
  
-    @topic("/productinformationmanagement/product/getSucceeded")
+    @topic("/pim/product/getSucceeded")
     @version("1.0.0")
     record GetProductSucceeded
     {
         array<Product> products;
-        union {null, ProductFilter} filter; 
+        union {null, ProductFilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
     }
  
-    @topic("/productinformationmanagement/product/getFailed")
+    @topic("/pim/product/getFailed")
     @version("1.0.0")
     record GetProductFailed
     {
         array<string> productIds;
-        union {null, ProductFilter} filter; 
+        union {null, ProductFilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
         array<Error> errors;
     }
  
-    /**
-     * Get SKUs
-     */
-    @topic("/productinformationmanagement/sku/get")
+    //
+    // Get SKUs
+    //
+    @topic("/pim/sku/get")
     @version("1.0.0")
     record GetSKU
     {
         array<string> skuIds;
-        union {null, SKUFilter} filter; 
+        union {null, SKUFilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
     }
  
-    @topic("/productinformationmanagement/sku/getSucceeded")
+    @topic("/pim/sku/getSucceeded")
     @version("1.0.0")
     record GetSKUSucceeded
     {
         array<SKU> skus;
-        union {null, SKUFilter} filter; 
+        union {null, SKUFilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
     }
  
-    @topic("/productinformationmanagement/SKU/getFailed")
+    @topic("/pim/SKU/getFailed")
     @version("1.0.0")
     record GetSKUFailed
     {
         array<string> skuIDs;
-        union {null, SKUFilter} filter; 
+        union {null, SKUFilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
         array<Error> errors;
     }
  
     // TODO: Use Query pattern
-    @topic("/productinformationmanagement/product/search")
+    @topic("/pim/product/search")
     @version("1.0.0")
     record SearchProduct
     {
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
     }
  
-    @topic("/productinformationmanagement/product/searchSucceeded")
+    @topic("/pim/product/searchSucceeded")
     @version("1.0.0")
     record SearchProductSucceeded
     {
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
         QueryResult queryResult;
     }
  
-    @topic("/productinformationmanagement/product/searchFailed")
+    @topic("/pim/product/searchFailed")
     @version("1.0.0")
     record SearchProductFailed
     {
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
         array<Error> errors;
     }
  
     // TODO: Use Query pattern
-    @topic("/productinformationmanagement/sku/search")
+    @topic("/pim/sku/search")
     @version("1.0.0")
     record SearchSKU
     {
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
     }
  
-    @topic("/productinformationmanagement/sku/searchSucceeded")
+    @topic("/pim/sku/searchSucceeded")
     @version("1.0.0")
     record SearchSKUSucceeded
     {
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
         QueryResult queryResult;
     }
  
-    @topic("/productinformationmanagement/product/searchFailed")
+    @topic("/pim/product/searchFailed")
     @version("1.0.0")
     record SearchProductFailed
     {
         Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales;
+        union { null, array<Locale> } locales = null;
         array<Error> errors;
     }
  
-    /** Update Product */
-    @topic("/productinformationmanagement/product/update")
+    // Update Product //
+    @topic("/pim/product/update")
     @version("1.0.0")
     record UpdateProduct
     {
         Product product;
     }
  
-    @topic("/productinformationmanagement/product/updated")
+    @topic("/pim/product/updated")
     @version("1.0.0")
     record ProductUpdated
     {
         Product product;
     }
  
-    @topic("/productinformationmanagement/product/updateFailed")
+    @topic("/pim/product/updateFailed")
     @version("1.0.0")
     record UpdateProductFailed
     {
@@ -493,22 +489,22 @@ protocol ProductInformationManagementCapability
         array<Error> errors;
     }
  
-    /** Update SKU */
-    @topic("/productinformationmanagement/sku/update")
+    // Update SKU 
+    @topic("/pim/sku/update")
     @version("1.0.0")
     record UpdateSKU
     {
         SKU sku;
     }
  
-    @topic("/productinformationmanagement/sku/updated")
+    @topic("/pim/sku/updated")
     @version("1.0.0")
     record SKUUpdated
     {
         SKU sku;
     }
  
-    @topic("/productinformationmanagement/sku/updateFailed")
+    @topic("/pim/sku/updateFailed")
     @version("1.0.0")
     record UpdateSKUFailed
     {
@@ -516,22 +512,22 @@ protocol ProductInformationManagementCapability
         array<Error> errors;
     }
  
-    /** Delete Product */
-    @topic("/productinformationmanagement/product/delete")
+    // Delete Product 
+    @topic("/pim/product/delete")
     @version("1.0.0")
     record DeleteProduct
     {
         Product product;
     }
  
-    @topic("/productinformationmanagement/product/deleted")
+    @topic("/pim/product/deleted")
     @version("1.0.0")
     record ProductDeleted
     {
         Product product;
     }
  
-    @topic("/productinformationmanagement/product/deleteFailed")
+    @topic("/pim/product/deleteFailed")
     @version("1.0.0")
     record DeleteProductFailed
     {
@@ -539,22 +535,22 @@ protocol ProductInformationManagementCapability
         array<Error> errors;
     }
 
-    /** Delete SKU */
-    @topic("/productinformationmanagement/sku/delete")
+    // Delete SKU 
+    @topic("/pim/sku/delete")
     @version("1.0.0")
     record DeleteSKU
     {
         SKU sku;
     }
  
-    @topic("/productinformationmanagement/sku/deleted")
+    @topic("/pim/sku/deleted")
     @version("1.0.0")
     record SKUDeleted
     {
         SKU sku;
     }
  
-    @topic("/productinformationmanagement/sku/deleteFailed")
+    @topic("/pim/sku/deleteFailed")
     @version("1.0.0")
     record DeleteSKUFailed
     {
