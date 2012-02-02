@@ -1,4 +1,4 @@
-@namespace("com.x.marketplace.v1")
+@namespace("com.x.marketplace.v2")
 
 /*
 	The Marketplace protocol defines the schema that is common across
@@ -11,22 +11,10 @@
 	element of certain types.
 */
 protocol Marketplace {
-	/*
-		This record is used to return market specific data using the schema specified.
-	*/
-	record EmbeddedMessage {
-		string schemaVersion;
-		union{null, string} schemaUri;
-		bytes payload;
-	}
-
-	/*
-		This record is used to return error information.
-	 */
-	record Error {
-		string code;
-		string message;
-	}
+	import idl "CurrencyAmount.avdl";
+	import idl "Error.avdl";
+	import idl "EmbeddedObject.avdl";
+	import idl "Offer.avdl";
 
 	/*
 		A marketplace site represents a sub-section of the marketplace.
@@ -54,11 +42,6 @@ protocol Marketplace {
 	*/
 	record Credential {
 		map<string> properties;
-	}
-
-	record CurrencyAmount {
-		double amount;
-		string code;
 	}
 
 	enum ShippingLocaleType {
@@ -92,11 +75,11 @@ protocol Marketplace {
 	record ShippingServiceOption {
 		int sellerPriority;
 		string serviceName;
-		CurrencyAmount cost;
-		union{null, CurrencyAmount} discountAmount = null;
-		union{null, CurrencyAmount} additionalCost = null;
-		union{null, CurrencyAmount} packagingHandlingCost = null;
-		union{null, CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+		com.x.ocl.CurrencyAmount cost;
+		union{null, com.x.ocl.CurrencyAmount} discountAmount = null;
+		union{null, com.x.ocl.CurrencyAmount} additionalCost = null;
+		union{null, com.x.ocl.CurrencyAmount} packagingHandlingCost = null;
+		union{null, com.x.ocl.CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
 		union{null, array<string>} shipToLocations = null;  // International shipping only
 	}
 
@@ -108,8 +91,8 @@ protocol Marketplace {
 	}
 
 	/*
-		Use this during profile creation or listing to indicate the type of shipping
-		available for your listing.
+		Use this during profile creation or offer to indicate the type of shipping
+		available for your offer.
 	*/
 	record Shipping {
 		//FUTURE: add shipping elements that are common to domestic/international, flat/calculated.
@@ -176,7 +159,7 @@ protocol Marketplace {
 
 	/*
 		A marketplace profile defines the default policies that a merchant
-		will use for listings on that marketplace.
+		will use for offers on that marketplace.
 	*/
 	record MarketplaceProfile {
 		union{null, string} xId = null; //ID provided by X.commerce
@@ -199,15 +182,7 @@ protocol Marketplace {
 		that is encoded using the avro schema of the specific marketplace profile data.
 		ie, payPalEmailAddress for eBay
 		*/
-		union{null, EmbeddedMessage} embeddedMessage = null;
-	}
-
-	record ProductCategory {
-		Site site;
-		string id;
-		string name;
-		string parentCatId;
-		boolean isLeaf;
+		union{null, com.x.ocl.EmbeddedObject} embeddedMessage = null;
 	}
 
 	record Category {
@@ -226,11 +201,6 @@ protocol Marketplace {
 		array<CustomCategory> childCategories;
 	}
 
-	record AttributeRecommendations {
-		string categoryId;
-		map<array<string>> nameValues;
-	}
-
 	enum ImagePurpose {
 		FEATURED,
 		GALLERY,
@@ -242,62 +212,29 @@ protocol Marketplace {
 		string locationURL;
 	}
 
-	record ProductAttribute {
-		string name;
-		array<string> value;
-	}
-
-	record ProductDetails {
-		//ID as assigned by X catalog service or null if this is not a catalog product
-		union{null, string} xId = null;
-		union{null, string} xProductTypeId = null;  // Product type id as defined by the taxonomy manager.
-		string sku;//Only sku is required for a listing update.
-		union{null, string} manufacturer = null;
-		union{null, string} mpn = null;
-		union{null, string} brand = null;
-		union{null, CurrencyAmount} msrp = null;
-		union{null, array<ProductImage>} imageURL = null;
-		union{null, string} description = null;
-		union{null, array<ProductAttribute>} attributes = null;
-	}
-
-	record Listing {
-		union{null, string} xId = null; //Identifier as known by the X.commerce adapter.
-		union{null, string} marketItemId = null; //Unique id as known by marketplace i.e. ASIN, etc..
-
-		ProductDetails product;
-		union{null, long} startTime = null; //a unix time stamp
-		union{null, CurrencyAmount} price = null;
-		union{null, int} quantity = null;
+	@extends("com.x.ocl.Offer")
+	record MarketplaceOffer {
 		union{null, string} title = null;
-		union{null, string} listingURL = null;
-		union{null, string} status = null;
+		union{null, string} offerURL = null;
 
-		/*
-			Following are fields that are optionally supported
-			across marketplaces.  Will be ignored if market does
-			not support this.
-		*/
+		union{null, array<ProductImage>} imageURL = null;
 		union{null, string} subTitle = null;
 		union{null, boolean} giftWrapAvailable = null;
 		//Indicates where in the marketplace category to list
 		union{null, array<string>} marketCategories = null;
         //Indicates where in the seller custom categories to list
 		union{null, array<string>} customCategories = null;
-
-		//Following data can override data in a specified profile
+		
+		//Following data can override the policies defined in a policy group.
 		union{null, Payment} payment = null;
 		union{null, Shipping} shipping = null;
 		union{null, ReturnPolicy} returnPolicy = null;
-
-		/*
-			The following is an embedded message that contains a market specific data "blob"
-			that is encoded	using the avro schema of the specific marketplace this listing is intended for.
-		*/
-		union{null, EmbeddedMessage} embeddedMessage = null;
+		
+		/** The map key is the fully qualified type name of the object. */
+		map<com.x.ocl.EmbeddedObject> extensions;
 	}
 
-	record ListingFilter {
+	record OfferFilter {
 		union{null, array<string>} skus = null;
 		union{null, long} startTime = null; //unix time
 		union{null, long} endTime = null;
@@ -337,16 +274,16 @@ protocol Marketplace {
 	}
 
 	record OrderItem {
-		string marketListingId;
-		union{null, string} listingTitle = null;
-		string listingURL;
+		string marketOfferId;
+		union{null, string} offerTitle = null;
+		string offerURL;
 		string status;
 		string sku;
 		int quantity;
-		union{null, CurrencyAmount} cost = null;
-		union{null, CurrencyAmount} insuranceCost = null;
-		union{null, CurrencyAmount} taxAmount = null;
-		union{null, CurrencyAmount} discountAmount = null;
+		union{null, com.x.ocl.CurrencyAmount} cost = null;
+		union{null, com.x.ocl.CurrencyAmount} insuranceCost = null;
+		union{null, com.x.ocl.CurrencyAmount} taxAmount = null;
+		union{null, com.x.ocl.CurrencyAmount} discountAmount = null;
 		string shipmentId;  // Ties to the shipment.
 
 		union{null, boolean} giftWrap = null;
@@ -356,7 +293,7 @@ protocol Marketplace {
 			The following is an embedded message that contains a market specific data "blob"
 			that is encoded using the avro schema of the specific marketplace this order is intended for.
 		*/
-		union{null, EmbeddedMessage} embeddedMessage = null;
+		union{null, com.x.ocl.EmbeddedObject} embeddedMessage = null;
 	}
 
 	record Order {
@@ -365,10 +302,10 @@ protocol Marketplace {
 		string marketOrderId;
 		CustomerInfo customer;
 		array<OrderItem> items;
-		union{null, CurrencyAmount} totalInsuranceCost = null;
-		union{null, CurrencyAmount} totalTaxAmount = null;
-		union{null, CurrencyAmount} totalDiscountAmount = null;
-		CurrencyAmount totalAmount;
+		union{null, com.x.ocl.CurrencyAmount} totalInsuranceCost = null;
+		union{null, com.x.ocl.CurrencyAmount} totalTaxAmount = null;
+		union{null, com.x.ocl.CurrencyAmount} totalDiscountAmount = null;
+		com.x.ocl.CurrencyAmount totalAmount;
 		string status;
 		union{null, PaymentMethod} paymentMethod = null;
 		array<Shipment> shipments;
@@ -377,7 +314,7 @@ protocol Marketplace {
 			The following is an embedded message that contains a market specific data "blob"
 			that is encoded	using the avro schema of the specific marketplace this order is intended for.
 		*/
-		union{null, EmbeddedMessage} embeddedMessage = null;
+		union{null, com.x.ocl.EmbeddedObject} embeddedMessage = null;
 	}
 
 	record OrderShipmentUpdate {
@@ -399,22 +336,22 @@ protocol Marketplace {
 
 	record OrderUpdateError {
 		OrderUpdate orderUpdate;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
-	record ListingError {
-		union{null, Listing} listing = null;
-		array<Error> errors;
+	record OfferError {
+		union{null, com.x.ocl.Offer} offer = null;
+		array<com.x.ocl.Error> errors;
 	}
 
-	record ListingUpdateError {
-		Listing listing;
-		array<Error> errors;
+	record OfferUpdateError {
+		com.x.ocl.Offer offer;
+		array<com.x.ocl.Error> errors;
 	}
 
-	record CancelListingError {
+	record CancelOfferError {
 		string sku;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	/*
@@ -457,7 +394,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record SearchSiteFailed {
 		string marketplace;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
     @topic("/marketplace/store/get")
@@ -487,7 +424,7 @@ protocol Marketplace {
 		string siteCode;
 		string environmentName;
         string marketplace;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
     }
 
 	@topic("/marketplace/environment/search")
@@ -509,7 +446,7 @@ protocol Marketplace {
 	record SearchEnvironmentFailed {
 		string marketplace;
 		string siteCode;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/returnPolicy/get")
@@ -534,7 +471,7 @@ protocol Marketplace {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/shippingService/search")
@@ -559,7 +496,7 @@ protocol Marketplace {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/country/search")
@@ -584,7 +521,7 @@ protocol Marketplace {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/currency/search")
@@ -606,7 +543,7 @@ protocol Marketplace {
 	record SearchCurrencyFailed {
 		string siteCode;
 		string marketplace;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/handlingTime/search")
@@ -631,7 +568,7 @@ protocol Marketplace {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/paymentMethod/search")
@@ -656,7 +593,7 @@ protocol Marketplace {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/category/search")
@@ -681,7 +618,7 @@ protocol Marketplace {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/categoryForProductType/search")
@@ -709,7 +646,7 @@ protocol Marketplace {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/account/delete")
@@ -728,7 +665,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record DeleteAccountFailed {
 		string xAccountId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/account/search")
@@ -745,7 +682,7 @@ protocol Marketplace {
 	@topic("/marketplace/account/searchFailed")
 	@version("1.0.0")
 	record SearchAccountFailed {
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/authorization/init")
@@ -787,7 +724,7 @@ protocol Marketplace {
         union{null, string} environmentName = null;
         union{null, string} userMarketplaceId = null;
 
-        array<Error> errors;
+        array<com.x.ocl.Error> errors;
     }
 
 	@topic("/marketplace/authorization/userCompleted")
@@ -814,7 +751,7 @@ protocol Marketplace {
         //any extra credentials needed to complete the process
         union{null, Credential} cred = null;
 
-        array<Error> errors;
+        array<com.x.ocl.Error> errors;
     }
 
 	@topic("/marketplace/profile/create")
@@ -833,7 +770,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record CreateProfileFailed {
 		MarketplaceProfile p;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/profile/get")
@@ -852,7 +789,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record GetProfileFailed {
 		string xProfileId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/profile/update")
@@ -871,7 +808,7 @@ protocol Marketplace {
 	@version("1.0.0")
 	record UpdateProfileFailed {
 		MarketplaceProfile p;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/marketplace/profile/delete")
@@ -890,92 +827,92 @@ protocol Marketplace {
 	@version("1.0.0")
 	record DeleteProfileFailed {
 		string xProfileId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
-	@topic("/listing/create")
+	@topic("/offer/create")
 	@version("1.0.0")
-	record CreateListing {
-		array<Listing> listings; //does not have marketListingId yet
+	record CreateOffer {
+		array<com.x.ocl.Offer> offers; //does not have marketOfferId yet
 		string xProfileId;
 	}
 
-	@topic("/listing/created")
+	@topic("/offer/created")
 	@version("1.0.0")
-	record ListingCreated { //Does not map 1:1 with request message
-		array<Listing> listings;
+	record OfferCreated { //Does not map 1:1 with request message
+		array<com.x.ocl.Offer> offers;
 		string xProfileId;
 	}
 
-	@topic("/listing/createFailed")
+	@topic("/offer/createFailed")
 	@version("1.0.0")
-	record CreateListingFailed {
-		array<ListingError> errors;
+	record CreateOfferFailed {
+		array<OfferError> errors;
 		string xProfileId;
 	}
 
-	@topic("/listing/search")
+	@topic("/offer/search")
 	@version("1.0.0")
-	record SearchListing {
+	record SearchOffer {
 		string xProfileId;
-		ListingFilter filter;
+		OfferFilter filter;
 	}
 
-	@topic("/listing/searchSucceeded")
+	@topic("/offer/searchSucceeded")
 	@version("1.0.0")
-	record SearchListingSucceeded {
-		array<Listing> listings;
+	record SearchOfferSucceeded {
+		array<com.x.ocl.Offer> offers;
 		string xProfileId;
-		ListingFilter filter;
+		OfferFilter filter;
 	}
 
-	@topic("/listing/searchFailed")
+	@topic("/offer/searchFailed")
 	@version("1.0.0")
-	record SearchListingFailed {
+	record SearchOfferFailed {
 		string xProfileId;
-		ListingFilter filter;
-		array<Error> errors;
+		OfferFilter filter;
+		array<com.x.ocl.Error> errors;
 	}
 
-	@topic("/listing/update")
+	@topic("/offer/update")
 	@version("1.0.0")
-	record UpdateListing {
-		array<Listing> updates; //must have marketListingId
-		string xProfileId;
-	}
-
-	@topic("/listing/updated")
-	@version("1.0.0")
-	record ListingUpdated {
-		array<Listing> updates;
+	record UpdateOffer {
+		array<com.x.ocl.Offer> updates; //must have marketOfferId
 		string xProfileId;
 	}
 
-	@topic("/listing/updateFailed")
+	@topic("/offer/updated")
 	@version("1.0.0")
-	record UpdateListingFailed {
-		array<ListingUpdateError> errors;
+	record OfferUpdated {
+		array<com.x.ocl.Offer> updates;
 		string xProfileId;
 	}
 
-	@topic("/listing/cancel")
+	@topic("/offer/updateFailed")
 	@version("1.0.0")
-	record CancelListing {
+	record UpdateOfferFailed {
+		array<OfferUpdateError> errors;
+		string xProfileId;
+	}
+
+	@topic("/offer/cancel")
+	@version("1.0.0")
+	record CancelOffer {
 		array<string> skus;
 		string xProfileId;
 	}
 
-	@topic("/listing/cancelled")
+	@topic("/offer/cancelled")
 	@version("1.0.0")
-	record ListingCancelled {
+	record OfferCancelled {
 		array<string> skus;
 		string xProfileId;
 	}
 
-	@topic("/listing/cancelFailed")
+	@topic("/offer/cancelFailed")
 	@version("1.0.0")
-	record CancelListingFailed {
-    	array<CancelListingError> errors;
+	record CancelOfferFailed {
+    	array<CancelOfferError> errors;
 		string xProfileId;
   	}
 
@@ -999,7 +936,7 @@ protocol Marketplace {
 	record SearchOrderFailed {
 		OrderFilter filter;
 		string xProfileId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/order/update")

@@ -6,13 +6,13 @@ protocol Common {
 
     enum OfferState
     {
-        DRAFT, //has not been published to the channel
-	SCHEDULED, //scheduled to be published, but not yet published
-	ACTIVATION_PENDING, //request to publish sent
-        ACTIVE, //published to the channel
-	UPDATE_PENDING, //update request sent to channel
-	SUSPEND_PENDING, //removal from channel in progress
-        SUSPENDED //removed from the channel
+		DRAFT, //has not been published to the channel
+		SCHEDULED, //scheduled to be published, but not yet published
+		ACTIVATION_PENDING, //request to publish sent
+		ACTIVE, //published to the channel
+		UPDATE_PENDING, //update request sent to channel
+		SUSPEND_PENDING, //removal from channel in progress
+		SUSPENDED //removed from the channel
     }
  
 	record Offer 
@@ -28,7 +28,7 @@ protocol Common {
 		union{null,string} channelStatus = null;		
 
 		/** Reference to an object of type com.x.ocl.SKU
-		string skuId;
+		string sku;
 		
 		CurrencyAmount price;
 		int quantity;

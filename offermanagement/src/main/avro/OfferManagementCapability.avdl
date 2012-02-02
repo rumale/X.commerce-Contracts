@@ -6,15 +6,6 @@ protocol OfferManagementCapability
 	import idl "Query.avdl";
 	import idl "Offer.avdl";
 
-	@extends("com.x.ocl.Offer")
-	record MarketplaceOffer {
-		//TODO: merge the remaining fields from Marketplace.avdl Listing type.
-		
-		//Shipping policy
-		//Payment policy
-		//Return policy
-	}
-
 	record OfferError {
 		com.x.ocl.Offer offer;
 		array<com.x.ocl.Error> errors;
