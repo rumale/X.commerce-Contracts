@@ -136,6 +136,7 @@ protocol OrderManagement {
 
 	record OrderItem {
 		string ItemId;
+		string ExternalItemId;
 		string productSku;
 		string description;
 		array<ProductAttribute> productAttributes;	
