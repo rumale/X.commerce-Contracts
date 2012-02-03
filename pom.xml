@@ -52,6 +52,7 @@
 		<module>customer</module>
 		<module>emailmarketing</module>
 		<module>inventory</module>
+		<module>loyaltymarketing</module>
 		<module>marketplace</module>
 		<module>offermanagement</module>
 		<module>ordermanagement</module>
@@ -101,6 +102,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>inventory-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>loyaltymarketing-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

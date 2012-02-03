@@ -38,6 +38,6 @@ protocol Common {
 		union{null, string} endTime = null;
 		
 		/** The map key is the fully qualified type name of the object. */
-		map<EmbeddedObject> extensions;
+		union{null,map<EmbeddedObject>} extensions = null;
 	}
 }

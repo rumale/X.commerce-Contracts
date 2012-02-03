@@ -9,17 +9,9 @@
  */
 protocol EmailMarketing {
 
-	/** This record is used to return error information */
-	record Error {
-		string code;
-		
-	  	/**  Debug message for this error.  Developers and Merchants might see this but customers won't. */  
-    	union {null, string} message = null;
-  	
-  		/**  Parameters for the message. Parameter place holders identified as {} in the message */
-    	union {null, array<string>} parameters = null;
-	}
-	
+	import idl "Error.avdl";
+	import idl "Campaign.avdl";
+
 	/**
 	 * An account represents the merchant's relationship with the
 	 * Email Marketing provider. A merchant can have a hierarchy
@@ -85,8 +77,8 @@ protocol EmailMarketing {
 		string campaignId;
 		string contactId;
 		
-		/** unix time stamp */
-		long time;
+		/** Date Time Format: ISO 8601 */
+		string time;
 		
 		/** Provider specific types can be specified as strings */
 		union{EventType,string} type;
@@ -280,26 +272,10 @@ protocol EmailMarketing {
 		array<union{Event,LinkClick,SocialShare}> allEvents;				
 	}
 	
-	enum CampaignStatus {
-		DRAFT,
-		SCHEDULED,
-		EXECUTING,
-		COMPLETED
-	}
-	
-	record Campaign {
-		union {null,string} id = null;
+	@extends("com.x.ocl.Campaign")
+	record EmailCampaign {
 		string messageId;
 
-		/** The account this list belongs to */
-		string accountId;
-		
-		string name;
-		union{null,string} description = null;
-		
-		/** Provider specific types can be specified as strings */
-		union{CampaignStatus,string} status;
-		
 		/** If not provided, will use default on message */
 		union{null,string} fromEmail = null;
 		union{null,string} fromName = null;
@@ -342,7 +318,7 @@ protocol EmailMarketing {
 	@version("0.0.2")
 	record CreateContactFailed {
 		array<Contact> listOfContacts;		
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/contact/search")
@@ -381,7 +357,7 @@ protocol EmailMarketing {
 	@version("0.0.2")
 	record UpdateContactFailed {
 		array<Contact> listOfContacts;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/contact/delete")
@@ -401,7 +377,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record DeleteContactFailed {
 		array<string> listOfContactIds;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/contact/subscribe")
@@ -425,7 +401,7 @@ protocol EmailMarketing {
 	record SubscribeContactFailed {
 		string contactId;
 		string listId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/contact/unsubscribed")
@@ -453,7 +429,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record GetContactStatisticFailed {
 		string contactId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/emailMarketing/list/create")
@@ -479,7 +455,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record CreateListFailed {
 		List list;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/list/search")
@@ -501,7 +477,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record SearchListFailed {
 		ListSearchFilter filter;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/list/update")
@@ -521,7 +497,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record UpdateListFailed {
 		List list;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/list/delete")
@@ -543,7 +519,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record DeleteListFailed {
 		string listId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/list/subscribe")
@@ -568,7 +544,7 @@ protocol EmailMarketing {
 	record SubscribeListFailed {
 		array<string> contactIds;
 		string listId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/list/unsubscribe")
@@ -591,7 +567,7 @@ protocol EmailMarketing {
 	record UnsubscribeListFailed {
 		array<string> contactIds;
 		string listId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/message/create")
@@ -611,7 +587,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record CreateMessageFailed {
 		Message message;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/emailMarketing/message/search")
@@ -631,7 +607,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record SearchMessageFailed {
 		MessageSearchFilter filter;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/message/update")
@@ -651,7 +627,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record UpdateMessageFailed {
 		Message message;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/message/delete")
@@ -671,27 +647,27 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record DeleteMessageFailed {
 		string messageId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/create")
 	@version("0.0.1")
 	record CreateCampaign {
-		Campaign campaign;
+		com.x.ocl.Campaign campaign;
 	}
 	
 	@topic("/emailMarketing/campaign/created")
 	@version("0.0.1")
 	@event("true")
 	record CampaignCreated {
-		Campaign campaign;
+		com.x.ocl.Campaign campaign;
 	}
 	
 	@topic("/emailMarketing/campaign/createFailed")
 	@version("0.0.1")
 	record CreateCampaignFailed {
-		Campaign campaign;
-		array<Error> errors;
+		com.x.ocl.Campaign campaign;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/search")
@@ -704,34 +680,34 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record SearchCampaignSucceeded {
 		CampaignSearchFilter filter;
-		array<Campaign> campaigns;
+		array<com.x.ocl.Campaign> campaigns;
 	}
 	
 	@topic("/emailMarketing/campaign/searchFailed")
 	@version("0.0.1")
 	record SearchCampaignFailed {
 		CampaignSearchFilter filter;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/update")
 	@version("0.0.1")
 	record UpdateCampaign {
-		Campaign campaign;
+		com.x.ocl.Campaign campaign;
 	}
 	
 	@topic("/emailMarketing/campaign/updated")
 	@version("0.0.1")
 	@event("0.0.1")
 	record CampaignUpdated {
-		Campaign campaign;
+		com.x.ocl.Campaign campaign;
 	}
 	
 	@topic("/emailMarketing/campaign/updateFailed")
 	@version("0.0.1")
 	record UpdateCampaignFailed {
-		Campaign campaign;
-		array<Error> errors;
+		com.x.ocl.Campaign campaign;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/delete")
@@ -751,7 +727,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record DeleteCampaignFailed {
 		string campaignId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/list/add")
@@ -776,7 +752,7 @@ protocol EmailMarketing {
 	record AddCampaignListFailed {
 		string campaignId;
 		array<string> listIds;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/schedule")
@@ -801,7 +777,7 @@ protocol EmailMarketing {
 	record ScheduleCampaignFailed {
 		string campaignId;
 		long beginTime;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/unschedule")
@@ -821,7 +797,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record UnscheduleCampaignFailed {
 		string campaignId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/statistic/get")
@@ -841,7 +817,7 @@ protocol EmailMarketing {
 	@version("0.0.1")
 	record GetCampaignStatisticFailed {
 		string campaignId;
-		array<Error> errors;
+		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/emailMarketing/campaign/started")
