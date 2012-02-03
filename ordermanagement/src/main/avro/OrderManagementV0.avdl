@@ -152,7 +152,7 @@ protocol OrderManagement {
 	record Order {
    		string orderNumber;
    		string externalOrderNumber;
-    	string dateOrdered;
+    	long dateOrdered;
     	string source;
     	string sourceId;
     	OrderStatus status;
