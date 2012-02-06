@@ -23,7 +23,11 @@ protocol OfferManagementCapability
 		array<com.x.ocl.Offer> offers;
 		
 		/** Id of the Policy Group defined at the channel to use. */
-		union{null,string} channelPolicyGroupId;
+		union{null,string} defaultChannelPolicyGroupId;
+
+		/** Default offer management schedule. */
+		// each offer may contain an OfferSchedule as extension
+		//union{null,OfferSchedule} defaultOfferSchedule;
 	}
  
 	@topic("/offer/created")
@@ -31,9 +35,6 @@ protocol OfferManagementCapability
 	record OfferCreated
 	{
 		array<com.x.ocl.Offer> offers;
-
-		/** Id of the Policy Group defined at the channel to use. */
-		union{null,string} channelPolicyGroupId;
 	}
  
 	@topic("/offer/createFailed")
@@ -44,6 +45,50 @@ protocol OfferManagementCapability
 
 		/** Id of the Policy Group defined at the channel to use. */
 		union{null,string} channelPolicyGroupId;
+	}
+
+	@topic("/offer/publish")
+	@version("1.0.0")
+	record PublishOffer
+	{
+		array<string> offerIds;
+	}
+
+	@topic("/offer/published")
+	@version("1.0.0")
+	record PublishOfferSucceeded
+	{
+		array<com.x.ocl.Offer> offers;
+	}
+
+	@topic("/offer/publishFailed")
+	@version("1.0.0")
+	record PublishOfferFailed
+	{
+		array<string> offerIds;
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/offer/suspend")
+	@version("1.0.0")
+	record SuspendOffer
+	{
+		array<string> offerIds;
+	}
+
+	@topic("/offer/suspended")
+	@version("1.0.0")
+	record SuspendOfferSucceeded
+	{
+		array<com.x.ocl.Offer> offers;
+	}
+
+	@topic("/offer/suspendFailed")
+	@version("1.0.0")
+	record SuspendOfferFailed
+	{
+		array<string> offerIds;
+		array<com.x.ocl.Error> errors;
 	}
  
 	@topic("/offer/search")
@@ -101,7 +146,7 @@ protocol OfferManagementCapability
 	@version("1.0.0")
 	record OfferDeleted
 	{
-		array<string> offers;
+		array<com.x.ocl.Offer> offers;
 	}
  
 	@topic("/offer/deleteFailed")

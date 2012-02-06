@@ -4,17 +4,13 @@ protocol Common {
 	import idl "CurrencyAmount.avdl";
 	import idl "EmbeddedObject.avdl";
 
-    enum OfferState
-    {
-		DRAFT, //has not been published to the channel
-		SCHEDULED, //scheduled to be published, but not yet published
-		ACTIVATION_PENDING, //request to publish sent
-		ACTIVE, //published to the channel
-		UPDATE_PENDING, //update request sent to channel
-		SUSPEND_PENDING, //removal from channel in progress
+	enum OfferState
+	{
+		NEW, //has not been published to the channel
+		PUBLISHED, //published to the channel
 		SUSPENDED //removed from the channel
-    }
- 
+	}
+
 	record Offer 
 	{
 		/** Unique ID */
