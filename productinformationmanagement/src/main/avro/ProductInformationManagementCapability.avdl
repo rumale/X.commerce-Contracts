@@ -125,6 +125,10 @@ protocol ProductInformationManagementCapability
         union {null, string} id = null;
         // ID of the product type 
         union {null, string} productTypeId = null;
+        // Manufacturer suggested retail price
+        union {null, com.x.ocl.CurrencyAmount} MSRP = null;
+        // Minimal advertisement price
+        union {null, com.x.ocl.CurrencyAmount} MAP = null;
         // product images 
         union {null, array<ProductImage>} images = null;
         // product attributes 
@@ -144,6 +148,10 @@ protocol ProductInformationManagementCapability
         union {null, string} merchantSKU = null;
         // ID of the product for this SKU 
         union {null, string} productId = null;
+        // Manufacturer suggested retail price, override the field in Product
+        union {null, com.x.ocl.CurrencyAmount} MSRP = null;
+        // Minimal advertisement price, override the field in Product
+        union {null, com.x.ocl.CurrencyAmount} MAP = null;
         // variation attributes, the list must match the variationAttributeIds in Product 
         union {null, array<ProductAttributeValue>} attributes = null;
     }
