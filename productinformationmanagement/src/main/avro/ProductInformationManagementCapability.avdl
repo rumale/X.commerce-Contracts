@@ -58,7 +58,7 @@ protocol ProductInformationManagementCapability
         union {null, string} variant = null;
     }
 	
-	record LocalizedUOM {
+	record LocalizedMeasurement {
 		union {null, Locale} locale = null;
 		string name;
 		string unit;
@@ -86,8 +86,8 @@ protocol ProductInformationManagementCapability
  		array<LocalizedNameValue> attributeNameValue;
  	}
  	
- 	record UOMAttributeValue {
- 		array<LocalizedUOM> uomValue;
+ 	record MeasurementAttributeValue {
+ 		array<LocalizedMeasurement> localizedMeasurementValue;
  	}
  	
     record StringEnumerationAttributeValue
@@ -110,7 +110,7 @@ protocol ProductInformationManagementCapability
  	
     record CustomAttributeValue {
  		string customAttributeId;
- 		union {null, BooleanAttributeValue, StringAttributeValue, UOMAttributeValue} attributeValue = null;
+ 		union {null, BooleanAttributeValue, StringAttributeValue, MeasurementAttributeValue} attributeValue = null;
     }
  	
     record ProductTypeAttributeValue
