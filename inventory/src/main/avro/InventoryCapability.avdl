@@ -158,6 +158,7 @@ protocol InventoryCapability
     record Location
     {
 	string name;
+	string code;
     }
 
     record StockItem 
@@ -173,30 +174,36 @@ protocol InventoryCapability
 
     record InventoryError
     {
-	StockItem stockItem;
+	union {null, StockItem} stockItem;
+	array<Error> errors;
+    }
+
+    record LocationError
+    {
+	union {null, Location} Locations;
 	array<Error> errors;
     }
  
     /*-------------------------------------------------------------------*/
     /* Message definitions                                               */
     /*-------------------------------------------------------------------*/
-    @topic("/inventory/stockItem/create")
+    @topic("/inventory/stockItem/set")
     @version("1.0.0")
-    record CreateStockItem
+    record SetStockItem
     {
         array<StockItem> stockItems;
     }
  
-    @topic("/inventory/stockItem/created")
+    @topic("/inventory/stockItem/setSucceeded")
     @version("1.0.0")
-    record StockItemCreated
+    record SetStockItemSucceeded
     {
         array<StockItem> stockItems;
     }
  
-    @topic("/inventory/stockItem/createFailed")
+    @topic("/inventory/stockItem/setFailed")
     @version("1.0.0")
-    record CreateStockItemFailed
+    record SetStockItemFailed
     {
         array<InventoryError> createErrors;
     }
@@ -218,6 +225,7 @@ protocol InventoryCapability
     }
  
     @topic("/inventory/stockItem/getFailed")
+
     @version("1.0.0")
     record GetStockItemFailed
     {
@@ -326,6 +334,82 @@ protocol InventoryCapability
     record OutOfStock
     {
         StockItem stockItem;
+    }
+
+    @topic("/inventory/location/create")
+    @version("1.0.0")
+    record CreateLocation
+    {
+        array<Location> locations;
+    }   
+
+    @topic("/inventory/location/created")
+    @version("1.0.0")
+    record LocationCreated
+    {
+        array<Location> locations;
+    }
+
+    @topic("/inventory/location/createFailed")
+    @version("1.0.0")
+    record CreateLocationFailed
+    {
+        array<LocationError> locationErrors;
+    }
+
+    @topic("/inventory/location/update")
+    @version("1.0.0")
+    record UpdateLocation
+    {
+        array<Location> locations;
+    }
+
+    @topic("/inventory/location/updated")
+    @version("1.0.0")
+    record LocationUpdated
+    {
+        array<Location> locations;
+    }
+
+    @topic("/inventory/location/updateFailed")
+    @version("1.0.0")
+    record UpdateLocationFailed
+    {
+        array<LocationError> updateErrors;
+    }
+
+    @topic("/inventory/location/get")
+    @version("1.0.0")
+    record GetLocation
+    {
+    }   
+
+    @topic("/inventory/location/getSucceeded")
+    @version("1.0.0")
+    record GetLocationSucceeded
+    {
+        union {null, array<Location>} locations;
+    }
+
+    @topic("/inventory/location/deactivate")
+    @version("1.0.0")
+    record DeactivateLocation
+    {
+        array<Location> locations;
+    }
+
+    @topic("/inventory/location/deactivated")
+    @version("1.0.0")
+    record LocationDeactivated
+    {
+        array<Location> locations;
+    }
+
+    @topic("/inventory/location/deactivateFailed")
+    @version("1.0.0")
+    record DeactivateLocationFailed
+    {
+        array<LocationError> deactivateErrors;
     }
 
 }
