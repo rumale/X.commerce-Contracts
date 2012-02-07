@@ -11,26 +11,18 @@
 	element of certain types.
 */
 protocol Marketplace {
-	import idl "CurrencyAmount.avdl";
-	import idl "Error.avdl";
-	import idl "Query.avdl";
-	import idl "EmbeddedObject.avdl";
-	import idl "Offer.avdl";
-
 	/*
 		This record is used to return market specific data using the schema specified.
 	*/
-	@deprecated("true")
 	record EmbeddedMessage {
 		string schemaVersion;
-		union{null, string} schemaUri;
+		union{null, string} schemaUri = null;
 		bytes payload;
 	}
 
 	/*
 		This record is used to return error information.
 	 */
-	@deprecated("true")
 	record Error {
 		string code;
 		string message;
@@ -64,8 +56,6 @@ protocol Marketplace {
 		map<string> properties;
 	}
 
-	/* Will be replaced by com.x.ocl.CurrencyAmount in next release */
-	@deprecated("true")
 	record CurrencyAmount {
 		double amount;
 		string code;
@@ -103,18 +93,12 @@ protocol Marketplace {
 		int sellerPriority;
 		string serviceName;
 		CurrencyAmount cost;
-
-		union{null, CurrencyAmount} @deprecated("true") discountAmount = null;
-		union{null, CurrencyAmount} @deprecated("true") additionalCost = null;
-		union{null, CurrencyAmount} @deprecated("true") packagingHandlingCost = null;
-		union{null, CurrencyAmount} @deprecated("true") surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+		union{null, CurrencyAmount} discountAmount = null;
+		union{null, CurrencyAmount} additionalCost = null;
+		union{null, CurrencyAmount} packagingHandlingCost = null;
+		union{null, CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
 		union{null, array<string>} shipToLocations = null;  // International shipping only
-
-		union{null, com.x.ocl.CurrencyAmount} @replace("discountAmount") discount = null;
-		union{null, com.x.ocl.CurrencyAmount} @replace("additionalCost") addCost = null;
-		union{null, com.x.ocl.CurrencyAmount} @replace("packagingHandlingCost") handlingCost = null;
-		union{null, com.x.ocl.CurrencyAmount} @replace("surcharge") sc = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
-
+		union{null, array<string>} excludeShipToLocations = null;
 	}
 
 	record ShippingLocaleService {
@@ -216,8 +200,15 @@ protocol Marketplace {
 		that is encoded using the avro schema of the specific marketplace profile data.
 		ie, payPalEmailAddress for eBay
 		*/
-		union{null, EmbeddedMessage} @deprecated("true") embeddedMessage = null;
-		union{null, map<com.x.ocl.EmbeddedObject>} @replace("embeddedMessage") extensions = null;
+		union{null, EmbeddedMessage} embeddedMessage = null;
+	}
+
+	record ProductCategory {
+		Site site;
+		string id;
+		string name;
+		string parentCatId;
+		boolean isLeaf;
 	}
 
 	record Category {
@@ -226,7 +217,7 @@ protocol Marketplace {
 		union{null, string} parentId = null;
 		union{null, boolean} catalogEnabled = null;
 		union{null, int} categoryLevel = null;
-		boolean leafCategory;
+		union{null, boolean} leafCategory = null;
 	}
 
 	record CustomCategory {
@@ -236,26 +227,27 @@ protocol Marketplace {
 		array<CustomCategory> childCategories;
 	}
 
-	@deprecated("true")
+	record AttributeRecommendations {
+		string categoryId;
+		map<array<string>> nameValues;
+	}
+
 	enum ImagePurpose {
 		FEATURED,
 		GALLERY,
 		THUMBNAIL
 	}
 
-	@deprecated("true")
 	record ProductImage {
 		union{null, ImagePurpose} purpose = null;
 		string locationURL;
 	}
 
-	@deprecated("true")
 	record ProductAttribute {
 		string name;
 		array<string> value;
 	}
 
-	@deprecated("true")
 	record ProductDetails {
 		//ID as assigned by X catalog service or null if this is not a catalog product
 		union{null, string} xId = null;
@@ -265,12 +257,12 @@ protocol Marketplace {
 		union{null, string} mpn = null;
 		union{null, string} brand = null;
 		union{null, CurrencyAmount} msrp = null;
+		union{null, CurrencyAmount} minimumAdvertisedPrice = null;
 		union{null, array<ProductImage>} imageURL = null;
 		union{null, string} description = null;
 		union{null, array<ProductAttribute>} attributes = null;
 	}
 
-	@deprecated("true")
 	record Listing {
 		union{null, string} xId = null; //Identifier as known by the X.commerce adapter.
 		union{null, string} marketItemId = null; //Unique id as known by marketplace i.e. ASIN, etc..
@@ -292,7 +284,7 @@ protocol Marketplace {
 		union{null, boolean} giftWrapAvailable = null;
 		//Indicates where in the marketplace category to list
 		union{null, array<string>} marketCategories = null;
-		//Indicates where in the seller custom categories to list
+        //Indicates where in the seller custom categories to list
 		union{null, array<string>} customCategories = null;
 
 		//Following data can override data in a specified profile
@@ -307,28 +299,6 @@ protocol Marketplace {
 		union{null, EmbeddedMessage} embeddedMessage = null;
 	}
 
-	@extends("com.x.ocl.Offer")
-	record MarketplaceOffer {
-		union{null,string} title = null;
-		union{null,string} offerURL = null;
-
-		union{null,string} subTitle = null;
-		union{null,boolean} giftWrapAvailable = null;
-		//Indicates where in the marketplace category to list
-		union{null,array<string>} marketCategories = null;
-		//Indicates where in the seller custom categories to list
-		union{null,array<string>} customCategories = null;
-		
-		//Following data can override the policies defined in a policy group.
-		union{null,Payment} payment = null;
-		union{null,Shipping} shipping = null;
-		union{null,ReturnPolicy} returnPolicy = null;
-		
-		/** The map key is the fully qualified type name of the object. */
-		union{null,map<com.x.ocl.EmbeddedObject>} extensions = null;
-	}
-
-	@deprecated("true")
 	record ListingFilter {
 		union{null, array<string>} skus = null;
 		union{null, long} startTime = null; //unix time
@@ -434,36 +404,19 @@ protocol Marketplace {
 		array<Error> errors;
 	}
 
-	@deprecated("true")
 	record ListingError {
 		union{null, Listing} listing = null;
 		array<Error> errors;
 	}
-	
-	record OfferError {
-		union{null,com.x.ocl.Offer} offer = null;
-		array<com.x.ocl.Error> errors;
-	}
 
-	@deprecated("true")
 	record ListingUpdateError {
 		Listing listing;
 		array<Error> errors;
-	}
-	
-	record OfferUpdateError {
-		com.x.ocl.Offer offer;
-		array<com.x.ocl.Error> errors;
 	}
 
 	record CancelListingError {
 		string sku;
 		array<Error> errors;
-	}
-	
-	record CancelOfferError {
-		string sku;
-		array<com.x.ocl.Error> errors;
 	}
 
 	/*
@@ -477,13 +430,13 @@ protocol Marketplace {
 		union{null, long} authorizationExpiration = null;
 	}
 
-	/*
-		Defines a marketplace store.
-	*/
-	record MarketplaceStore {
-		string name;
-		union{null, array<CustomCategory>} categories = null;
-	}
+    /*
+        Defines a marketplace store.
+    */
+    record MarketplaceStore {
+        string name;
+        union{null, array<CustomCategory>} categories = null;
+    }
 
 
 	//###########################################################
@@ -503,43 +456,41 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/site/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchSiteFailed {
 		string marketplace;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
-	@topic("/marketplace/store/get")
-	@version("1.0.0")
-	record GetStore {
-		union{null, string} xAccountId = null;
-		union{null, string} userMarketplaceId = null;
+    @topic("/marketplace/store/get")
+    @version("1.0.0")
+    record GetStore {
+        union{null, string} xAccountId = null;
+        union{null, string} userMarketplaceId = null;
 		union{null, string} siteCode = null;
 		union{null, string} environmentName = null;
-	}
+    }
 
-	@topic("/marketplace/store/getSucceeded")
-	@version("1.0.0")
-	record GetStoreSucceeded {
-		MarketplaceStore store;
-		string userMarketplaceId;
+    @topic("/marketplace/store/getSucceeded")
+    @version("1.0.0")
+    record GetStoreSucceeded {
+        MarketplaceStore store;
+        string userMarketplaceId;
 		string siteCode;
 		string environmentName;
-		string marketplace;
-	}
+        string marketplace;
+    }
 
-	@topic("/marketplace/store/getFailed")
-	@version("1.1.0")
-	record GetStoreFailed {
-		union{null, string} xAccountId = null;
-		union{null, string} userMarketplaceId = null;
+    @topic("/marketplace/store/getFailed")
+    @version("1.0.0")
+    record GetStoreFailed {
+        union{null, string} xAccountId = null;
+        union{null, string} userMarketplaceId = null;
 		string siteCode;
 		string environmentName;
-		string marketplace;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
-	}
+        string marketplace;
+		array<Error> errors;
+    }
 
 	@topic("/marketplace/environment/search")
 	@version("1.0.0")
@@ -556,12 +507,11 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/environment/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchEnvironmentFailed {
 		string marketplace;
 		string siteCode;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/returnPolicy/get")
@@ -581,13 +531,12 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/returnPolicy/getFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record GetReturnPolicyFailed {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/shippingService/search")
@@ -607,13 +556,12 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/shippingService/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchShippingServiceFailed {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/country/search")
@@ -633,13 +581,12 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/country/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchCountryFailed {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/currency/search")
@@ -657,12 +604,11 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/currency/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchCurrencyFailed {
 		string siteCode;
 		string marketplace;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/handlingTime/search")
@@ -682,13 +628,12 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/handlingTime/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchHandlingTimeFailed {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/paymentMethod/search")
@@ -708,13 +653,12 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/paymentMethod/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchPaymentMethodFailed {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/category/search")
@@ -734,13 +678,12 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/category/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchCategoriesFailed {
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/categoryForProductType/search")
@@ -762,14 +705,13 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/categoryForProductType/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchCategoriesForProductTypeFailed {
 		string xProductTypeId;
 		string marketplace;
 		string siteCode;
 		string environmentName;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/account/delete")
@@ -785,11 +727,10 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/account/deleteFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record DeleteAccountFailed {
 		string xAccountId;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/account/search")
@@ -804,14 +745,13 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/account/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchAccountFailed {
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/authorization/init")
-	@version("1.0.1")
+	@version("1.0.0")
 	record InitAuthorization {
 		//Only used if marketplace web-auth flow supports it
 		union{null, string} returnURL = null;
@@ -824,14 +764,14 @@ protocol Marketplace {
 		   This can be any string that is unique to the client. It will not be used by
 		   the adapter for any purpose except returned as part of the AuthorizationPending.
 		 */
-		string @deprecated("true") guid;
+		string guid;
 	}
 
 	@topic("/marketplace/authorization/pending")
-	@version("1.0.1")
+	@version("1.0.0")
 	record AuthorizationPending {
 		//This guid is use to correlate between this message and InitAuthorization
-		string @deprecated("true") guid;
+		string guid;
 
 		string redirectURL;
 		string authId; //A unique identifier for the authorization
@@ -842,16 +782,15 @@ protocol Marketplace {
 		union{null, Credential} cred = null;
 	}
 
-	@topic("/marketplace/authorization/initFailed")
-	@version("1.1.0")
-	record InitAuthorizationFailed {
-		//Only used if marketplace web-auth flow supports it
-		union{null, string} environmentName = null;
-		union{null, string} userMarketplaceId = null;
+    @topic("/marketplace/authorization/initFailed")
+    @version("1.0.0")
+    record InitAuthorizationFailed {
+        //Only used if marketplace web-auth flow supports it
+        union{null, string} environmentName = null;
+        union{null, string} userMarketplaceId = null;
 
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
-	}
+        array<Error> errors;
+    }
 
 	@topic("/marketplace/authorization/userCompleted")
 	@version("1.0.0")
@@ -870,16 +809,15 @@ protocol Marketplace {
 		union{null, long} authorizationExpiration = null;
 	}
 
-	@topic("/marketplace/authorization/failed")
-	@version("1.1.0")
-	record AuthorizationFailed {
-		union{null, string} authId = null;
-		//any extra credentials needed to complete the process
-		union{null, Credential} cred = null;
+    @topic("/marketplace/authorization/failed")
+    @version("1.0.0")
+    record AuthorizationFailed {
+        union{null, string} authId = null;
+        //any extra credentials needed to complete the process
+        union{null, Credential} cred = null;
 
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
-	}
+        array<Error> errors;
+    }
 
 	@topic("/marketplace/profile/create")
 	@version("1.0.0")
@@ -894,11 +832,10 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/profile/createFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record CreateProfileFailed {
 		MarketplaceProfile p;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/profile/get")
@@ -914,11 +851,10 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/profile/getFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record GetProfileFailed {
 		string xProfileId;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/profile/update")
@@ -934,11 +870,10 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/profile/updateFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record UpdateProfileFailed {
 		MarketplaceProfile p;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/marketplace/profile/delete")
@@ -954,86 +889,74 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/profile/deleteFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record DeleteProfileFailed {
 		string xProfileId;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		array<Error> errors;
 	}
 
 	@topic("/listing/create")
-	@version("1.1.0")
+	@version("1.0.0")
 	record CreateListing {
-		array<Listing> @deprecated("true") listings; //does not have marketListingId yet
-		union{null,array<com.x.ocl.Offer>} @replace("listings") offers = null;
+		array<Listing> listings; //does not have marketListingId yet
 		string xProfileId;
 	}
 
 	@topic("/listing/created")
-	@version("1.1.0")
+	@version("1.0.0")
 	record ListingCreated { //Does not map 1:1 with request message
-		array<Listing> @deprecated("true") listings;
-		union{null,array<com.x.ocl.Offer>} @replace("listings") offers = null;
+		array<Listing> listings;
 		string xProfileId;
 	}
 
 	@topic("/listing/createFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record CreateListingFailed {
-		array<ListingError> @deprecated("true") errors;
-		union{null,array<OfferError>} @replace("errors") err = null;
+		array<ListingError> errors;
 		string xProfileId;
 	}
 
 	@topic("/listing/search")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchListing {
 		string xProfileId;
-		ListingFilter @deprecated("true") filter;
-		union{null,com.x.ocl.Query} @replace("filter") query = null;
+		ListingFilter filter;
 	}
 
 	@topic("/listing/searchSucceeded")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchListingSucceeded {
-		array<Listing> @deprecated("true") listings;
-		union{null,array<com.x.ocl.Offer>} @replace("listings") offers = null;
+		array<Listing> listings;
 		string xProfileId;
-		ListingFilter @deprecated("true") filter;
-		union{null,com.x.ocl.Query} @replace("filter") query = null;
+		ListingFilter filter;
 	}
 
 	@topic("/listing/searchFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record SearchListingFailed {
 		string xProfileId;
-		ListingFilter @deprecated("true") filter;
-		union{null,com.x.ocl.Query} @replace("filter") query;
-		array<Error> @deprecated("true") errors;
-		union{null,array<com.x.ocl.Error>} @replace("errors") err = null;
+		ListingFilter filter;
+		array<Error> errors;
 	}
 
 	@topic("/listing/update")
-	@version("1.1.0")
+	@version("1.0.0")
 	record UpdateListing {
-		array<Listing> @deprecated("true") updates; //must have marketListingId
-		union{null,array<com.x.ocl.Offer>} @replace("updates") offers = null;
+		array<Listing> updates; //must have marketListingId
 		string xProfileId;
 	}
 
 	@topic("/listing/updated")
-	@version("1.1.0")
+	@version("1.0.0")
 	record ListingUpdated {
-		array<Listing> @deprecated("true") updates; //must have marketListingId
-		union{null,array<com.x.ocl.Offer>} @replace("updates") offers = null;
+		array<Listing> updates;
 		string xProfileId;
 	}
 
 	@topic("/listing/updateFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record UpdateListingFailed {
-		array<ListingUpdateError> @deprecated("true") errors;
-		union{null,array<OfferUpdateError>} @replace("errors") err = null;
+		array<ListingUpdateError> errors;
 		string xProfileId;
 	}
 
@@ -1052,10 +975,9 @@ protocol Marketplace {
 	}
 
 	@topic("/listing/cancelFailed")
-	@version("1.1.0")
+	@version("1.0.0")
 	record CancelListingFailed {
-		array<CancelListingError> @deprecated("true") errors;
-		union{null,array<CancelOfferError>} @replace("errors") err = null;
+    	array<CancelListingError> errors;
 		string xProfileId;
   	}
 
