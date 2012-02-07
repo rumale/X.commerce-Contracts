@@ -11,11 +11,13 @@ protocol eBay {
 	}
 
 	record Variation {
-		com.x.ocl.CurrencyAmount price;
+		com.x.marketplace.v1.CurrencyAmount price;
 		int quantity;
 		string sku;
 		union{null,array<string>} imageUrls;
 		array<VariationSpecific> variationSpecifics;
+		union{null,com.x.marketplace.v1.CurrencyAmount} msrp;
+		union{null,com.x.marketplace.v1.CurrencyAmount} minimumAdvertisedPrice;
 	}
 	
 	record ListingVariations {
@@ -28,8 +30,8 @@ protocol eBay {
 		string listingFormat;
 		string duration;
         union{null,string} countryCode;
-		union{null,com.x.ocl.CurrencyAmount} buyItNowPrice;
-		union{null,com.x.ocl.CurrencyAmount} reservePrice;
+		union{null,com.x.marketplace.v1.CurrencyAmount} buyItNowPrice;
+		union{null,com.x.marketplace.v1.CurrencyAmount} reservePrice;
 		union{null,string} payPalEmailAddress;
 		union{null,int} handlingTime;
 		union{null,boolean} useTaxTable;
