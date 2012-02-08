@@ -96,8 +96,8 @@
 				<configuration>
 					<includes>
 						<!-- We only want to include the classes generated from the eBay.avdl -->
-						<include>**/pim/*</include>
-						<include>*.avdl</include>
+						<include>**/pim/**/*</include>
+						<include>ProductInformationManagementCapability.avdl</include>
 					</includes>
 				</configuration>
 			</plugin>

@@ -65,9 +65,6 @@
 		<resources>
 			<resource>
 				<directory>src/main/avro</directory>
-				<excludes>
-					<exclude>**/import/*.avdl</exclude>
-				</excludes>
 			</resource>
 		</resources>
 		<plugins>
@@ -86,7 +83,7 @@
 							<includeArtifactIds>core-contract</includeArtifactIds>
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**\/*.avdl</includes>
-							<outputDirectory>src/main/avro/import</outputDirectory>
+							<outputDirectory>src/main/avro</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -99,7 +96,7 @@
 					<includes>
 						<!-- We only want to include the classes generated from this project's avdl -->
 						<include>**/cse/**/*</include>
-						<include>*.avdl</include>
+						<include>ComparisonShoppingEngineV0.avdl</include>
 					</includes>
 				</configuration>
 			</plugin>

@@ -100,8 +100,8 @@
 				<configuration>
 					<includes>
 						<!-- We only want to include the classes generated from the EmailMarketing.avdl -->
-						<include>**/emailmarketing/*</include>
-						<include>*.avdl</include>
+						<include>**/emailmarketing/**/*</include>
+						<include>EmailMarketing.avdl</include>
 					</includes>
 				</configuration>
 			</plugin>

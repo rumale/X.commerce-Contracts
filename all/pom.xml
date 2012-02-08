@@ -131,7 +131,6 @@
 						</goals>
 						<configuration>
 							<includeGroupIds>com.x.ocl</includeGroupIds>
-							<!-- <includeArtifactIds>marketplace-contract</includeArtifactIds> -->
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**\/*.avdl</includes>
 							<outputDirectory>src/main/avro</outputDirectory>

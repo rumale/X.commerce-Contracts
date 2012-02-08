@@ -1,11 +1,11 @@
-@namespace("com.x.cse")
+@namespace("com.x.cse.v0")
 
 /**
 	The comparison shopping engine (CSE) protocol defines the schema for all
 	the messages that are part of the CSE domain.
 */
 protocol ComparisonShoppingEngine {
-	import idl "import/CurrencyAmount.avdl";
+	import idl "CurrencyAmount.avdl";
 
 	enum ImagePurpose {
 		Hero,

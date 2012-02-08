@@ -101,8 +101,8 @@
 				<configuration>
 					<includes>
 						<!-- We only want to include the classes generated from the eBay.avdl -->
-						<include>**/offermanagement/*</include>
-						<include>*.avdl</include>
+						<include>**/offermanagement/**/*</include>
+						<include>OfferManagementCapability.avdl</include>
 					</includes>
 				</configuration>
 			</plugin>

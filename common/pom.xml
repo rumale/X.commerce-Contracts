@@ -66,9 +66,6 @@
 		<resources>
 			<resource>
 				<directory>src/main/avro</directory>
-				<excludes>
-					<exclude>**/import/*.avdl</exclude>
-				</excludes>
 			</resource>
 		</resources>
 		<plugins>
@@ -87,7 +84,7 @@
 							<includeArtifactIds>core-contract</includeArtifactIds>
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**\/*.avdl</includes>
-							<outputDirectory>src/main/avro/import</outputDirectory>
+							<outputDirectory>src/main/avro</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -100,7 +97,13 @@
 					<includes>
 						<!-- We only want to include the classes generated from this project's avdl -->
 						<include>**/ocl/*</include>
-						<include>*.avdl</include>
+						<!-- 
+							Since the import in this project are not segregated into an import dir
+							(because it introduce an folder dependency on any other project that impor this)
+							We need to explicitly call out the avdl of this porject
+						 -->
+						<include>Offer.avdl</include>
+						<include>Campaign.avdl</include>
 					</includes>
 				</configuration>
 			</plugin>
