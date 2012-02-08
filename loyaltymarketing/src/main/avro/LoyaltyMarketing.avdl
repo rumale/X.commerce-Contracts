@@ -119,115 +119,134 @@ protocol LoyaltyMarketing
 		array<com.x.ocl.Error> errors;
 	}
 	
-	@topic("loyalty/customer/create")
+	@topic("/loyalty/customer/create")
 	@version("0.0.1")
 	record CreateCustomer {
 		array<Customer> customers;
 	}
 	
-	@topic("loyalty/customer/created")
+	@topic("/loyalty/customer/created")
 	@version("0.0.1")
 	record CustomerCreated {
 		array<Customer> customers;
 	}
 	
-	@topic("loyalty/customer/createFailed")
+	@topic("/loyalty/customer/createFailed")
 	@version("0.0.1")
 	record CreateCustomerFailed {
 		array<LoyaltyCustomerError> errors;
 	}
 	
-	@topic("loyalty/customer/search")
+	@topic("/loyalty/customer/search")
 	@version("0.0.1")
 	record SearchCustomer {
 		com.x.ocl.Query query;
 	}
 	
-	@topic("loyalty/customer/searchSucceeded")
+	@topic("/loyalty/customer/searchSucceeded")
 	@version("0.0.1")
 	record SearchCustomerSucceeded {
 		com.x.ocl.Query query;
 		array<Customer> customers;
 	}
 	
-	@topic("loyalty/customer/searchFailed")
+	@topic("/loyalty/customer/searchFailed")
 	@version("0.0.1")
 	record SearchCustomerFailed {
 		com.x.ocl.Query query;
 		array<com.x.ocl.Error> errors;
 	}
 
-	@topic("loyalty/customer/update")
+	@topic("/loyalty/customer/update")
 	@version("0.0.1")
 	record UpdateCustomer {
 		array<Customer> customers;
 	}
 	
-	@topic("loyalty/customer/updated")
+	@topic("/loyalty/customer/updated")
 	@version("0.0.1")
 	record CustomerUpdated {
 		array<Customer> customers;
 	}
 	
-	@topic("loyalty/customer/updateFailed")
+	@topic("/loyalty/customer/updateFailed")
 	@version("0.0.1")
 	record UpdateCustomerFailed {
 		array<LoyaltyCustomerError> errors;
 	}
 	
-	@topic("loyalty/customer/delete")
+	@topic("/loyalty/customer/delete")
 	@version("0.0.1")
 	record DeleteCustomer {
 		array<string> customerIds;
 	}
 	
-	@topic("loyalty/customer/deleted")
+	@topic("/loyalty/customer/deleted")
 	@version("0.0.1")
 	record CustomerCreated {
 		array<string> customerIds;
 	}
 	
-	@topic("loyalty/customer/deleteFailed")
+	@topic("/loyalty/customer/deleteFailed")
 	@version("0.0.1")
 	record CreateCustomerFailed {
 		array<LoyaltyCustomerIdError> errors;
 	}
 	
-	@topic("loyalty/event/create")
+	@topic("/loyalty/event/create")
 	@version("0.0.1")
 	record CreateEvent {
 		array<Event> events;
 	}
 	
-	@topic("loyalty/event/created")
+	@topic("/loyalty/event/created")
 	@version("0.0.1")
 	record EventCreated {
 		Event event;
 		union{null,Reward} reward; //The reward that resulted from the event being created
 	}
 
-	@topic("loyalty/event/createFailed")
+	@topic("/loyalty/event/createFailed")
 	@version("0.0.1")
 	record CreateEventFailed {
 		array<EventError> errors;
 	}
 
-	@topic("loyalty/reward/create")
+	@topic("/loyalty/reward/create")
 	@version("0.0.1")
 	record CreateReward {
 		array<Reward> rewards;
 	}
 	
-	@topic("loyalty/reward/created")
+	@topic("/loyalty/reward/created")
 	@version("0.0.1")
 	record RewardCreated {
 		//This message is also published whenever an event causes a reward to be generated
 		Reward reward;
 	}
 	
-	@topic("loyalty/reard/createFailed")
+	@topic("/loyalty/reard/createFailed")
 	@version("0.0.1")
 	record CreateRewardFailed {
 		array<RewardError> errors;
+	}
+
+	@topic("/loyalty/reward/search")
+	@version("0.0.1")
+	record SearchReward {
+		com.x.ocl.Query query;
+	}
+	
+	@topic("/loyalty/reward/searchSucceeded")
+	@version("0.0.1")
+	record SearchRewardSucceeded {
+		com.x.ocl.Query query;
+		array<Reward> rewards;
+	}
+	
+	@topic("/loyalty/reward/searchFailed")
+	@version("0.0.1")
+	record SearchRewardFailed {
+		array<com.x.ocl.Error> errors;
 	}
 }
