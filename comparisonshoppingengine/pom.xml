@@ -96,7 +96,7 @@
 					<includes>
 						<!-- We only want to include the classes generated from this project's avdl -->
 						<include>**/cse/**/*</include>
-						<include>ComparisonShoppingEngineV0.avdl</include>
+						<include>ComparisonShoppingEngine.avdl</include>
 					</includes>
 				</configuration>
 			</plugin>
