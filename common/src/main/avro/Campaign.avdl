@@ -1,7 +1,7 @@
 @namespace("com.x.ocl")
 
 protocol Common {
-	import idl "EmbeddedObject.avdl";
+	import idl "import/EmbeddedObject.avdl";
 
 	enum CampaignStatus {
 		DRAFT,

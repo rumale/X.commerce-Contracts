@@ -1,10 +1,12 @@
-@namespace("com.x.cse.v0")
+@namespace("com.x.cse")
 
 /**
 	The comparison shopping engine (CSE) protocol defines the schema for all
 	the messages that are part of the CSE domain.
 */
 protocol ComparisonShoppingEngine {
+	import idl "import/CurrencyAmount.avdl";
+
 	enum ImagePurpose {
 		Hero,
 		Gallery,
@@ -36,11 +38,6 @@ protocol ComparisonShoppingEngine {
 		string value;
 	}
 	
-	record CurrencyAmount {
-		double amount;
-		string code;
-	}
-	
 	record ProductImage {
 		string imageUrl;
 		ImagePurpose imagePurpose;
@@ -58,12 +55,12 @@ protocol ComparisonShoppingEngine {
 	 	string country;
 	 	string region;
 	 	string service;
-	 	CurrencyAmount price;
+	 	com.x.ocl.CurrencyAmount price;
 	 }
 
 	
 	record VariationValue {
-		CurrencyAmount price;
+		com.x.ocl.CurrencyAmount price;
 		string sku;
 		array<ProductImage> imageUrls;
 		string value;
@@ -86,8 +83,8 @@ protocol ComparisonShoppingEngine {
    		array<ProductImage> images;
    		string link;
    		ConditionType condition;
-   		CurrencyAmount salePrice;
-   		CurrencyAmount originalPrice;
+   		com.x.ocl.CurrencyAmount salePrice;
+   		com.x.ocl.CurrencyAmount originalPrice;
    		AvailabilityType availability;
    		TaxRate taxRate;
    		Shipping shipping;
@@ -95,7 +92,7 @@ protocol ComparisonShoppingEngine {
    		array<ProductAttribute> attributes;
    		array<Variation> variations;
    		string offerId;
-   		CurrencyAmount cpc;
+   		com.x.ocl.CurrencyAmount cpc;
 	}
 	
 	@topic("/cse/offer/create, /cse/offer/created")

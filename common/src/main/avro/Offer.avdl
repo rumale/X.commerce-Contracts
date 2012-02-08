@@ -1,8 +1,8 @@
 @namespace("com.x.ocl")
 
 protocol Common {
-	import idl "CurrencyAmount.avdl";
-	import idl "EmbeddedObject.avdl";
+	import idl "import/CurrencyAmount.avdl";
+	import idl "import/EmbeddedObject.avdl";
 
 	enum OfferState
 	{

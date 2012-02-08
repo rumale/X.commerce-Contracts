@@ -66,6 +66,9 @@
 		<resources>
 			<resource>
 				<directory>src/main/avro</directory>
+				<excludes>
+					<exclude>**/import/*.avdl</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		<plugins>
@@ -84,7 +87,7 @@
 							<includeArtifactIds>core-contract</includeArtifactIds>
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**\/*.avdl</includes>
-							<outputDirectory>src/main/avro</outputDirectory>
+							<outputDirectory>src/main/avro/import</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
