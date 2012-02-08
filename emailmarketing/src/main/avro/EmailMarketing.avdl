@@ -11,6 +11,7 @@ protocol EmailMarketing {
 
 	import idl "Error.avdl";
 	import idl "Campaign.avdl";
+	import idl "EmbeddedObject.avdl";
 
 	/**
 	 * An account represents the merchant's relationship with the
@@ -82,22 +83,19 @@ protocol EmailMarketing {
 		
 		/** Provider specific types can be specified as strings */
 		union{EventType,string} type;
+		
+		union{null,com.x.ocl.EmbeddedObject} extension = null;
 	}
 	
 	@extends("Event")
 	record SocialShare {
-		Event base;
-		
 		string socialNetwork;		
 		int networkViews;
 	}
 	
 	@extends("Event")
-	record LinkClick {
-		Event base;
-		
+	record LinkClick {		
 		int webPageViews;
-		
 		union{null, string} orderId = null;
 		union{null, double} salesValue = null;
 	}
