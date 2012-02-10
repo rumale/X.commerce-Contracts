@@ -70,7 +70,8 @@ protocol ComparisonShoppingEngine {
 		string id;
 		array<VariationValue> values;
 	}
-		
+
+	//TODO: need to remove this and use common Product type definition.
 	record ProductDetails {
    		string sku;
    		string title;
