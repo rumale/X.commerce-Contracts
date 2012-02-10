@@ -175,7 +175,7 @@ protocol SalesChannel {
 	}
 
 	record CustomerInfo {
-		union{null,string} userMarketId = null;
+		union{null,string} userChannelId = null;
 		union{null,string} email = null;
 		union{null,string} name = null;
 		union{null,string} phone = null;
@@ -199,7 +199,7 @@ protocol SalesChannel {
 
 		/*
 			The following is an embedded message that contains a market specific data "blob"
-			that is encoded using the avro schema of the specific marketplace this order is intended for.
+			that is encoded using the avro schema of the specific channel this order is intended for.
 		*/
 		union{null,map<com.x.ocl.EmbeddedObject>} extensions = null;
 	}
@@ -220,7 +220,7 @@ protocol SalesChannel {
 
 		/*
 			The following is an embedded message that contains a market specific data "blob"
-			that is encoded	using the avro schema of the specific marketplace this order is intended for.
+			that is encoded	using the avro schema of the specific channel this order is intended for.
 		*/
 		union{null,map<com.x.ocl.EmbeddedObject>} extensions = null;
 	}
