@@ -101,7 +101,7 @@ def process_protocol(protocol_file_name)
       end
       
       resp, data = http.post(path, buf.read, {})
-      puts "done: #{resp}"
+      puts "done: #{resp.code} #{resp.code_type}"
     end
   end
 end
