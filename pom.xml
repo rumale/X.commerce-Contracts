@@ -11,6 +11,7 @@
 	</scm>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<avro.version>1.6.1</avro.version>
 	</properties>
 
@@ -62,6 +63,7 @@
 		<module>producttaxonomy</module>
 		<module>saleschannel</module>
 		<module>shipping</module>
+		<module>system</module>
 		<module>all</module>
 		<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
 	</modules>
@@ -153,6 +155,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>shipping-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>system-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- PLEASE KEEP IN ALPHABETICAL ORDER -->
