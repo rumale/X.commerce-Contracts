@@ -12,23 +12,6 @@ protocol ProductInformationManagementCapability
         FULL_DETAILS
     }
  
-    
-    enum SortOrderType
-    {
-        ASCENDING,
-        DESCENDING
-    }
-    
-    enum OperatorType
-    {
-        EQUALS,
-        NOT_EQUALS,
-        GREATER_THAN,
-        GREATER_THAN_EQUALS,
-        LESS_THAN,
-        LESS_THAN_EQUALS
-    }
-    
     ///
     // Locale contains a combination of ISO language code, country code and 
     // optional variant
