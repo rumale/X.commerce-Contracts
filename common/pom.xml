@@ -104,6 +104,11 @@
 						 -->
 						<include>Offer.avdl</include>
 						<include>Campaign.avdl</include>
+						<include>Address.avdl</include>
+						<include>Email.avdl</include>
+						<include>Name.avdl</include>
+						<include>Phone.avdl</include>
+						<include>Contact.avdl</include> 
 					</includes>
 				</configuration>
 			</plugin>
