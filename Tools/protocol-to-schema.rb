@@ -108,6 +108,8 @@ end
 
 jar_path = File.join(Dir.pwd, 'Tools', 'avro-tools-1.6.1.jar')
 
+$stderr.puts jar_path
+
 Dir['all/**/*'].each do |d|
   if File.directory? d
     Dir.chdir d do
