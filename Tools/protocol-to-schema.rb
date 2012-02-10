@@ -83,15 +83,15 @@ def process_protocol(protocol_file_name)
       
       written = Set.new
       
-      p type.name
+      print "Publishing #{type.name}"...
       
       write_type(buf, type, '', written, protocol.namespace)
       
       buf.rewind
       
-      out = File.open(protocol.namespace + '.' + type.name + '.avsc', 'w')
-      out.print buf.read
-      out.close
+#      out = File.open(protocol.namespace + '.' + type.name + '.avsc', 'w')
+#      out.print buf.read
+#      out.close
       
       # I moved the topic check here as not all the schemas that needed to be uploaded had topics but
       # all had versions. Not sure if this will adversly effect the other end of the schema server.
@@ -100,15 +100,13 @@ def process_protocol(protocol_file_name)
         path += "?topic=#{type.props['topic'][1..-1]}&namespace=#{protocol.namespace}"
       end
       
-      #    resp, data = http.post(path, buf.read, {})
-      #    p resp
+      resp, data = http.post(path, buf.read, {})
+      puts "done: #{resp}"
     end
   end
 end
 
 jar_path = File.join(Dir.pwd, 'Tools', 'avro-tools-1.6.1.jar')
-
-$stderr.puts jar_path
 
 Dir['all/**/*'].each do |d|
   if File.directory? d
