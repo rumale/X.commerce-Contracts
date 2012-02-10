@@ -1,0 +1,291 @@
+@namespace("com.x.marketplace.v2")
+
+protocol Marketplace {
+	import idl "../SalesChannel.avdl";
+	
+	/*
+		An environment represents a sub-section of the marketplace/site.
+		The environment often defines the destination urls, credentails, etc for
+		communicating with a given marketplace (ie 'production', 'sandbox', etc)
+	*/
+	record Environment {
+		string name;
+	}
+
+	record SupportedCountry {
+		string countryCode;
+		string description;
+	}
+
+	/*
+		Each marketplace adapter will requires a different set of
+		credential keys with its own name/value. Please
+		check the marketplace adapter documentation for specific
+		requirements.
+	*/
+	record Credential {
+		map<string> properties;
+	}
+
+	/*
+		A marketplace profile defines the default policies that a merchant
+		will use for listings on that marketplace.
+	*/
+	@extends("com.x.saleschannel.PolicyGroup")
+	record MarketplaceProfile {
+		string xAccountId;
+
+		union{null, com.x.saleschannel.v1.PolicyGroup} policyGroup;
+
+		/*
+		 * The following is an embedded message that contains a market specific data "blob"
+		 * that is encoded using the avro schema of the specific marketplace profile data.
+		 * ie, payPalEmailAddress for eBay
+		*/
+		union{null, map<com.x.ocl.EmbeddedObject>} extensions = null;
+	}
+
+	record CustomCategory {
+		long id;
+		string name;
+		int order;
+		array<CustomCategory> childCategories;
+	}
+
+	record AttributeRecommendations {
+		string categoryId;
+		map<array<string>> nameValues;
+	}
+
+	@extends("com.x.ocl.Offer")
+	record MarketplaceOffer {
+		union{null, string} title = null;
+		union{null, string} offerUrl = null;
+
+		/*
+			Following are fields that are optionally supported
+			across marketplaces.  Will be ignored if market does
+			not support this.
+		*/
+		union{null, string} subTitle = null;
+		union{null, boolean} giftWrapAvailable = null;
+		//Indicates where in the marketplace category to list
+		union{null, array<string>} marketCategories = null;
+		//Indicates where in the seller custom categories to list
+		union{null, array<string>} customCategories = null;
+
+		//Following data can override data in a specified profile
+		union{null, com.x.saleschannel.v1.PaymentPolicy} payment = null;
+		union{null, com.x.saleschannel.v1.ShippingPolicy} shipping = null;
+		union{null, com.x.saleschannel.v1.ReturnPolicy} returnPolicy = null;
+
+		/*
+			The following is an embedded message that contains a market specific data "blob"
+			that is encoded	using the avro schema of the specific marketplace this listing is intended for.
+		*/
+		union{null, map<com.x.ocl.EmbeddedObject>} extensions = null;
+	}
+
+	/*
+		Defines a marketplace account which is intended to be used for all supported marketplaces.
+	*/
+	record MarketplaceAccount {
+		union{null, string} xId = null;   // ID provided by X.commerce
+		union{null, string} userMarketplaceId = null;
+		union{null, string} siteCode = null;
+		union{null, string} environmentName = null;
+		union{null, long} authorizationExpiration = null;
+	}
+
+	/*
+		Defines a marketplace store.
+	*/
+	record MarketplaceStore {
+		string name;
+		union{null, array<CustomCategory>} categories = null;
+	}
+
+	@topic("/marketplace/environment/search")
+	@version("1.0.0")
+	record SearchEnvironment {
+		string siteCode;
+	}
+
+	@topic("/marketplace/environment/searchSucceeded")
+	@version("1.0.0")
+	record SearchEnvironmentSucceeded {
+		array<Environment> environments;
+		string marketplace;
+		string siteCode;
+	}
+
+	@topic("/marketplace/environment/searchFailed")
+	@version("1.0.0")
+	record SearchEnvironmentFailed {
+		string marketplace;
+		string siteCode;
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/marketplace/store/get")
+	@version("1.0.0")
+	record GetStore {
+		union{null, string} xAccountId = null;
+		union{null, string} userMarketplaceId = null;
+		union{null, string} siteCode = null;
+		union{null, string} environmentName = null;
+	}
+
+	@topic("/marketplace/store/getSucceeded")
+	@version("1.0.0")
+	record GetStoreSucceeded {
+		MarketplaceStore store;
+		string userMarketplaceId;
+		string siteCode;
+		string environmentName;
+		string marketplace;
+	}
+
+	@topic("/marketplace/store/getFailed")
+	@version("1.0.0")
+	record GetStoreFailed {
+		union{null, string} xAccountId = null;
+		union{null, string} userMarketplaceId = null;
+		string siteCode;
+		string environmentName;
+		string marketplace;
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/marketplace/country/search")
+	@version("1.0.0")
+	record SearchCountry {
+		string siteCode;
+		union{null, string} environmentName = null;
+	}
+
+	@topic("/marketplace/country/searchSucceeded")
+	@version("1.0.0")
+	record SearchCountrySucceeded {
+		array<SupportedCountry> countries;
+		string marketplace;
+		string siteCode;
+		union{null, string} environmentName = null;
+	}
+
+	@topic("/marketplace/country/searchFailed")
+	@version("1.0.0")
+	record SearchCountryFailed {
+		string marketplace;
+		string siteCode;
+		union{null, string} environmentName = null;
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/marketplace/account/delete")
+	@version("1.0.0")
+	record DeleteAccount {
+		string xAccountId;
+	}
+
+	@topic("/marketplace/account/deleted")
+	@version("1.0.0")
+	record AccountDeleted {
+		string xAccountId;
+	}
+
+	@topic("/marketplace/account/deleteFailed")
+	@version("1.0.0")
+	record DeleteAccountFailed {
+		string xAccountId;
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/marketplace/account/search")
+	@version("1.0.0")
+	record SearchAccount {
+	}
+
+	@topic("/marketplace/account/searchSucceeded")
+	@version("1.0.0")
+	record SearchAccountSucceeded {
+		array<MarketplaceAccount> accounts;
+	}
+
+	@topic("/marketplace/account/searchFailed")
+	@version("1.0.0")
+	record SearchAccountFailed {
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/marketplace/authorization/init")
+	@version("1.0.0")
+	record InitAuthorization {
+		//Only used if marketplace web-auth flow supports it
+		union{null, string} returnURL = null;
+		union{null, string} cancelURL = null;
+		union{null, string} environmentName = null;
+		union{null, string} userMarketplaceId = null;
+
+		/*
+		   This guid is use to correlate between this message and AuthorizationPending.
+		   This can be any string that is unique to the client. It will not be used by
+		   the adapter for any purpose except returned as part of the AuthorizationPending.
+		 */
+		string guid;
+	}
+
+	@topic("/marketplace/authorization/pending")
+	@version("1.0.0")
+	record AuthorizationPending {
+		//This guid is use to correlate between this message and InitAuthorization
+		string guid;
+
+		string redirectURL;
+		string authId; //A unique identifier for the authorization
+
+		/*
+		 * Any extra credentials needed to proceed with the auth
+		 */
+		union{null, Credential} cred = null;
+	}
+
+	@topic("/marketplace/authorization/initFailed")
+	@version("1.0.0")
+	record InitAuthorizationFailed {
+		//Only used if marketplace web-auth flow supports it
+		union{null, string} environmentName = null;
+		union{null, string} userMarketplaceId = null;
+
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/marketplace/authorization/userCompleted")
+	@version("1.0.0")
+	record AuthorizationUserCompleted {
+		string authId;
+		//any extra credentials needed to complete the process
+		union{null, Credential} cred = null;
+	}
+
+	@topic("/marketplace/authorization/completed")
+	@version("1.0.0")
+	record AuthorizationCompleted {
+		string authId;
+		string xAccountId;
+		union{null, string} userMarketplaceId = null;
+		union{null, long} authorizationExpiration = null;
+	}
+
+	@topic("/marketplace/authorization/failed")
+	@version("1.0.0")
+	record AuthorizationFailed {
+		union{null, string} authId = null;
+		//any extra credentials needed to complete the process
+		union{null, Credential} cred = null;
+
+		array<com.x.ocl.Error> errors;
+	}
+
+
+}

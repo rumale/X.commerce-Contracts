@@ -47,25 +47,15 @@ protocol Core {
 	}
 
 	/**
-	 * Specifies the page of results to return in the response
-	 */
-	record Paging
-	{
-		int startIndex;
- 
- 		/** Number of items to return per page */
-		int pageSize;
-	}
-
-	/**
 	 * Query that corresponds to the report
 	 */
 	record Query
 	{
 		/**
-		 * Fields to be selected. These will be 'columns' in the report
+		 * Fields to be selected. These will be 'columns' in the report.
+		 * When not specified, the entire object should be returned. 
 		 */
-		array<string> fields;
+		union{null,array<string>} fields = null;
 		
 		/**
 		 * Specifies how an entity should be filtered. Essentially, the WHERE
@@ -79,11 +69,16 @@ protocol Core {
 		 * secondary sort order, etc.
 		 */
 		array<OrderBy> ordering;
+	}
 
-		/**
-		 * Pagination information
-		 */
-		Paging paging;
+	record GenericItem {
+		//Fixed is not supported. Use bytes instead.
+		//For union, the actual type should be use instead of the union type.
+		union {null,boolean,int,long,float,double,string,bytes,array<GenericItem>,map<GenericItem>} value;
+	}
+
+	record QueryResultItem {
+		array<GenericItem> fields;
 	}
 
 	/**
@@ -99,7 +94,7 @@ protocol Core {
 	record QueryResult
 	{
 		//TODO: this needs to be fixed to support named types.
-		union {null, array<array<union{string}>>} data;
+		union {null, array<QueryResultItem>} data = null;
 	}
 
 }
