@@ -59,16 +59,16 @@ protocol Core {
 		
 		/**
 		 * Specifies how an entity should be filtered. Essentially, the WHERE
-		 * clause
+		 * clause.  Don't specify any predicate if the query is for all.
 		 */
-		array<Predicate> predicates;
+		union{null,array<Predicate>} predicates = null;
 
 		/**
 		 * Fields on which the report should be sorted. The order is significant -
 		 * first field determines primary sort order, the next determines
 		 * secondary sort order, etc.
 		 */
-		array<OrderBy> ordering;
+		union{null,array<OrderBy>} ordering = null;
 	}
 
 	record GenericItem {
@@ -93,7 +93,6 @@ protocol Core {
 	 */
 	record QueryResult
 	{
-		//TODO: this needs to be fixed to support named types.
 		union {null, array<QueryResultItem>} data = null;
 	}
 

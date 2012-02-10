@@ -506,123 +506,123 @@ protocol SalesChannel {
 		array<com.x.ocl.Error> errors;
 	}
 
-	@topic("/offer/create")
+	@topic("/salesChannel/offer/create")
 	@version("1.0.0")
 	record CreateOffer {
 		array<com.x.ocl.Offer> offers; //does not have marketOfferId yet
 		string policyGroupId;
 	}
 
-	@topic("/offer/created")
+	@topic("/salesChannel/offer/created")
 	@version("1.0.0")
 	record OfferCreated { //Does not map 1:1 with request message
 		array<com.x.ocl.Offer> offers;
 		string policyGroupId;
 	}
 
-	@topic("/offer/createFailed")
+	@topic("/salesChannel/offer/createFailed")
 	@version("1.0.0")
 	record CreateOfferFailed {
 		array<OfferError> errors;
 		string policyGroupId;
 	}
 
-	@topic("/offer/search")
+	@topic("/salesChannel/offer/search")
 	@version("1.0.0")
 	record SearchOffer {
-		com.x.ocl.Query query;
+		union{null,com.x.ocl.Query} query = null;
 	}
 
-	@topic("/offer/searchSucceeded")
+	@topic("/salesChannel/offer/searchSucceeded")
 	@version("1.0.0")
 	record SearchOfferSucceeded {
-		array<com.x.ocl.Offer> offers;
-		com.x.ocl.Query query;
+		array<union{com.x.ocl.QueryResult,com.x.ocl.Offer}> offers;
+		union{null,com.x.ocl.Query} query = null;
 	}
 
-	@topic("/offer/searchFailed")
+	@topic("/salesChannel/offer/searchFailed")
 	@version("1.0.0")
 	record SearchOfferFailed {
-		com.x.ocl.Query query;
+		union{null,com.x.ocl.Query} query = null;
 		array<com.x.ocl.Error> errors;
 	}
 
-	@topic("/offer/update")
+	@topic("/salesChannel/offer/update")
 	@version("1.0.0")
 	record UpdateOffer {
 		array<com.x.ocl.Offer> updates; //must have marketOfferId
 		string policyGroupId;
 	}
 
-	@topic("/offer/updated")
+	@topic("/salesChannel/offer/updated")
 	@version("1.0.0")
 	record OfferUpdated {
 		array<com.x.ocl.Offer> updates;
 		string policyGroupId;
 	}
 
-	@topic("/offer/updateFailed")
+	@topic("/salesChannel/offer/updateFailed")
 	@version("1.0.0")
 	record UpdateOfferFailed {
 		array<OfferUpdateError> errors;
 		string policyGroupId;
 	}
 
-	@topic("/offer/cancel")
+	@topic("/salesChannel/offer/cancel")
 	@version("1.0.0")
 	record CancelOffer {
 		array<string> skus;
 		string policyGroupId;
 	}
 
-	@topic("/offer/cancelled")
+	@topic("/salesChannel/offer/cancelled")
 	@version("1.0.0")
 	record OfferCancelled {
 		array<string> skus;
 		string policyGroupId;
 	}
 
-	@topic("/offer/cancelFailed")
+	@topic("/salesChannel/offer/cancelFailed")
 	@version("1.0.0")
 	record CancelOfferFailed {
 		array<CancelOfferError> errors;
 		string policyGroupId;
   	}
 
-	@topic("/order/search")
+	@topic("/salesChannel/order/search")
 	@version("1.0.0")
 	record SearchOrder {
-		com.x.ocl.Query query;
+		union{null,com.x.ocl.Query} query = null;
 	}
 
-	@topic("/order/searchSucceeded")
+	@topic("/salesChannel/order/searchSucceeded")
 	@version("1.0.0")
 	record SearchOrdersSucceeded {
 		array<Order> orders;
-		com.x.ocl.Query query;
+		union{null,com.x.ocl.Query} query = null;
 	}
 
-	@topic("/order/searchFailed")
+	@topic("/salesChannel/order/searchFailed")
 	@version("1.0.0")
 	record SearchOrderFailed {
-		com.x.ocl.Query query;
+		union{null,com.x.ocl.Query} query = null;
 	}
 
-	@topic("/order/update")
+	@topic("/salesChannel/order/update")
 	@version("1.0.0")
 	record UpdateOrder {
 		array<OrderUpdate> updates;
 		string policyGroupId;
 	}
 
-	@topic("/order/updated")
+	@topic("/salesChannel/order/updated")
 	@version("1.0.0")
 	record OrderUpdated {
 		array<OrderUpdate> updates;
 		string policyGroupId;
 	}
 
-	@topic("/order/updateFailed")
+	@topic("/salesChannel/order/updateFailed")
 	@version("1.0.0")
 	record UpdateOrderFailed {
 		array<OrderUpdateError> errors;
