@@ -3,249 +3,9 @@
 protocol InventoryCapability 
 {
  
-    //import idl "Error.avdl";
-    //import idl "Query.avdl";
+    import idl "Error.avdl";
+    import idl "Query.avdl";
 
-    /** This record is used to return error information */
-    record Error
-    {
-        /** Numeric value that indicates the type of error */
-        string code;
- 
-        /**  Key whose value is a human displayable version of this error */
-        union {null, string} message = null;
- 
-        /** 
-         * Parameters for the message. Parameter place holders identified 
-         * using the format in java.text.MessageFormat. The key of the map is
-         * the placeholder string, and the value is the string that replaces it. 
-         */
-        union {null, map<string>} parameters = null;
-    }
-
-    /**
-     * Locale contains a combination of ISO language code, country code and 
-     * optional variant
-     */
-    record Locale 
-    {
-        string language;
-        string country;
-        union {null, string} variant;
-    }
-
-    record UOM {
-	string unit;
-	double value;
-    }	
-
-    record LocalizedNameValue {
-	// if the locale is null, default to en_US
-	// there should be only one element with default locale in an array
-	union {null, Locale} locale = null;
-	string name;
-	string value;
-    }
- 	
-    record LocalizedString {
-	union {null, Locale} locale = null;
-	string stringValue;
-    }
- 	
-    record LocalizedUOM {
-	union {null, Locale} locale = null;
-	UOM uom;
-    }
-	
- 	
-    record BooleanAttributeValue
-    {
-        boolean value;
-        /** attributeName will be populated by capability */
-        union{null, array<LocalizedString>} attributeName;
-    }
- 
-    record StringEnumerationAttributeValue
-    {
-    	/** valueId is the id of the value defined in XPT StringEnumeration */
-        union {string, array<string>} valueId;
-        /** this localized value will be populated by capability */
-        union {null, array<array<LocalizedNameValue>>} attributeValues;
-    }
- 
-    record StringAttributeValue
-    {
-    	/** a string attribute value can optionally refer to */
-    	/** a predefined value in XPT, or it can be localized name/value pair */
-        union {null, string} valueId;
-        /** this localized value can be populated by capability if valueId is present */
-        /** if valueId is not present, the localized values can be populated by requester */
-        union {null, array<LocalizedNameValue>} attributeValue;
-    }
- 
-    record CustomAttributeValue {
- 	string attributeId;
- 	union {null, array<LocalizedNameValue>, boolean, LocalizedUOM} attributeValue;
-    }
- 	
-    record XPTAttributeValue
-    {
-        string attributeId;
-        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
-    }
- 
-    record ProductAttributeValue
-    {
-        union {XPTAttributeValue, CustomAttributeValue} value;
-    }
- 
-    enum ProductFilter 
-    {
-        SUMMARY,
-        FULL_DETAILS
-    }
- 
-    enum SKUFilter 
-    {
-        SUMMARY,
-        FULL_DETAILS
-    }
- 
-    /**
-     * Range of dates
-     */
-    record DateRange
-    {
-        /**
-         * Start date
-         * Format: ISO 8601 YYYYMMDD
-         */
-        union {null, string} startDate;
-
-        /**
-         * End date
-         * Format: ISO 8601 YYYYMMDD
-         */
-        union {null, string} endDate;
-    }
-
-    /**
-     * Operator
-     */
-    enum Operator
-    {
-        EQUALS,
-        NOT_EQUALS,
-        GREATER_THAN,
-        GREATER_THAN_EQUALS,
-        LESS_THAN,
-        LESS_THAN_EQUALS
-    }
-    
-    /**
-     * Predicate
-     */
-    record Predicate
-    {
-        /** 
-         * The field by which to filter the returned data. The filterable
-         * fields for an entity are specified in the documentation.
-         */
-        string field;
-
-        Operator operator;
-
-        /**
-         * Must only contain single value. Support for multiple values defined
-         * for any future operations that may need it.
-         */
-        array<string> values;
-    }
-
-    /**
-     * Sort order
-     */
-    enum SortOrder
-    {
-        ASCENDING,
-        DESCENDING
-    }
-
-    /**
-     * Order by
-     */
-    record OrderBy
-    {
-        string field;
-
-        SortOrder sortOrder;
-    }
-
-    /**
-     * Specifies the page of results to return in the response
-     */
-    record Paging
-    {
-        int startIndex;
- 
-        int numberResults;
-    }
-
-    /**
-     * Query that corresponds to the report
-     */
-    record Query
-    {
-        /**
-         * Fields whose values need to be returned in the results.  These 
-         * will be 'columns' in the report
-         */
-        array<string> fields;
-        
-        /**
-         * Specifies how an entity should be filtered. Essentially, the WHERE
-         * clause. This cannot be empty.
-         * Multiple Predicate elements are combined using AND logic.
-         */
-        array<Predicate> predicates;
-
-        /**
-         * Range of dates for which the report data should be included
-         * TODO: Can this be replaced by the startDate and endDate fields in
-         * predicate
-         */
-        DateRange dateRange;
-
-        /**
-         * Fields on which the report should be sorted. The order is significant -
-         * first field determines primary sort order, the next determines
-         * secondary sort order, etc.
-         */
-        array<OrderBy> ordering;
-
-        /**
-         * Pagination information
-         */
-        Paging paging;
-    }
-
-    /**
-     * Query Result
-     * The result of a query can be null, in which case the Error structure
-     * will indicate the error.
-     * In the successful case, the result is zero or more rows, each containing
-     * one or more columns. The order of the columns would correspond to the
-     * order of the fields in the Query record.
-     * While the type of column supported is a string now, this can be enhanced
-     * by adding additional types to the inner union.
-     */
-    record QueryResult
-    {
-        union {null, array<array<union{string}>>} data;
-    }
-
-
-    // TODO: Model location
     record Location
     {
 	string name;
@@ -266,13 +26,13 @@ protocol InventoryCapability
     record InventoryError
     {
 	union {null, StockItem} stockItem;
-	array<Error> errors;
+	array<com.x.ocl.Error> errors;
     }
 
     record LocationError
     {
 	union {null, Location} Locations;
-	array<Error> errors;
+	array<com.x.ocl.Error> errors;
     }
  
     /*-------------------------------------------------------------------*/
@@ -329,23 +89,23 @@ protocol InventoryCapability
     @version("1.0.0")
     record SearchStockItem
     {
-        Query query;
+        com.x.ocl.Query query;
     }
  
     @topic("/inventory/stockItem/searchSucceeded")
     @version("1.0.0")
     record SearchStockItemSucceeded
     {
-        Query query;
-        QueryResult queryResult;
+        com.x.ocl.Query query;
+        com.x.ocl.QueryResult queryResult;
     }
  
     @topic("/inventory/stockItem/searchFailed")
     @version("1.0.0")
     record SearchStockItemFailed
     {
-        Query query;
-        array<Error> errors;
+        com.x.ocl.Query query;
+        array<com.x.ocl.Error> errors;
     }
 
     //Note: this update command will update all fields of the StockItem including the quantity field.
@@ -396,7 +156,7 @@ protocol InventoryCapability
     @version("1.0.0")
     record UpdateQuantityFailed
     {
-        Error quantityUpdateError;
+        com.x.ocl.Error quantityUpdateError;
     }
  
     @topic("/inventory/stockItem/delete")
@@ -473,23 +233,23 @@ protocol InventoryCapability
     @version("1.0.0")
     record GetLocation
     {
-        Query query; 
+        com.x.ocl.Query query; 
     }   
 
     @topic("/inventory/location/searchSucceeded")
     @version("1.0.0")
     record GetLocationSucceeded
     {
-        Query query;
-        QueryResult queryResult;
+        com.x.ocl.Query query;
+        com.x.ocl.QueryResult queryResult;
     }
 
     @topic("/inventory/location/searchFailed")
     @version("1.0.0")
     record SearchLocationFailed
     {
-        Query query;
-        array<Error> errors;
+        com.x.ocl.Query query;
+        array<com.x.ocl.Error> errors;
     }
 
     @topic("/inventory/location/deactivate")
