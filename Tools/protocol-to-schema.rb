@@ -83,8 +83,8 @@ def process_protocol(protocol_file_name)
       
       written = Set.new
       
-      print "Publishing #{type.name}"...
-      
+      print "publishing #{type.name}... "
+ 
       write_type(buf, type, '', written, protocol.namespace)
       
       buf.rewind
