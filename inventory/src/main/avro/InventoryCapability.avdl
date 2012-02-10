@@ -19,13 +19,15 @@ protocol InventoryCapability
         union {null, Location} location;
     }
 
-    enum Filter 
-    {
-    }
-
     record InventoryError
     {
 	union {null, StockItem} stockItem;
+	array<com.x.ocl.Error> errors;
+    }
+
+    record InventoryGetError
+    {
+	union {null, string} skuId;
 	array<com.x.ocl.Error> errors;
     }
 
@@ -64,7 +66,6 @@ protocol InventoryCapability
     record GetStockItem
     {
         array<string> stockItemIds;
-        union {null, Filter} filter; 
     }
  
     @topic("/inventory/stockItem/getSucceeded")
@@ -72,7 +73,6 @@ protocol InventoryCapability
     record GetStockItemSucceeded
     {
         array<StockItem> stockItems;
-        union {null, Filter} filter; 
     }
  
     @topic("/inventory/stockItem/getFailed")
@@ -80,8 +80,7 @@ protocol InventoryCapability
     @version("1.0.0")
     record GetStockItemFailed
     {
-        union {null, Filter} filter; 
-        array<InventoryError> errors;
+        array<InventoryGetError> errors;
     }
  
     // TODO: Use Query pattern
@@ -149,6 +148,9 @@ protocol InventoryCapability
     @version("1.0.0")
     record QuantityUpdated
     {
+	string skuId;
+	Location location;
+	int quantity;
         StockItem stockItem;
     }
  
@@ -156,6 +158,9 @@ protocol InventoryCapability
     @version("1.0.0")
     record UpdateQuantityFailed
     {
+	string skuId;
+	Location location;
+	int quantity;
         com.x.ocl.Error quantityUpdateError;
     }
  
