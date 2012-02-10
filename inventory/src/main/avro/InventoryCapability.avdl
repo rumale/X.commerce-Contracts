@@ -3,6 +3,8 @@
 protocol InventoryCapability 
 {
  
+    //import idl "Error.avdl";
+    //import idl "Query.avdl";
 
     /** This record is used to return error information */
     record Error
@@ -21,6 +23,94 @@ protocol InventoryCapability
         union {null, map<string>} parameters = null;
     }
 
+    /**
+     * Locale contains a combination of ISO language code, country code and 
+     * optional variant
+     */
+    record Locale 
+    {
+        string language;
+        string country;
+        union {null, string} variant;
+    }
+
+    record UOM {
+	string unit;
+	double value;
+    }	
+
+    record LocalizedNameValue {
+	// if the locale is null, default to en_US
+	// there should be only one element with default locale in an array
+	union {null, Locale} locale = null;
+	string name;
+	string value;
+    }
+ 	
+    record LocalizedString {
+	union {null, Locale} locale = null;
+	string stringValue;
+    }
+ 	
+    record LocalizedUOM {
+	union {null, Locale} locale = null;
+	UOM uom;
+    }
+	
+ 	
+    record BooleanAttributeValue
+    {
+        boolean value;
+        /** attributeName will be populated by capability */
+        union{null, array<LocalizedString>} attributeName;
+    }
+ 
+    record StringEnumerationAttributeValue
+    {
+    	/** valueId is the id of the value defined in XPT StringEnumeration */
+        union {string, array<string>} valueId;
+        /** this localized value will be populated by capability */
+        union {null, array<array<LocalizedNameValue>>} attributeValues;
+    }
+ 
+    record StringAttributeValue
+    {
+    	/** a string attribute value can optionally refer to */
+    	/** a predefined value in XPT, or it can be localized name/value pair */
+        union {null, string} valueId;
+        /** this localized value can be populated by capability if valueId is present */
+        /** if valueId is not present, the localized values can be populated by requester */
+        union {null, array<LocalizedNameValue>} attributeValue;
+    }
+ 
+    record CustomAttributeValue {
+ 	string attributeId;
+ 	union {null, array<LocalizedNameValue>, boolean, LocalizedUOM} attributeValue;
+    }
+ 	
+    record XPTAttributeValue
+    {
+        string attributeId;
+        union {StringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
+    }
+ 
+    record ProductAttributeValue
+    {
+        union {XPTAttributeValue, CustomAttributeValue} value;
+    }
+ 
+    enum ProductFilter 
+    {
+        SUMMARY,
+        FULL_DETAILS
+    }
+ 
+    enum SKUFilter 
+    {
+        SUMMARY,
+        FULL_DETAILS
+    }
+ 
     /**
      * Range of dates
      */
@@ -154,6 +244,7 @@ protocol InventoryCapability
         union {null, array<array<union{string}>>} data;
     }
 
+
     // TODO: Model location
     record Location
     {
@@ -205,7 +296,7 @@ protocol InventoryCapability
     @version("1.0.0")
     record SetStockItemFailed
     {
-        array<InventoryError> createErrors;
+        array<InventoryError> errors;
     }
 
     @topic("/inventory/stockItem/get")
@@ -230,7 +321,7 @@ protocol InventoryCapability
     record GetStockItemFailed
     {
         union {null, Filter} filter; 
-        array<InventoryError> getErrors;
+        array<InventoryError> errors;
     }
  
     // TODO: Use Query pattern
@@ -277,7 +368,7 @@ protocol InventoryCapability
     @version("1.0.0")
     record UpdateStockItemFailed
     {
-        array<InventoryError> updateErrors;
+        array<InventoryError> errors;
     }
 
     //This is a relative assignment (+3 or -1), not an absolute assignment of quantity.
@@ -326,7 +417,7 @@ protocol InventoryCapability
     @version("1.0.0")
     record DeleteStockItemFailed
     {
-        array<InventoryError> deleteErrors;
+        array<InventoryError> errors;
     }
 
     @topic("/inventory/stockItem/outOfStock")
@@ -354,7 +445,7 @@ protocol InventoryCapability
     @version("1.0.0")
     record CreateLocationFailed
     {
-        array<LocationError> locationErrors;
+        array<LocationError> errors;
     }
 
     @topic("/inventory/location/update")
@@ -375,20 +466,30 @@ protocol InventoryCapability
     @version("1.0.0")
     record UpdateLocationFailed
     {
-        array<LocationError> updateErrors;
+        array<LocationError> errors;
     }
 
-    @topic("/inventory/location/get")
+    @topic("/inventory/location/search")
     @version("1.0.0")
     record GetLocation
     {
+        Query query; 
     }   
 
-    @topic("/inventory/location/getSucceeded")
+    @topic("/inventory/location/searchSucceeded")
     @version("1.0.0")
     record GetLocationSucceeded
     {
-        union {null, array<Location>} locations;
+        Query query;
+        QueryResult queryResult;
+    }
+
+    @topic("/inventory/location/searchFailed")
+    @version("1.0.0")
+    record SearchLocationFailed
+    {
+        Query query;
+        array<Error> errors;
     }
 
     @topic("/inventory/location/deactivate")
@@ -409,7 +510,28 @@ protocol InventoryCapability
     @version("1.0.0")
     record DeactivateLocationFailed
     {
-        array<LocationError> deactivateErrors;
+        array<LocationError> errors;
+    }
+
+    @topic("/inventory/location/activate")
+    @version("1.0.0")
+    record ActivateLocation
+    {
+        array<Location> locations;
+    }
+
+    @topic("/inventory/location/activated")
+    @version("1.0.0")
+    record LocationActivated
+    {
+        array<Location> locations;
+    }
+
+    @topic("/inventory/location/activateFailed")
+    @version("1.0.0")
+    record ActivateLocationFailed
+    {
+        array<LocationError> errors;
     }
 
 }
