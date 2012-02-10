@@ -4,12 +4,43 @@
         The customer protocol defines the schema for all messages that are part of the customer domain.
 */
 protocol Customer {
-        import idl "Contact.avdl";
-	    import idl "Name.avdl";
-	    
         record CurrencyAmount {
                 double amount;
                 string code;
+        }
+        /** todo: use common types for name and contact */ 
+        record Name {
+                 string firstName;
+                 union {null, string} middleName;
+                 string lastName;
+                 union {null, string} prefix;
+                 union {null, string} suffix;
+        }
+
+            
+        record Address {
+                 string addressLine1;
+                 union {null, string} addressLine2;
+                 union {null, string} addressLine3;
+                 union {null, string} addressLine4;
+                 string city;
+                 union {null, string} county;
+                 union {null, string} state;
+                 union {null, string} postalCode;
+                 string country;   // 2 character ISO value
+        }
+        
+
+        enum PhoneType {
+                Home,
+                Mobile,
+                Work,
+                Fax
+        }
+        
+        record Phone {
+                string Number;
+                PhoneType Type;
         }
 
         enum Gender {
@@ -25,32 +56,35 @@ protocol Customer {
                 Cold
         }
 
-        @extends("com.x.ocl.Contact")
-        record CRMContact{
-                union {null, string} Company;  
-                boolean DoNotCall;   
+        record Contact {
+                Name fullName;
+                Address address;
+                string emailAddress;
+                union {null, Phone} PrimaryPhone;
+                union {null, Phone} SecondaryPhone;
+                union {null, string} Company;
+                boolean DoNotCall;
                 boolean EmailOptOut;
                 Gender Gender;
                 long DateCreated;
+                long LastActivityDate;
                 string SourceId;
                 ContactStatus Status;
-         }
+        }
 
-        /**
-        	TODO:  need to create a distinct record for each topic.   
-		*/
+        
         @topic("/customer/create, /customer/created, /customer/update, /customer/updated, /customer/deactivate, /customer/deactivated, /customer/delete, /customer/deleted, /customer/activate, /customer/activated")
         record Customer {
                 string CustomerId;
                 string ExternalCustomerId;
-                long LastActivityDate;
-                CRMContact PrimaryContact;
+                Contact PrimaryContact;
         }
+
 
         @topic("/customer/search")
         record CustomerSearchFilter {
                 union {null, string} CustomerId;
-                union {null, com.x.ocl.Name} CustomerName;
+                union {null, Name} CustomerName;
         }
 
         
