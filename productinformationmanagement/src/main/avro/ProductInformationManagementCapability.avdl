@@ -6,17 +6,12 @@ protocol ProductInformationManagementCapability
 	import idl "Error.avdl";
 	import idl "Query.avdl";
 	
-    enum ProductFilterType 
+    enum FilterType 
     {
         SUMMARY,
         FULL_DETAILS
     }
  
-    enum SKUFilterType
-    {
-        SUMMARY,
-        FULL_DETAILS
-    }
     
     enum SortOrderType
     {
@@ -118,25 +113,6 @@ protocol ProductInformationManagementCapability
         // TODO: Other image attributes
     }
 
-    // TODO: Set of ProductAttributeValues
-    record Product 
-    {
-        // product id 
-        union {null, string} id = null;
-        // ID of the product type 
-        union {null, string} productTypeId = null;
-        // Manufacturer suggested retail price
-        union {null, com.x.ocl.CurrencyAmount} MSRP = null;
-        // Minimal advertisement price
-        union {null, com.x.ocl.CurrencyAmount} MAP = null;
-        // product images 
-        union {null, array<ProductImage>} images = null;
-        // product attributes 
-        union {null, array<ProductAttributeValue>} attributes = null;
-        // defines the ids of variation variables 
-        union {null, array<string>} variationAttributeIds = null;
-    }
-
     //
     // Stock Keeping Unit
     //
@@ -157,6 +133,27 @@ protocol ProductInformationManagementCapability
     }
 
     //-------------------------------------------------------------------
+    // TODO: Set of ProductAttributeValues
+    record Product 
+    {
+        // product id 
+        union {null, string} productIds = null;
+        // ID of the product type 
+        union {null, string} productTypeId = null;
+        // Manufacturer suggested retail price
+        union {null, com.x.ocl.CurrencyAmount} MSRP = null;
+        // Minimal advertisement price
+        union {null, com.x.ocl.CurrencyAmount} MAP = null;
+        // product images 
+        union {null, array<ProductImage>} images = null;
+        // product attributes 
+        union {null, array<ProductAttributeValue>} attributes = null;
+        // defines the ids of variation variables 
+        union {null, array<string>} variationAttributeIds = null;
+	// list of associated SKUs
+        union {null, array<SKU>} skuList = null;
+    }
+
     // Message definitions
     //-------------------------------------------------------------------
     //
@@ -217,7 +214,7 @@ protocol ProductInformationManagementCapability
     record GetProduct
     {
         array<string> productIds;
-        union {null, ProductFilterType} filter = null; 
+        union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
         union { null, array<Locale> } locales = null;
@@ -228,7 +225,7 @@ protocol ProductInformationManagementCapability
     record GetProductSucceeded
     {
         array<Product> products;
-        union {null, ProductFilterType} filter = null; 
+        union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
         union { null, array<Locale> } locales = null;
@@ -239,44 +236,7 @@ protocol ProductInformationManagementCapability
     record GetProductFailed
     {
         array<string> productIds;
-        union {null, ProductFilterType} filter = null; 
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        union { null, array<Locale> } locales = null;
-        array<com.x.ocl.Error> errors;
-    }
- 
-    //
-    // Get SKUs
-    //
-    @topic("/pim/sku/get")
-    @version("1.0.0")
-    record GetSKU
-    {
-        array<string> skuIds;
-        union {null, SKUFilterType} filter = null; 
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        union { null, array<Locale> } locales = null;
-    }
- 
-    @topic("/pim/sku/getSucceeded")
-    @version("1.0.0")
-    record GetSKUSucceeded
-    {
-        array<SKU> skus;
-        union {null, SKUFilterType} filter = null; 
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        union { null, array<Locale> } locales = null;
-    }
- 
-    @topic("/pim/SKU/getFailed")
-    @version("1.0.0")
-    record GetSKUFailed
-    {
-        array<string> skuIDs;
-        union {null, SKUFilterType} filter = null; 
+        union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
         union { null, array<Locale> } locales = null;
@@ -297,39 +257,6 @@ protocol ProductInformationManagementCapability
     @topic("/pim/product/searchSucceeded")
     @version("1.0.0")
     record SearchProductSucceeded
-    {
-        com.x.ocl.Query query;
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        union { null, array<Locale> } locales = null;
-        com.x.ocl.QueryResult queryResult;
-    }
- 
-    @topic("/pim/product/searchFailed")
-    @version("1.0.0")
-    record SearchProductFailed
-    {
-        com.x.ocl.Query query;
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        union { null, array<Locale> } locales = null;
-        array<com.x.ocl.Error> errors;
-    }
- 
-    // TODO: Use Query pattern
-    @topic("/pim/sku/search")
-    @version("1.0.0")
-    record SearchSKU
-    {
-        com.x.ocl.Query query;
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        union { null, array<Locale> } locales = null;
-    }
- 
-    @topic("/pim/sku/searchSucceeded")
-    @version("1.0.0")
-    record SearchSKUSucceeded
     {
         com.x.ocl.Query query;
         // The locale en_US will be the default if no locale is supplied in 
