@@ -1,0 +1,14 @@
+@namespace("com.x.ocl")
+
+protocol Common {
+	    import idl "EmbeddedObject.avdl";
+	   
+	   record Name {
+                 string firstName;
+                 union {null, string} middleName;
+                 string lastName;
+                 union {null, string} prefix;
+                 union {null, string} suffix;
+       }
+          
+}

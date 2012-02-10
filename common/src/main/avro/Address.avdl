@@ -1,0 +1,19 @@
+@namespace("com.x.ocl")
+
+protocol Common {
+	    import idl "EmbeddedObject.avdl";
+	
+	
+        record Address {
+                 string addressLine1;
+                 union {null, string} addressLine2;
+                 union {null, string} addressLine3;
+                 union {null, string} addressLine4;
+                 string city;
+                 union {null, string} county;
+                 union {null, string} state;
+                 union {null, string} postalCode;
+                 string country;   // 2 character ISO value
+       }       
+
+}
