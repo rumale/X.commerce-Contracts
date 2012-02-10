@@ -6,6 +6,7 @@ protocol LoyaltyMarketing
 	import idl "EmbeddedObject.avdl";
 	import idl "Campaign.avdl";
 	import idl "Query.avdl";
+	import idl "Contact.avdl";
 
 	record Points {
 		string type; //i.e. "X_Airline_FrequentFlyerMiles" or "BankOfX_Reward"
@@ -21,8 +22,8 @@ protocol LoyaltyMarketing
 	}
 	
 	record Customer {
-		//TODO: reuse the same type defined in Customer.avdl
 		union{null,string} id;
+		com.x.ocl.Contact primaryContact;
 		Balance balance;
 	}
 	

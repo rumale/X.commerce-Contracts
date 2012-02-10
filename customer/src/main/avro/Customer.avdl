@@ -44,7 +44,7 @@ protocol Customer {
                 string CustomerId;
                 string ExternalCustomerId;
                 long LastActivityDate;
-                CRMContact PrimaryContact;
+                com.x.ocl.Contact PrimaryContact;
         }
 
         @topic("/customer/search")

@@ -45,7 +45,7 @@ protocol EmailMarketing {
 	
 	
 	/** A contact of the tenant  uniquely represented by an email */
-	@Extends("com.x.ocl.Email")
+	@extends("com.x.ocl.Email")
 	record EmailContact {
 		/** The account this list belongs to */
 		string accountId;
