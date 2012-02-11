@@ -5,6 +5,7 @@ protocol ProductInformationManagementCapability
 	import idl "CurrencyAmount.avdl";
 	import idl "Error.avdl";
 	import idl "Query.avdl";
+	import idl "Locale.avdl";
 	
     enum FilterType 
     {
@@ -12,32 +13,21 @@ protocol ProductInformationManagementCapability
         FULL_DETAILS
     }
  
-    ///
-    // Locale contains a combination of ISO language code, country code and 
-    // optional variant
-    //
-    record Locale 
-    {
-        string language;
-        string country;
-        union {null, string} variant = null;
-    }
-	
 	record LocalizedMeasurement {
-		union {null, Locale} locale = null;
+		union {null, com.x.ocl.Locale} locale = null;
 		string name;
 		string unit;
 		string value;
 	}
 	
  	record LocalizedNameValue {
- 		union {null, Locale} locale = null;
+ 		union {null, com.x.ocl.Locale} locale = null;
  		string name;
  		string value;
  	}
  	
  	record LocalizedString {
- 		union {null, Locale} locale = null;
+ 		union {null, com.x.ocl.Locale} locale = null;
   		string stringValue;
  	}
  	
@@ -200,7 +190,7 @@ protocol ProductInformationManagementCapability
         union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales = null;
+        union { null, array<com.x.ocl.Locale> } locales = null;
     }
  
     @topic("/pim/product/getSucceeded")
@@ -211,7 +201,7 @@ protocol ProductInformationManagementCapability
         union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales = null;
+        union { null, array<com.x.ocl.Locale> } locales = null;
     }
  
     @topic("/pim/product/getFailed")
@@ -222,7 +212,7 @@ protocol ProductInformationManagementCapability
         union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales = null;
+        union { null, array<com.x.ocl.Locale> } locales = null;
         array<com.x.ocl.Error> errors;
     }
  
@@ -234,7 +224,7 @@ protocol ProductInformationManagementCapability
         com.x.ocl.Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales = null;
+        union { null, array<com.x.ocl.Locale> } locales = null;
     }
  
     @topic("/pim/product/searchSucceeded")
@@ -244,7 +234,7 @@ protocol ProductInformationManagementCapability
         com.x.ocl.Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales = null;
+        union { null, array<com.x.ocl.Locale> } locales = null;
         com.x.ocl.QueryResult queryResult;
     }
  
@@ -255,7 +245,7 @@ protocol ProductInformationManagementCapability
         com.x.ocl.Query query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        union { null, array<Locale> } locales = null;
+        union { null, array<com.x.ocl.Locale> } locales = null;
         array<com.x.ocl.Error> errors;
     }
  

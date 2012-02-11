@@ -5,12 +5,11 @@
 	that are part of the shipping domain.
 */
 protocol Shipping {
-
-	record CurrencyAmount {
-		double amount;
-		string code;
-	}
-
+	import idl "CurrencyAmount.avdl";
+	import idl "Name.avdl";
+	import idl "Address.avdl";
+	import idl "Contact.avdl";
+	
 	enum DimensionUnitType {
 	    Inches,
    	 	Centimeters
@@ -70,36 +69,6 @@ protocol Shipping {
 		Url
 	}
 	
-	record CurrencyValue {
-		double amount;
-		string code;
-	}
-
-	record Name {
-   		string firstName;
-   		string middleName;
-   		string lastName;
-   		string suffix;
-	}
-
-	record Address {
-   		string addressLine1;
-   		string addressLine2;
-   		string city;
-   		string state;
-   		string postalCode;
-   		string country;
-	}
-
-	record Contact {
-		Name fullName;
-		Address address;
-		string emailAddress;
-		string homePhone;
-		string workPhone;
-		string mobilePhone;
-	}
-	
 	record Package {
 		string description;
 		double weight;
@@ -108,15 +77,15 @@ protocol Shipping {
 		double width;
 		double height;
 		DimensionUnitType dimensionUnit;
-		CurrencyValue declaredValue;
+		com.x.ocl.CurrencyAmount declaredValue;
 		PackageType type;
 		PackageSizeType sizeClassification;
 	}
 
 	record Recipient {
-		Name name;
+		com.x.ocl.Name name;
 		string title;
-		Address address;
+		com.x.ocl.Address address;
 		boolean isResidential;
 		string phoneNumber;
 		string phoneExtension;
@@ -128,7 +97,7 @@ protocol Shipping {
 		double weightMajor;
 		double weightMinor;
 		WeightUnitType weightUnit;
-		CurrencyAmount eachValue;
+		com.x.ocl.CurrencyAmount eachValue;
 		string tariffCode;
 		int quantity;
 		string description;
@@ -159,7 +128,7 @@ protocol Shipping {
 	record SpecialService {
 		string name;
 		string description;
-		CurrencyValue fee;
+		com.x.ocl.CurrencyAmount fee;
 	}
 	
 	record SpecialServices {
@@ -182,12 +151,12 @@ protocol Shipping {
 
 	record Shipment {
 		array<Package> packages;
-		Address address;
+		com.x.ocl.Address address;
 		Recipient recipient;
 		int lotSize;
 		PackagingMethodType packagingMethod;
 		double totalWeight;
-		CurrencyValue totalInsuredValue;
+		com.x.ocl.CurrencyAmount totalInsuredValue;
 		string shippingInstructions;
 		HandoffModeType carrierHandoffMode;
 		ShippingServices shippingServices;
@@ -215,7 +184,7 @@ protocol Shipping {
 		LabelImageType imageType;
 		string encodedImage;
 		string imageUrl;
-		CurrencyValue cost;
+		com.x.ocl.CurrencyAmount cost;
 	}
 	
 	record ShippingLabels {

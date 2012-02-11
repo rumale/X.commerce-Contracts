@@ -9,5 +9,7 @@ protocol Core {
 		
 		/* ISO 3166 Two-letter UPPER-CASED country code */
 		string country;
+		
+        union {null, string} variant = null;		
 	}
 }

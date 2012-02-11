@@ -10,10 +10,10 @@ protocol PaidSearchAdvertisingCapability
 	import idl "Query.avdl";
 	import idl "Locale.avdl";
 	import idl "CurrencyAmount.avdl";
+	import idl "Contact.avdl";
 	
 	/**
 	 * Advertiser Account
-	 * TODO:
 	 */
 	record AdvertiserAccount
 	{
@@ -24,7 +24,7 @@ protocol PaidSearchAdvertisingCapability
 		 */
 		union{null, string} currencyCode = null;
 
-		// TODO: Additional data needed to create the account
+		com.x.ocl.Contact primaryContact;
 	}
 
 	/**
