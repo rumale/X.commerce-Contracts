@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>ontology</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.ocl</groupId>
@@ -13,7 +13,7 @@
 		This artifact contains the Paid Search Advertising contract.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.2/paidsearchadvertising</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/paidsearchadvertising</connection>
 	</scm>
 
 	<repositories>
