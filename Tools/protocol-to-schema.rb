@@ -29,6 +29,8 @@ def write_type(buf, schema, delim, written, namespace = nil)
   elsif schema.class == Avro::Schema::RecordSchema
     if !written.include?(schema.name)
       written.add(schema.name)
+
+      namespace = schema.namespace if schema.namespace
       
       buf.print "{\"type\":\"record\",\"name\":\"#{schema.name}\", \"version\":\"#{schema.props['version']}\""
       if namespace
@@ -85,19 +87,21 @@ def process_protocol(protocol_file_name)
       
       print "publishing #{type.name}... "
  
-      write_type(buf, type, '', written, protocol.namespace)
+      namespace = type.namespace ? type.namespace : protocol.namespace
+
+      write_type(buf, type, '', written, namespace)
       
       buf.rewind
       
-#      out = File.open(protocol.namespace + '.' + type.name + '.avsc', 'w')
+#      out = File.open(namespace + '.' + type.name + '.avsc', 'w')
 #      out.print buf.read
 #      out.close
       
       # I moved the topic check here as not all the schemas that needed to be uploaded had topics but
       # all had versions. Not sure if this will adversly effect the other end of the schema server.
-      path = "/#{protocol.namespace}/#{type.name}/#{type.props['version']}"
+      path = "/#{namespace}/#{type.name}/#{type.props['version']}"
       if type.props['topic']
-        path += "?topic=#{type.props['topic'][1..-1]}&namespace=#{protocol.namespace}"
+        path += "?topic=#{type.props['topic'][1..-1]}&namespace=#{namespace}"
       end
       
       resp, data = http.post(path, buf.read, {})
