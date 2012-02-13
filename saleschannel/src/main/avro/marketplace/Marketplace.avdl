@@ -31,11 +31,9 @@ protocol Marketplace {
 		A marketplace profile defines the default policies that a merchant
 		will use for listings on that marketplace.
 	*/
-	@extends("com.x.saleschannel.PolicyGroup")
+	@extends("com.x.saleschannel.v1.PolicyGroup")
 	record MarketplaceProfile {
 		string xAccountId;
-
-		union{null, com.x.saleschannel.v1.PolicyGroup} policyGroup;
 
 		/*
 		 * The following is an embedded message that contains a market specific data "blob"
