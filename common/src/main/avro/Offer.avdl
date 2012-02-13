@@ -20,8 +20,9 @@ protocol Common {
 		
 		/** The channel this offer is for */
 		string channelId;
-		union{null,string} channelAssignedId = null;
-		union{null,string} channelStatus = null;		
+		union{null,string} channelAssignedId = null; //To be provided by channel provider
+		union{null, string} offerChannelUrl = null; //To be provided by channel provider
+		union{null,string} channelStatus = null; //To be provided by channel provider		
 
 		/** Reference to an object of type com.x.ocl.SKU
 		string sku;

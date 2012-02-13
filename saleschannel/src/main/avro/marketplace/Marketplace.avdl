@@ -58,7 +58,6 @@ protocol Marketplace {
 	@extends("com.x.ocl.Offer")
 	record MarketplaceOffer {
 		union{null, string} title = null;
-		union{null, string} offerUrl = null;
 
 		/*
 			Following are fields that are optionally supported
