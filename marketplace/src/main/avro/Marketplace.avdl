@@ -669,7 +669,7 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/category/searchSucceeded")
-	@version("1.0.0")
+	@version("2.0.0")
 	record SearchCategoriesSucceeded {
 		array<Category> categories;
 		string marketplace;
@@ -695,7 +695,7 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/categoryForProductType/searchSucceeded")
-	@version("1.0.0")
+	@version("2.0.0")
 	record SearchCategoriesForProductTypeSucceeded {
 		string xProductTypeId;
 		array<Category> categories;
@@ -820,19 +820,19 @@ protocol Marketplace {
     }
 
 	@topic("/marketplace/profile/create")
-	@version("1.0.0")
+	@version("1.0.1")
 	record CreateProfile {
 		MarketplaceProfile p; //xId is empty
 	}
 
 	@topic("/marketplace/profile/created")
-	@version("1.0.0")
+	@version("1.0.1")
 	record ProfileCreated {
 		MarketplaceProfile p; //xId is filled in
 	}
 
 	@topic("/marketplace/profile/createFailed")
-	@version("1.0.0")
+	@version("1.0.1")
 	record CreateProfileFailed {
 		MarketplaceProfile p;
 		array<Error> errors;
@@ -845,7 +845,7 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/profile/getSucceeded")
-	@version("1.0.0")
+	@version("1.0.1")
 	record GetProfileSucceeded {
 		MarketplaceProfile p;
 	}
@@ -858,19 +858,19 @@ protocol Marketplace {
 	}
 
 	@topic("/marketplace/profile/update")
-	@version("1.0.0")
+	@version("1.0.1")
 	record UpdateProfile {
 		MarketplaceProfile p; //xId must be filled in
 	}
 
 	@topic("/marketplace/profile/updated")
-	@version("1.0.0")
+	@version("1.0.1")
 	record ProfileUpdated {
 		MarketplaceProfile p;
 	}
 
 	@topic("/marketplace/profile/updateFailed")
-	@version("1.0.0")
+	@version("1.0.1")
 	record UpdateProfileFailed {
 		MarketplaceProfile p;
 		array<Error> errors;
@@ -896,21 +896,21 @@ protocol Marketplace {
 	}
 
 	@topic("/listing/create")
-	@version("1.0.0")
+	@version("1.0.1")
 	record CreateListing {
 		array<Listing> listings; //does not have marketListingId yet
 		string xProfileId;
 	}
 
 	@topic("/listing/created")
-	@version("1.0.0")
+	@version("1.0.1")
 	record ListingCreated { //Does not map 1:1 with request message
 		array<Listing> listings;
 		string xProfileId;
 	}
 
 	@topic("/listing/createFailed")
-	@version("1.0.0")
+	@version("1.0.1")
 	record CreateListingFailed {
 		array<ListingError> errors;
 		string xProfileId;
@@ -924,7 +924,7 @@ protocol Marketplace {
 	}
 
 	@topic("/listing/searchSucceeded")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchListingSucceeded {
 		array<Listing> listings;
 		string xProfileId;
@@ -940,21 +940,21 @@ protocol Marketplace {
 	}
 
 	@topic("/listing/update")
-	@version("1.0.0")
+	@version("1.0.1")
 	record UpdateListing {
 		array<Listing> updates; //must have marketListingId
 		string xProfileId;
 	}
 
 	@topic("/listing/updated")
-	@version("1.0.0")
+	@version("1.0.1")
 	record ListingUpdated {
 		array<Listing> updates;
 		string xProfileId;
 	}
 
 	@topic("/listing/updateFailed")
-	@version("1.0.0")
+	@version("1.0.1")
 	record UpdateListingFailed {
 		array<ListingUpdateError> errors;
 		string xProfileId;
@@ -989,7 +989,7 @@ protocol Marketplace {
 	}
 
 	@topic("/order/searchSucceeded")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchOrdersSucceeded {
 		array<Order> orders;
 		string xProfileId;
