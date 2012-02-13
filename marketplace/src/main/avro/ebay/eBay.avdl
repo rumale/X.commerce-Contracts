@@ -16,8 +16,6 @@ protocol eBay {
 		string sku;
 		union{null,array<string>} imageUrls;
 		array<VariationSpecific> variationSpecifics;
-		union{null,com.x.marketplace.v1.CurrencyAmount} msrp;
-		union{null,com.x.marketplace.v1.CurrencyAmount} minimumAdvertisedPrice;
 	}
 	
 	record ListingVariations {

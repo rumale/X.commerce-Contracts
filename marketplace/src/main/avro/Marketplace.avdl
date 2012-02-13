@@ -16,7 +16,7 @@ protocol Marketplace {
 	*/
 	record EmbeddedMessage {
 		string schemaVersion;
-		union{null, string} schemaUri = null;
+		union{null, string} schemaUri;
 		bytes payload;
 	}
 
@@ -98,7 +98,6 @@ protocol Marketplace {
 		union{null, CurrencyAmount} packagingHandlingCost = null;
 		union{null, CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
 		union{null, array<string>} shipToLocations = null;  // International shipping only
-		union{null, array<string>} excludeShipToLocations = null;
 	}
 
 	record ShippingLocaleService {
@@ -217,7 +216,7 @@ protocol Marketplace {
 		union{null, string} parentId = null;
 		union{null, boolean} catalogEnabled = null;
 		union{null, int} categoryLevel = null;
-		union{null, boolean} leafCategory = null;
+		boolean leafCategory;
 	}
 
 	record CustomCategory {
@@ -257,7 +256,6 @@ protocol Marketplace {
 		union{null, string} mpn = null;
 		union{null, string} brand = null;
 		union{null, CurrencyAmount} msrp = null;
-		union{null, CurrencyAmount} minimumAdvertisedPrice = null;
 		union{null, array<ProductImage>} imageURL = null;
 		union{null, string} description = null;
 		union{null, array<ProductAttribute>} attributes = null;
