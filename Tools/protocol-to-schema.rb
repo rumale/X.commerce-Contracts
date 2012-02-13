@@ -50,7 +50,7 @@ def write_type(buf, schema, delim, written, namespace = nil)
 
       buf.print "]}"
     else
-      buf.print "\"#{schema.name}\""
+      buf.print "\"#{schema.namespace}.#{schema.name}\""
     end
   elsif schema.class == Avro::Schema::ArraySchema
     buf.print "{\"type\":\"array\",\"items\":"
