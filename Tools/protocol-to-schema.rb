@@ -101,8 +101,6 @@ def process_protocol(protocol_file_name)
 #      out.print buf.read
 #      out.close
       
-      # I moved the topic check here as not all the schemas that needed to be uploaded had topics but
-      # all had versions. Not sure if this will adversly effect the other end of the schema server.
       path = "/#{namespace}/#{type.name}/#{type.props['version']}"
       if type.props['topic']
         path += "?topic=#{type.props['topic'][1..-1]}&namespace=#{namespace}"
