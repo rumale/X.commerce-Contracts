@@ -50,7 +50,11 @@ def write_type(buf, schema, delim, written, namespace = nil)
 
       buf.print "]}"
     else
-      buf.print "\"#{schema.namespace}.#{schema.name}\""
+      if schema.namespace
+        buf.print "\"#{schema.namespace}.#{schema.name}\""
+      else
+        buf.print "\"#{schema.name}\""
+      end
     end
   elsif schema.class == Avro::Schema::ArraySchema
     buf.print "{\"type\":\"array\",\"items\":"
@@ -77,7 +81,7 @@ def process_protocol(protocol_file_name)
 
   http = Net::HTTP.new('ocl.cloud.x.com', 443)
   http.use_ssl = true
-  #http = Net::HTTP.new('localhost',3010)
+#  http = Net::HTTP.new('localhost', 3010)
   
   protocol.types.each do |type|
     if type.class == Avro::Schema::RecordSchema && type.props['version']
@@ -104,10 +108,17 @@ def process_protocol(protocol_file_name)
         path += "?topic=#{type.props['topic'][1..-1]}&namespace=#{namespace}"
       end
       
-      resp, data = http.post(path, buf.read, {})
+      req = Net::HTTP::Post.new(path)
+      req.basic_auth ARGV[0], ARGV[1]
+      req.body = buf.read
+      resp, data = http.request req
       puts "done: #{resp.code} #{resp.code_type}"
     end
   end
+end
+
+if ARGV.length < 2
+  fail("Usage: protocol-to-schema.rb <username> <password>")
 end
 
 jar_path = File.join(Dir.pwd, 'Tools', 'avro-tools-1.6.1.jar')
