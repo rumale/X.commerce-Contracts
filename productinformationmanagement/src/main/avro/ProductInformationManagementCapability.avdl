@@ -110,7 +110,7 @@ protocol ProductInformationManagementCapability
     record Product 
     {
         // product id 
-        union {null, string} productIds = null;
+        union {null, string} id = null;
         // ID of the product type 
         union {null, string} productTypeId = null;
         // Manufacturer suggested retail price
