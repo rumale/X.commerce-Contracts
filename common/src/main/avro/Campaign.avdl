@@ -26,7 +26,6 @@ protocol Common {
 		/** Provider specific types can be specified as strings */
 		union{CampaignStatus,string} status;
 
-		/** The map key is the fully qualified type name of the object. */
-		union{null,map<EmbeddedObject>} extensions = null;
+		union{null,EmbeddedObject} extension = null;
 	}	
 }

@@ -15,7 +15,7 @@ protocol Common {
 		union {null, com.x.ocl.Phone} PrimaryPhone = null;
         union {null, com.x.ocl.Phone} SecondaryPhone = null;
 		union {null, com.x.ocl.Email} emailAddress = null;   		
-		union {null, map<com.x.ocl.EmbeddedObject>} extensions = null;
+		union {null, com.x.ocl.EmbeddedObject} extension = null;
 	}
 
 }

@@ -141,7 +141,7 @@ protocol SalesChannel {
 		union{null,ShippingPolicy} shipping = null;
 		union{null,ReturnPolicy} returnPolicy = null;
 		
-		union{null,map<com.x.ocl.EmbeddedObject>} extension = null;
+		union{null,com.x.ocl.EmbeddedObject} extension = null;
 	}
 
 	record SupportedHandlingTime {
@@ -197,11 +197,7 @@ protocol SalesChannel {
 		union{null,boolean} giftWrap = null;
 		union{null,string} giftWrapText = null;
 
-		/*
-			The following is an embedded message that contains a market specific data "blob"
-			that is encoded using the avro schema of the specific channel this order is intended for.
-		*/
-		union{null,map<com.x.ocl.EmbeddedObject>} extensions = null;
+		union{null,com.x.ocl.EmbeddedObject} extension = null;
 	}
 
 	record Order {
@@ -218,11 +214,7 @@ protocol SalesChannel {
 		union{null,SupportedPaymentMethod} paymentMethod = null;
 		array<Shipment> shipments;
 
-		/*
-			The following is an embedded message that contains a market specific data "blob"
-			that is encoded	using the avro schema of the specific channel this order is intended for.
-		*/
-		union{null,map<com.x.ocl.EmbeddedObject>} extensions = null;
+		union{null,com.x.ocl.EmbeddedObject} extension = null;
 	}
 
 	record OrderShipmentUpdate {

@@ -36,11 +36,11 @@ protocol Marketplace {
 		string xAccountId;
 
 		/*
-		 * The following is an embedded message that contains a market specific data "blob"
+		 * The following is an embedded object that contains a market specific data "blob"
 		 * that is encoded using the avro schema of the specific marketplace profile data.
 		 * ie, payPalEmailAddress for eBay
 		*/
-		union{null, map<com.x.ocl.EmbeddedObject>} extensions = null;
+		union{null, com.x.ocl.EmbeddedObject} extension = null;
 	}
 
 	record CustomCategory {
@@ -80,7 +80,7 @@ protocol Marketplace {
 			The following is an embedded message that contains a market specific data "blob"
 			that is encoded	using the avro schema of the specific marketplace this listing is intended for.
 		*/
-		union{null, map<com.x.ocl.EmbeddedObject>} extensions = null;
+		union{null, com.x.ocl.EmbeddedObject} extension = null;
 	}
 
 	/*

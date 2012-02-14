@@ -5,7 +5,7 @@ protocol Common {
     
      record Email{
 		string emailAddress;   		
-		union {null, map<com.x.ocl.EmbeddedObject>} extension = null;
+		union {null, com.x.ocl.EmbeddedObject} extension = null;
 	 }
     
 
