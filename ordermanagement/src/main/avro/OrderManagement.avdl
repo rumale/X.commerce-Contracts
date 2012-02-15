@@ -5,44 +5,19 @@
 	the messages that are part of the order management domain.
 */
 protocol OrderManagement {
-	record CurrencyAmount {
-		double amount;
-		string code;
-	}
-
-	record Name {
-   		string firstName;
-   		string middleName;
-   		string lastName;
-   		string suffix;
-	}
-
-	record Address {
-   		string addressLine1;
-   		string addressLine2;
-   		string city;
-   		string state;
-   		string postalCode;
-   		string country;
-	}
-
-	record Contact {
-		Name fullName;
-		Address address;
-		string emailAddress;
-		string homePhone;
-		string workPhone;
-		string mobilePhone;
-	}
-
+	import idl "CurrencyAmount.avdl";
+	import idl "Name.avdl";
+	import idl "Address.avdl";
+	import idl "Contact.avdl";
+	
 	record Customer {
 		string id;
-		Name name;
+		com.x.ocl.Name name;
 		string emailAddress;
 	}
 
 	record Billing {
-		Contact billingContact;
+		com.x.ocl.Contact billingContact;
 		string companyName;
 	}
 
@@ -70,7 +45,7 @@ protocol OrderManagement {
 		string id;
 		string code;
 		string description;
-		CurrencyAmount amount;
+		com.x.ocl.CurrencyAmount amount;
 	}
 
 	enum ShippingServiceType {
@@ -87,7 +62,7 @@ protocol OrderManagement {
 		DateRange shippingWindow;
 		string message;
 		array<PromotionalDiscount> discounts;
-		CurrencyAmount fee;
+		com.x.ocl.CurrencyAmount fee;
 		string trackingNumber;
 	}
 
@@ -102,14 +77,14 @@ protocol OrderManagement {
 	record Tax {
 		TaxabilityType taxability;
 		string taxType;
-		CurrencyAmount taxableAmount;
-		CurrencyAmount calculatedTax;
+		com.x.ocl.CurrencyAmount taxableAmount;
+		com.x.ocl.CurrencyAmount calculatedTax;
 		double effectiveRate;
 	}
 
 	record OrderItemPrice {
-		CurrencyAmount amount;
-		CurrencyAmount originalAmount;
+		com.x.ocl.CurrencyAmount amount;
+		com.x.ocl.CurrencyAmount originalAmount;
 		array<PromotionalDiscount> discounts;
 	}
 
@@ -144,7 +119,7 @@ protocol OrderManagement {
 		OrderItemPrice unitPrice;
 		Tax tax;
 		GiftTag giftTag;
-		Contact destination;
+		com.x.ocl.Contact destination;
 		Shipping shipping;
 		string message;
 	}
