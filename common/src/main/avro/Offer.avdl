@@ -24,7 +24,7 @@ protocol Common {
 		union{null, string} offerChannelUrl = null; //To be provided by channel provider
 		union{null,string} channelStatus = null; //To be provided by channel provider		
 
-		/** Reference to an object of type com.x.ocl.SKU
+		/** Reference to an object of type com.x.ocl.SKU */
 		string sku;
 		
 		CurrencyAmount price;
