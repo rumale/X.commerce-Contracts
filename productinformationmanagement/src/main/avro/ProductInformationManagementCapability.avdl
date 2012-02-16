@@ -127,16 +127,14 @@ protocol ProductInformationManagementCapability
         union {null, array<SKU>} skuList = null;
     }
 
-	record SkuId {
-		string sku;
-	}
-	
-	record ProductId {
-		string productId;
+	enum ProductIdType {
+		PRODUCT_ID,
+		SKU
 	}
 	
 	record ProductIdentifier {
-		union {SKU, ProductId} id;
+		string value;
+		ProductIdType type;
 	}
 	
 
