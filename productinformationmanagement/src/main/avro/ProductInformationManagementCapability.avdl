@@ -197,7 +197,7 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record GetProduct
     {
-        array<ProductIdentifier> productIds;
+        array<ProductIdentifier> ids;
         union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
@@ -219,7 +219,7 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record GetProductFailed
     {
-        array<string> productIds;
+        array<ProductIdentifier> ids;
         union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
