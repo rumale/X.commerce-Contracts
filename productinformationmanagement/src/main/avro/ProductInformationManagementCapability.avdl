@@ -127,6 +127,19 @@ protocol ProductInformationManagementCapability
         union {null, array<SKU>} skuList = null;
     }
 
+	record SkuId {
+		string sku;
+	}
+	
+	record ProductId {
+		string productId;
+	}
+	
+	record ProductIdentifier {
+		union {SKU, ProductId} id;
+	}
+	
+
     // Message definitions
     //-------------------------------------------------------------------
     //
@@ -186,7 +199,7 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record GetProduct
     {
-        array<string> productIds;
+        array<ProductIdentifier> productIds;
         union {null, FilterType} filter = null; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
