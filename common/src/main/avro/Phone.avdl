@@ -1,20 +1,15 @@
 @namespace("com.x.ocl")
 
 protocol Common {
-	    import idl "EmbeddedObject.avdl";
-	
-	
-       enum PhoneType {
-                Home,
-                Mobile,
-                Work,
-                Fax
-        }
-        
-        record Phone {
-                string Number;
-                PhoneType Type;
-        }
-    
+	enum PhoneType {
+		HOME,
+		MOBILE,
+		WORK,
+		FAX
+	}
 
+	record Phone {
+		string number;
+		PhoneType type;
+	}
 }

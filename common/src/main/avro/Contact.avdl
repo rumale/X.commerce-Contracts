@@ -1,21 +1,18 @@
 @namespace("com.x.ocl")
 
 protocol Common {
-	    import idl "EmbeddedObject.avdl";
-	    import idl "Address.avdl";
-	    import idl "Phone.avdl";
-	    import idl "Name.avdl";
-	    import idl "Email.avdl";
-	
-	
-    
-	record Contact{
+	import idl "EmbeddedObject.avdl";
+	import idl "Address.avdl";
+	import idl "Phone.avdl";
+	import idl "Name.avdl";
+	import idl "Email.avdl";
+
+	record Contact {
 		com.x.ocl.Name fullName;	   
-        com.x.ocl.Address address;
-		union {null, com.x.ocl.Phone} PrimaryPhone = null;
-        union {null, com.x.ocl.Phone} SecondaryPhone = null;
+		com.x.ocl.Address address;
+		union {null, com.x.ocl.Phone} primaryPhone = null;
+		union {null, com.x.ocl.Phone} secondaryPhone = null;
 		union {null, com.x.ocl.Email} emailAddress = null;   		
 		union {null, com.x.ocl.EmbeddedObject} extension = null;
 	}
-
 }
