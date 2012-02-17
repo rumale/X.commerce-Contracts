@@ -5,15 +5,18 @@
 	the messages that are part of the order management domain.
 */
 protocol OrderManagement {
-	import idl "CurrencyAmount.avdl";
-	import idl "Name.avdl";
 	import idl "Address.avdl";
 	import idl "Contact.avdl";
+	import idl "CurrencyAmount.avdl";
+	import idl "Email.avdl";
+	import idl "Name.avdl";
+	import idl "Phone.avdl";
 	
 	record Customer {
-		string id;
+		string channelAddressId;
 		com.x.ocl.Name name;
-		string emailAddress;
+		com.x.ocl.Email email;
+		com.x.ocl.Phone phone;
 	}
 
 	record Billing {
@@ -133,7 +136,7 @@ protocol OrderManagement {
     	string sourceId;
     	OrderStatus status;
 		Customer customer;
-		Billing billTo;
+		com.x.ocl.Address billTo;
 		string purchaseOrder;
 		array<OrderItem> orderItems;
 		Tax tax;
