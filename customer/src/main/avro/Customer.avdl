@@ -1,80 +1,69 @@
 @namespace("com.x.customer.v0")
 
 /**
-        The customer protocol defines the schema for all messages that are part of the customer domain.
+		The customer protocol defines the schema for all messages that are part of the customer domain.
 */
 protocol Customer {
-        import idl "Contact.avdl";
-	    import idl "Name.avdl";
-	    
-        record CurrencyAmount {
-                double amount;
-                string code;
-        }
+	import idl "Contact.avdl";
+	import idl "Name.avdl";
+	import idl "Error.avdl";
+		
+	record CurrencyAmount {
+		double amount;
+		string code;
+	}
 
-        enum Gender {
-                Male,
-                Female,
-                Unknown
-        }
+	enum Gender {
+		Male,
+		Female,
+		Unknown
+	}
 
-        enum ContactStatus {
-                New,
-                Warm,
-                Active,
-                Cold
-        }
+	enum ContactStatus {
+		New,
+		Warm,
+		Active,
+		Cold
+	}
 
-        @extends("com.x.ocl.Contact")
-        record CRMContact{
-                union {null, string} Company;  
-                boolean DoNotCall;   
-                boolean EmailOptOut;
-                Gender Gender;
-                long DateCreated;
-                string SourceId;
-                ContactStatus Status;
-         }
+	@extends("com.x.ocl.Contact")
+	record CRMContact{
+		union {null, string} Company;  
+		boolean DoNotCall;   
+		boolean EmailOptOut;
+		Gender Gender;
+		long DateCreated;
+		string SourceId;
+		ContactStatus Status;
+	 }
 
-        /** 
-        	TODO:  need to create a distinct record for each topic...   
-		*/
-        @topic("/customer/create, /customer/created, /customer/update, /customer/updated, /customer/deactivate, /customer/deactivated, /customer/delete, /customer/deleted, /customer/activate, /customer/activated")
-        record Customer {
-                string CustomerId;
-                string ExternalCustomerId;
-                long LastActivityDate;
-                com.x.ocl.Contact PrimaryContact;
-        }
+	/** 
+		TODO:  need to create a distinct record for each topic...   
+	*/
+	@topic("/customer/create, /customer/created, /customer/update, /customer/updated, /customer/deactivate, /customer/deactivated, /customer/delete, /customer/deleted, /customer/activate, /customer/activated")
+	record Customer {
+		string CustomerId;
+		string ExternalCustomerId;
+		long LastActivityDate;
+		com.x.ocl.Contact PrimaryContact;
+	}
 
-        @topic("/customer/search")
-        record CustomerSearchFilter {
-                union {null, string} CustomerId;
-                union {null, com.x.ocl.Name} CustomerName;
-        }
+	@topic("/customer/search")
+	record CustomerSearchFilter {
+		union {null, string} CustomerId;
+		union {null, com.x.ocl.Name} CustomerName;
+	}
 
-        
-        @topic("/customer/searchSucceeded")
-        record Customers {
-                CustomerSearchFilter filter;
-                array <Customer> Customers;
-        }
+		
+	@topic("/customer/searchSucceeded")
+	record Customers {
+		CustomerSearchFilter filter;
+		array <Customer> Customers;
+	}
 
-
-        enum SeverityType {
-                ERROR,
-                WARNING
-        }
-
-        record Error {
-                SeverityType severity;
-                string code;
-                string message;
-        }
-
-        @topic("/customer/searchFailed")
-        record CustomerSearchFailure {
-                CustomerSearchFilter filter;
-                array<Error> errors;
-        }
+	@topic("/customer/searchFailed")
+	record CustomerSearchFailure {
+		CustomerSearchFilter filter;
+		array<com.x.ocl.Error> errors;
+	}
 }
