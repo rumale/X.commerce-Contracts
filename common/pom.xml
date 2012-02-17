@@ -107,7 +107,9 @@
 						<include>Email.avdl</include>
 						<include>Name.avdl</include>
 						<include>Phone.avdl</include>
-						<include>Contact.avdl</include> 
+						<include>Contact.avdl</include>
+						<include>PaymentMethod.avdl</include>
+						<include>Order.avdl</include>
 					</includes>
 				</configuration>
 			</plugin>

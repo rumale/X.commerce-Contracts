@@ -1,0 +1,156 @@
+@namespace("com.x.ocl")
+
+protocol Common {
+	import idl "Name.avdl";
+	import idl "Email.avdl";
+	import idl "Phone.avdl";
+	import idl "Address.avdl";
+	import idl "PaymentMethod.avdl";
+	import idl "CurrencyAmount.avdl";
+	import idl "DateRange.avdl";
+	
+	enum OrderStatus {
+		NEW,
+		ON_HOLD,
+		BACKORDERED,
+		READYTOSHIP,
+		SHIPPED,
+		PROCESSING_RETURN,
+		EXCHANGED,
+		CANCELLED,
+		COMPLETED
+	}
+
+	record GiftTag {
+		union{null,string} from = null;
+		union{null,string} to = null;
+		string message;
+	}
+
+	record OrderCustomerInfo {
+		string channelAssignedCustomerId;
+		union{null,com.x.ocl.Email} email = null;
+		union{null,com.x.ocl.Name} name = null;
+		union{null,com.x.ocl.Phone} phone = null;
+	}
+
+	record OrderPaymentInfo {
+		PaymentMethod method;
+
+		/** Date Time Format: ISO 8601 */
+		string datePaid;
+
+		union{null,string} transactionId = null;
+		union{null,string} transactionStatus = null;
+	}
+	
+	record PromotionalDiscount {
+		string code;
+		string description;
+		com.x.ocl.CurrencyAmount amount;
+	}
+
+	record OrderItemPriceInfo {
+		com.x.ocl.CurrencyAmount cost; //The price after all adjustments are applied
+		com.x.ocl.CurrencyAmount originalPrice;
+
+		union{null,com.x.ocl.CurrencyAmount} insuranceCost = null;
+		union{null,com.x.ocl.CurrencyAmount} taxAmount = null;
+		
+		//Total discount amount summarized from all PromotionalDiscount.
+		union{null,com.x.ocl.CurrencyAmount} discountAmount = null;
+		union{null,array<PromotionalDiscount>} discounts = null;
+	}
+	
+	record ShipTo {
+		com.x.ocl.Name name;
+		com.x.ocl.Address address;
+		union{null,GiftTag} giftTag = null;
+	}
+
+	//TODO: this should probably go into its own shipping module.
+	enum ShippingServiceType {
+		MerchantShipped,
+		DropShipped,
+		ShippingService
+	}
+	
+	record TrackingDetail {
+		string trackingNumber;
+		union{null,string} carrier = null;
+		union{null,string} service = null;
+		union{null,ShippingServiceType} serviceType = null;
+	}
+
+	record Shipment {
+		string shipmentId; //only need to be unique to the order like 1, 2, 3, etc...
+		com.x.ocl.Address shipToAddress;
+		
+		com.x.ocl.CurrencyAmount cost;
+		//TODO: should we tie this with the item's PromotionalDiscount?
+		union{null,com.x.ocl.CurrencyAmount} discountAmount = null;
+		union{null,com.x.ocl.CurrencyAmount} additionalCost = null;
+		union{null,com.x.ocl.CurrencyAmount} packagingHandlingCost = null;
+		union{null,com.x.ocl.CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+
+		union{null,com.x.ocl.DateRange} deliveryWindow = null;
+		union{null,com.x.ocl.DateRange} shippingWindow = null; //TODO: ask Tod what this means?
+
+		union{null,TrackingDetail} trackingDetail = null; //TODO: susan to look into whether this needs to be an array
+		union{null,string} recipientName = null;
+		
+		//TODO: is this really needed?
+		union{null,int} weight = null;
+		union{null,string} shippingDescription = null;
+	}
+
+	record OrderItem {
+		union{null,string} offerId = null;
+		string externalItemId; //TODO: ask Tod what this is??
+
+		string productSku;
+		int quantity;
+
+		string status;
+		
+		union{null,string} offerUrl = null;
+
+		OrderItemPriceInfo price;
+		
+		union{null,ShipTo} destination = null;		
+		union{null,string} shipmentId = null; //defined once the item is shipped.
+
+		union{null,com.x.ocl.EmbeddedObject} extension = null;
+	}
+
+	record Order {
+   		string orderNumber;
+   		string externalOrderNumber; //TODO: ask Tod what this is??
+		union{null,string} purchaseOrder = null; //TODO: ask Tod what this is??
+  		
+		/** Date Time Format: ISO 8601 */
+		string dateOrdered;
+
+		string source; //TODO: ask Tod what this is?? Is this same as channel?
+		string sourceId;
+		OrderStatus status;
+		
+		OrderCustomerInfo customer;
+		Address billingAddress;
+
+		/** Summary of various amounts */ 
+		com.x.ocl.CurrencyAmount totalAmount;
+		union{null,com.x.ocl.CurrencyAmount} totalInsuranceCost = null;
+		union{null,com.x.ocl.CurrencyAmount} totalTaxAmount = null;
+		union{null,com.x.ocl.CurrencyAmount} totalDiscountAmount = null;
+		union{null,OrderPaymentInfo} paymentMethod = null;
+		
+		array<OrderItem> orderItems;
+		
+		/** if not provided, use ShipTo info on OrderItem */
+		union{null,ShipTo} destination = null;
+		union{null,array<Shipment>} shipments = null;
+		
+		union{null,com.x.ocl.EmbeddedObject} extension = null;
+	}
+}

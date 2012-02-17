@@ -1,40 +1,33 @@
-@namespace("com.x.ordermanagement.v0")
+@namespace("com.x.ordermanagement.v1")
 
 /**
 	The order management protocol defines the schema for all
 	the messages that are part of the order management domain.
 */
 protocol OrderManagement {
-	import idl "Address.avdl";
-	import idl "Contact.avdl";
 	import idl "CurrencyAmount.avdl";
-	import idl "Email.avdl";
-	import idl "Name.avdl";
-	import idl "Phone.avdl";
+	import idl "DateRange.avdl";
+	import idl "Order.avdl";
+	import idl "Query.avdl";
+	import idl "Error.avdl";
 	
-	record Customer {
-		string channelAddressId;
-		com.x.ocl.Name name;
-		com.x.ocl.Email email;
-		com.x.ocl.Phone phone;
+	record OrderShipmentUpdate {
+		string shipmentId;
+		array<com.x.ocl.TrackingDetail> trackingDetails;
 	}
 
-	record Billing {
-		com.x.ocl.Contact billingContact;
-		string companyName;
+	record OrderUpdate {
+		string channelOrderId;
+		union{null,boolean} processed = null;
+		union{null,OrderShipmentUpdate} orderShipmentUpdate = null;
 	}
 
-	record DateRange {
-		long fromDate;
-		long toDate;
+	record OrderUpdateError {
+		OrderUpdate orderUpdate;
+		array<com.x.ocl.Error> errors;
 	}
 
-	record GiftTag {
-   		string From;
-   		string To;
-   		string message;
-	}
-
+	//TODO: ask Tod how he think this would actually works??
 	@topic("/order/payment/captured")
 	record PaymentTransaction {
 		string paymentType;
@@ -44,31 +37,6 @@ protocol OrderManagement {
 		string transactionStatus;
 	}
 	
-	record PromotionalDiscount {
-		string id;
-		string code;
-		string description;
-		com.x.ocl.CurrencyAmount amount;
-	}
-
-	enum ShippingServiceType {
-		MerchantShipped,
-		DropShipped,
-		ShippingService
-	}
-
-	record Shipping {
-		ShippingServiceType serviceType;
-		string serviceProviderId;
-		string shippingMethod;
-		DateRange deliveryWindow;
-		DateRange shippingWindow;
-		string message;
-		array<PromotionalDiscount> discounts;
-		com.x.ocl.CurrencyAmount fee;
-		string trackingNumber;
-	}
-
 	enum TaxabilityType {
 		Taxable,
 		NonTaxable,
@@ -76,6 +44,7 @@ protocol OrderManagement {
 		Deferred
 	}
 
+	//TODO: ask Tod how he think this would actually works??
 	@topic("/order/tax/calculated")
 	record Tax {
 		TaxabilityType taxability;
@@ -85,88 +54,61 @@ protocol OrderManagement {
 		double effectiveRate;
 	}
 
-	record OrderItemPrice {
-		com.x.ocl.CurrencyAmount amount;
-		com.x.ocl.CurrencyAmount originalAmount;
-		array<PromotionalDiscount> discounts;
-	}
-
-	enum OrderStatus {
-		New,
-		OnHold,
-		Backordered,
-		ReadyToShip,
-		Shipped,
-		ProcessingReturn,
-		Exchanged,
-		Canceled
-	}
-
-	record ProductAttribute {
-		string label;
-		string value;
-	}
-
-	record OrderShippingStatus {
-		string OrderId;
-		string Status;
-	}
-
-	record OrderItem {
-		string ItemId;
-		string ExternalItemId;
-		string productSku;
-		string description;
-		array<ProductAttribute> productAttributes;	
-		int quantity;
-		OrderItemPrice unitPrice;
-		Tax tax;
-		GiftTag giftTag;
-		com.x.ocl.Contact destination;
-		Shipping shipping;
-		string message;
-	}
-
+	/*
 	@topic("/order/create, /order/created, /order/update, /order/updated, /order/shipped")
-	record Order {
-   		string orderNumber;
-   		string externalOrderNumber;
-    	long dateOrdered;
-    	string source;
-    	string sourceId;
-    	OrderStatus status;
-		Customer customer;
-		com.x.ocl.Address billTo;
-		string purchaseOrder;
-		array<OrderItem> orderItems;
-		Tax tax;
-		PaymentTransaction transaction;
-	}
+	*/
 
-	@topic("/order/searchSucceeded")
-	record Orders {
-		array<Order> orders;
-	}
-
+	//TODO: ask Tod how he think this would actually works??
 	@topic("/order/cancel")
 	record OrderCancel {
 		array<string> orderIds;
 	}
 
-	@topic("/order/search")
-	record OrderFilter {
-		string filter;
-	}
-
+	//TODO: ask Tod what the heck this is??
 	@topic ("/order/inventoryUpdated")
 	record OrderInventoryChanged {
 		string productId;
 		int change;
 	}
+	@topic("/order/search")
+	@version("1.0.0")
+	record SearchOrder {
+		union{null,com.x.ocl.Query} query = null;
+	}
 
-	record OrderSearchFilter {
-		string customerId;
-		string orderId;
+	@topic("/order/searchSucceeded")
+	@version("1.0.0")
+	record SearchOrdersSucceeded {
+		array<com.x.ocl.Order> orders;
+		union{null,com.x.ocl.Query} query = null;
+	}
+
+	@topic("/salesChannel/order/searchFailed")
+	@version("1.0.0")
+	record SearchOrderFailed {
+		union{null,com.x.ocl.Query} query = null;
+	}
+
+	@topic("/salesChannel/order/updateShippingInfo")
+	@version("1.0.0")
+	record UpdateOrder {
+		array<OrderUpdate> updates;
+		union{null,string} accountId = null;
+	}
+
+	@topic("/salesChannel/order/updated")
+	@version("1.0.0")
+	record OrderUpdated {
+		//TODO: change this to be more specific to updating shipping info
+		array<OrderUpdate> updates;
+		union{null,string} accountId = null;
+	}
+
+	@topic("/salesChannel/order/updateFailed")
+	@version("1.0.0")
+	record UpdateOrderFailed {
+		array<OrderUpdateError> errors;
+		union{null,string} accountId = null;
 	}
 }
 

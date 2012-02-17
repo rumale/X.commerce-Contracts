@@ -36,13 +36,13 @@
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>ontologydeploy</id>
-			<name>Email Marketing release repository</name>
+			<name>Ontology release repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>ontologydeploy</id>
-			<name>Email Marketing snapshot repository</name>
+			<name>Ontology snapshot repository</name>
 			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -85,13 +85,24 @@
 						</goals>
 						<configuration>
 							<includeGroupIds>com.x.ocl</includeGroupIds>
-							<!-- <includeArtifactIds>common-contract</includeArtifactIds> -->
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**\/*.avdl</includes>
 							<outputDirectory>src/main/avro</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<includes>
+						<!-- We only want to include the classes generated from this project's avdl -->
+						<include>**/ordermanagement/**/*</include>
+						<include>OrderMangement.avdl</include>
+					</includes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.avro</groupId>

@@ -17,6 +17,7 @@ protocol SalesChannel {
 	import idl "Query.avdl";
 	import idl "Address.avdl";
 	import idl "Offer.avdl";
+	import idl "PaymentMethod.avdl";
 
 	record Site {	
 		//Depending on the channel, this can be 2-character country code from ISO 3166
@@ -81,30 +82,8 @@ protocol SalesChannel {
 		array<ShippingServiceOptionGroup> optionGroups;  // Domestic and/or international shipping
 	}
 
-	enum SupportedPaymentMethod {
-		AMEX,
-		CASH_ON_DELIVERY,
-		CHECK,
-		CREDIT_CARD,
-		DINERS,
-		DISCOVER,
-		ESCROW,
-		INTEGRATED_MERCHANT_CREDIT_CARD,
-		MASTERCARD,
-		MONEY_ORDER,
-		MONEY_TRANSFER,
-		MONEY_TRANSFER_IN_CHECKOUT,
-		MONEYBOOKERS,
-		PAYMATE,
-		PAYMENT_ON_PICKUP,
-		PAYMENT_SEE_DESCRIPTION,
-		PAYPAL,
-		PROPAY,
-		VISA
-	}
-
 	record PaymentPolicy {
-		union{null,array<SupportedPaymentMethod>} acceptedPaymentTypes = null;
+		union{null,array<com.x.ocl.PaymentMethod>} acceptedPaymentTypes = null;
 		union{null,boolean} immediatePaymentRequired = null;
 		union{null,string} paymentInstructions = null;
 	}
@@ -156,81 +135,6 @@ protocol SalesChannel {
 		union{null, boolean} catalogEnabled = null;
 		union{null, int} categoryLevel = null;
 		union{null, boolean} leafCategory = null;
-	}
-
-	record TrackingDetail {
-		string trackingNumber;
-		union{null,string} carrier = null;
-		union{null,string} service = null;
-	}
-
-	record Shipment {
-		string shipmentId; //id unique to the order
-		com.x.ocl.Address address;
-		ShippingServiceOption shippingServiceOption;
-		union{null,array<TrackingDetail>} trackingDetails = null;
-		union{null,string} recipientName = null;
-		union{null,int} weight = null;
-		union{null,string} shippingDescription = null;
-	}
-
-	record CustomerInfo {
-		union{null,string} userChannelId = null;
-		union{null,string} email = null;
-		union{null,string} name = null;
-		union{null,string} phone = null;
-	}
-
-	record OrderItem {
-		string marketOfferId;
-		union{null,string} offerTitle = null;
-		string offerUrl;
-		string status;
-		string sku;
-		int quantity;
-		union{null,com.x.ocl.CurrencyAmount} cost = null;
-		union{null,com.x.ocl.CurrencyAmount} insuranceCost = null;
-		union{null,com.x.ocl.CurrencyAmount} taxAmount = null;
-		union{null,com.x.ocl.CurrencyAmount} discountAmount = null;
-		string shipmentId;  // Ties to the shipment.
-
-		union{null,boolean} giftWrap = null;
-		union{null,string} giftWrapText = null;
-
-		union{null,com.x.ocl.EmbeddedObject} extension = null;
-	}
-
-	record Order {
-		long orderTime;
-		string channel;
-		string marketOrderId;
-		CustomerInfo customer;
-		array<OrderItem> items;
-		union{null,com.x.ocl.CurrencyAmount} totalInsuranceCost = null;
-		union{null,com.x.ocl.CurrencyAmount} totalTaxAmount = null;
-		union{null,com.x.ocl.CurrencyAmount} totalDiscountAmount = null;
-		com.x.ocl.CurrencyAmount totalAmount;
-		string status;
-		union{null,SupportedPaymentMethod} paymentMethod = null;
-		array<Shipment> shipments;
-
-		union{null,com.x.ocl.EmbeddedObject} extension = null;
-	}
-
-	record OrderShipmentUpdate {
-		string shipmentId;
-		array<TrackingDetail> trackingDetails;
-	}
-
-	record OrderUpdate {
-		string marketOrderId;
-		union{null,boolean} processed = null;
-		union{null,OrderShipmentUpdate} orderShipmentUpdate = null;
-	}
-
-	record OrderUpdateError {
-		OrderUpdate orderUpdate;
-		array<com.x.ocl.Error> errors;
 	}
 
 	record OfferError {
@@ -381,7 +285,7 @@ protocol SalesChannel {
 	@topic("/salesChannel/paymentMethod/searchSucceeded")
 	@version("1.0.0")
 	record SearchPaymentMethodSucceeded {
-		array<SupportedPaymentMethod> methods;
+		array<com.x.ocl.PaymentMethod> methods;
 		string channelName;
 		string siteCode;
 		union{null,string} environmentName = null;
@@ -580,44 +484,4 @@ protocol SalesChannel {
 		array<CancelOfferError> errors;
 		string policyGroupId;
   	}
-
-	@topic("/salesChannel/order/search")
-	@version("1.0.0")
-	record SearchOrder {
-		union{null,com.x.ocl.Query} query = null;
-	}
-
-	@topic("/salesChannel/order/searchSucceeded")
-	@version("1.0.0")
-	record SearchOrdersSucceeded {
-		array<Order> orders;
-		union{null,com.x.ocl.Query} query = null;
-	}
-
-	@topic("/salesChannel/order/searchFailed")
-	@version("1.0.0")
-	record SearchOrderFailed {
-		union{null,com.x.ocl.Query} query = null;
-	}
-
-	@topic("/salesChannel/order/update")
-	@version("1.0.0")
-	record UpdateOrder {
-		array<OrderUpdate> updates;
-		string policyGroupId;
-	}
-
-	@topic("/salesChannel/order/updated")
-	@version("1.0.0")
-	record OrderUpdated {
-		array<OrderUpdate> updates;
-		string policyGroupId;
-	}
-
-	@topic("/salesChannel/order/updateFailed")
-	@version("1.0.0")
-	record UpdateOrderFailed {
-		array<OrderUpdateError> errors;
-		string policyGroupId;
-	}
 }
