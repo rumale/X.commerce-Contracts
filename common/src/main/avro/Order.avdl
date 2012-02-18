@@ -8,6 +8,7 @@ protocol Common {
 	import idl "PaymentMethod.avdl";
 	import idl "CurrencyAmount.avdl";
 	import idl "DateRange.avdl";
+	import idl "EmbeddedObject.avdl";
 	
 	enum OrderStatus {
 		NEW,
