@@ -1,9 +1,9 @@
 @namespace("com.x.ordermanagement.v1")
 
 /**
-	The order management protocol defines the schema for all
-	the messages that are part of the order management domain.
-*/
+ * The order management protocol defines the schema for all
+ * the messages that are part of the order management domain.
+ */
 protocol OrderManagement {
 	import idl "CurrencyAmount.avdl";
 	import idl "DateRange.avdl";
@@ -11,41 +11,13 @@ protocol OrderManagement {
 	import idl "Query.avdl";
 	import idl "Error.avdl";
 	
-	record OrderShipmentUpdate {
-		string shipmentId;
-		array<com.x.ocl.TrackingDetail> trackingDetails;
-	}
-
-	record OrderUpdate {
-		string channelOrderId;
-		union{null,boolean} processed = null;
-		union{null,OrderShipmentUpdate} orderShipmentUpdate = null;
-	}
-
-	record OrderUpdateError {
-		OrderUpdate orderUpdate;
-		array<com.x.ocl.Error> errors;
-	}
-
-	//TODO: ask Tod how he think this would actually works??
-	@topic("/order/payment/captured")
-	record PaymentTransaction {
-		string paymentType;
-		string paymentTypeId;
-		string paymentReferenceNumber;
-		long transactionDate;
-		string transactionStatus;
-	}
-	
 	enum TaxabilityType {
-		Taxable,
-		NonTaxable,
-		Exempt,
-		Deferred
+		TAXABLE,
+		NONTAXABLE,
+		EXEMPT,
+		DEFERRED
 	}
 
-	//TODO: ask Tod how he think this would actually works??
-	@topic("/order/tax/calculated")
 	record Tax {
 		TaxabilityType taxability;
 		string taxType;
@@ -54,22 +26,51 @@ protocol OrderManagement {
 		double effectiveRate;
 	}
 
-	/*
-	@topic("/order/create, /order/created, /order/update, /order/updated, /order/shipped")
-	*/
-
-	//TODO: ask Tod how he think this would actually works??
+	/**
+	 * Not required to be implemented if the capability only allow order creation
+	 * through a UI channel.
+	 */
+	@topic("/order/create")
+	@version("1.0.0")
+	record CreateOrder {
+		com.x.ocl.Order order;
+		union{null,string} accountId = null;
+	}
+	
+	@topic("/order/created")
+	@version("1.0.0")
+	record OrderCreated {
+		com.x.ocl.Order order;
+		union{null,string} accountId = null;
+	}
+	
+	@topic("/order/createFailed")
+	@version("1.0.0")
+	record CreateOrderFailed {
+		com.x.ocl.Order order;
+		union{null,string} accountId = null;
+		array<com.x.ocl.Error> errors;
+	}
+	
 	@topic("/order/cancel")
-	record OrderCancel {
+	@version("1.0.0")
+	record CancelOrder {
 		array<string> orderIds;
 	}
-
-	//TODO: ask Tod what the heck this is??
-	@topic ("/order/inventoryUpdated")
-	record OrderInventoryChanged {
-		string productId;
-		int change;
+	
+	@topic("/order/cancelled")
+	@version("1.0.0")
+	record OrderCancelled {
+		com.x.ocl.Order order;
 	}
+	
+	@topic("/order/cancelFailed")
+	@version("1.0.0")
+	record CancelOrderFailed {
+		string orderIds;
+		array<com.x.ocl.Error> errors;
+	}
+
 	@topic("/order/search")
 	@version("1.0.0")
 	record SearchOrder {
@@ -83,32 +84,51 @@ protocol OrderManagement {
 		union{null,com.x.ocl.Query} query = null;
 	}
 
-	@topic("/salesChannel/order/searchFailed")
+	@topic("/order/searchFailed")
 	@version("1.0.0")
 	record SearchOrderFailed {
 		union{null,com.x.ocl.Query} query = null;
 	}
 
-	@topic("/salesChannel/order/updateShippingInfo")
+	@topic("/order/shipment/shipped")
 	@version("1.0.0")
-	record UpdateOrder {
-		array<OrderUpdate> updates;
+	record OrderShipmentShipped {
 		union{null,string} accountId = null;
+		string orderId;
+		string shipmentId;
+		array<com.x.ocl.TrackingDetail> trackingDetails;
 	}
 
-	@topic("/salesChannel/order/updated")
+	/** An Order Management capability will be listening for this event. */
+	@topic("/order/payment/captured")
 	@version("1.0.0")
-	record OrderUpdated {
-		//TODO: change this to be more specific to updating shipping info
-		array<OrderUpdate> updates;
-		union{null,string} accountId = null;
+	record OrderPaymentCaptured {
+		string orderId;
+		com.x.ocl.OrderPaymentInfo paymentInfo;	
 	}
 
-	@topic("/salesChannel/order/updateFailed")
+	/** 
+	 * OPTIONAL: For external tax calculation, an OrderMgmt cap. will request a
+	 * 3rd party capability to calculate the tax on an order. 
+	 */
+	@topic("order/tax/calculate")
 	@version("1.0.0")
-	record UpdateOrderFailed {
-		array<OrderUpdateError> errors;
-		union{null,string} accountId = null;
+	record CalculateOrderTax {
+		com.x.ocl.Order order;
+	}
+	
+	@topic("order/tax/calculated")
+	@version("1.0.0")
+	record OrderTaxCalculated {
+		string orderId;
+		Tax tax;
+	}
+	
+	@topic("order/tax/calculateFailed")
+	@version("1.0.0")
+	record CalculateOrderTaxFailed {
+		com.x.ocl.Order order;
+		array<com.x.ocl.Error> errors;
 	}
 }
 

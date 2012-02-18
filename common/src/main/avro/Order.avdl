@@ -51,13 +51,14 @@ protocol Common {
 	}
 
 	record OrderItemPriceInfo {
-		com.x.ocl.CurrencyAmount cost; //The price after all adjustments are applied
+		/** The price after all adjustments are applied */
+		com.x.ocl.CurrencyAmount cost; 
 		com.x.ocl.CurrencyAmount originalPrice;
 
 		union{null,com.x.ocl.CurrencyAmount} insuranceCost = null;
 		union{null,com.x.ocl.CurrencyAmount} taxAmount = null;
 		
-		//Total discount amount summarized from all PromotionalDiscount.
+		/** Total discount amount summarized from all PromotionalDiscount. */
 		union{null,com.x.ocl.CurrencyAmount} discountAmount = null;
 		union{null,array<PromotionalDiscount>} discounts = null;
 	}
@@ -68,7 +69,6 @@ protocol Common {
 		union{null,GiftTag} giftTag = null;
 	}
 
-	//TODO: this should probably go into its own shipping module.
 	enum ShippingServiceType {
 		MerchantShipped,
 		DropShipped,
@@ -83,55 +83,60 @@ protocol Common {
 	}
 
 	record Shipment {
-		string shipmentId; //only need to be unique to the order like 1, 2, 3, etc...
+		/** only need to be unique to the order like 1, 2, 3, etc...*/
+		string shipmentId;
 		com.x.ocl.Address shipToAddress;
 		
 		com.x.ocl.CurrencyAmount cost;
-		//TODO: should we tie this with the item's PromotionalDiscount?
+		/** Total discount amount summarized from all PromotionalDiscount. */
 		union{null,com.x.ocl.CurrencyAmount} discountAmount = null;
+		union{null,array<PromotionalDiscount>} discounts = null;
 		union{null,com.x.ocl.CurrencyAmount} additionalCost = null;
 		union{null,com.x.ocl.CurrencyAmount} packagingHandlingCost = null;
 		union{null,com.x.ocl.CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
 
 		union{null,com.x.ocl.DateRange} deliveryWindow = null;
-		union{null,com.x.ocl.DateRange} shippingWindow = null; //TODO: ask Tod what this means?
+		union{null,com.x.ocl.DateRange} shippingWindow = null;
 
-		union{null,TrackingDetail} trackingDetail = null; //TODO: susan to look into whether this needs to be an array
+		union{null,TrackingDetail} trackingDetail = null;
 		union{null,string} recipientName = null;
-		
-		//TODO: is this really needed?
-		union{null,int} weight = null;
-		union{null,string} shippingDescription = null;
 	}
 
 	record OrderItem {
-		union{null,string} offerId = null;
-		string externalItemId; //TODO: ask Tod what this is??
+		/** Unique identifier that is assigned by the originator of this order once created. */
+		union{null,string} itemId = null;
 
 		string productSku;
 		int quantity;
 
 		string status;
-		
+
+		/** The id of the offered item on the sales channel where this order originated */		
+		union{null,string} offerId = null;
 		union{null,string} offerUrl = null;
 
 		OrderItemPriceInfo price;
 		
-		union{null,ShipTo} destination = null;		
-		union{null,string} shipmentId = null; //defined once the item is shipped.
+		/** If specified, override the destination defined on the Order header */
+		union{null,ShipTo} destination = null;
+		
+		/** Defined once the item is shipped. */		
+		union{null,string} shipmentId = null; 
 
 		union{null,com.x.ocl.EmbeddedObject} extension = null;
 	}
 
 	record Order {
-   		string orderNumber;
-   		string externalOrderNumber; //TODO: ask Tod what this is??
-		union{null,string} purchaseOrder = null; //TODO: ask Tod what this is??
+		/** Unique identifier that is assigned by the originator of this order once created.*/
+		union{null,string} orderNumber = null;
+   		
+		union{null,string} purchaseOrder = null;
   		
 		/** Date Time Format: ISO 8601 */
 		string dateOrdered;
 
-		string source; //TODO: ask Tod what this is?? Is this same as channel?
+		/** The channel where this order originated. */
+		string source;
 		string sourceId;
 		OrderStatus status;
 		
