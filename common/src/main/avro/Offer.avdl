@@ -13,7 +13,7 @@ protocol Common {
 
 	record Offer 
 	{
-		/** Unique ID */
+		/** Unique ID assigned by the originator of the offer. */
 		union{null, string} id = null;
 		/** State of the offer */
 		OfferState state;

@@ -1,14 +1,14 @@
 @namespace("com.x.saleschannel.v1")
 
-/*
-	The SalesChannel protocol defines the schema that is common across
-	all sales channel.  All sales channel must implement the
-	appropriate behavior for the interfaces defined here.
-
-	Channel specific behaviors should be defined in its own protocol.
-	The messages based on channel specific schema can be embedded in 
-	specific "extension" points defined in this schema.
-*/
+/**
+ * The SalesChannel protocol defines the schema that is common across
+ * all sales channel.  All sales channel must implement the
+ * appropriate behavior for the interfaces defined here.
+ *
+ * Channel specific behaviors should be defined in its own protocol.
+ * The messages based on channel specific schema can be embedded in 
+ * specific "extension" points defined in this schema.
+ */
 protocol SalesChannel {
 
 	import idl "CurrencyAmount.avdl";
@@ -20,7 +20,7 @@ protocol SalesChannel {
 	import idl "PaymentMethod.avdl";
 
 	record Site {	
-		//Depending on the channel, this can be 2-character country code from ISO 3166
+		/** Depending on the channel, this can be 2-character country code from ISO 3166 */
 		string siteCode;
 		string name;
 	}
@@ -36,11 +36,10 @@ protocol SalesChannel {
 		FREIGHT
 	}
 
-	/*
-		This is the shipping related metadata that the sales channel uses
-		to define the types of shipping options available.
-		TODO: clean this up.
-	*/
+	/**
+	 * This is the shipping related metadata that the sales channel uses
+	 * to define the types of shipping options available.
+	 */
 	record SupportedShippingService {
 		string description;
 		union{null,string} carrier = null; //USPS
@@ -66,7 +65,7 @@ protocol SalesChannel {
 		union{null,array<string>} excludeShipToLocations = null;
 	}
 
-	/* Grouping of ShippingServiceOption by locale (domestic/international) and rate type. */
+	/** Grouping of ShippingServiceOption by locale (domestic/international) and rate type. */
 	record ShippingServiceOptionGroup {
 		ShippingRateType rateType;  // Flat, calculated, etc
 		ShippingLocaleType localeType;  // Domestic or international
@@ -74,10 +73,10 @@ protocol SalesChannel {
 		array<ShippingServiceOption> shippingServiceOptions;
 	}
 
-	/*
-		Use this during profile creation or offer to indicate the type of shipping
-		available for your offer.
-	*/
+	/**
+	 * Use this during profile creation or offer to indicate the type of shipping
+	 * available for your offer.
+	 */
 	record ShippingPolicy {
 		array<ShippingServiceOptionGroup> optionGroups;  // Domestic and/or international shipping
 	}
@@ -94,7 +93,7 @@ protocol SalesChannel {
 		STORE_CREDIT
 	}
 
-	/* Metadata about the supported return policy from the sales channel */
+	/** Metadata about the supported return policy from the sales channel */
 	record SupportedReturnPolicy {
 		boolean returnsAccepted;
 		array<RefundMethod> method;
@@ -158,8 +157,10 @@ protocol SalesChannel {
 	@topic("/salesChannel/site/search")
 	@version("1.0.0")
 	record SearchSite {
-		/* Publisher should broadcast this message and expect
-		   multiple responses from different channels. */
+		/**
+		 * Publisher should broadcast this message and expect
+		 * multiple responses from different channels. 
+		 */
 	}
 
 	@topic("/salesChannel/site/searchSucceeded")
@@ -236,7 +237,7 @@ protocol SalesChannel {
 	@topic("/salesChannel/currency/searchSucceeded")
 	@version("1.0.0")
 	record SearchCurrencySucceeded {
-		/* ISO 4217 3-letter currency codes */
+		/** ISO 4217 3-letter currency codes */
 		array<string> currencies;
 		string siteCode;
 		string channelName;
@@ -405,7 +406,7 @@ protocol SalesChannel {
 	@topic("/salesChannel/offer/create")
 	@version("1.0.0")
 	record CreateOffer {
-		array<com.x.ocl.Offer> offers; //does not have marketOfferId yet
+		array<com.x.ocl.Offer> offers; //does not have channelOfferId yet
 		string policyGroupId;
 	}
 
@@ -446,7 +447,7 @@ protocol SalesChannel {
 	@topic("/salesChannel/offer/update")
 	@version("1.0.0")
 	record UpdateOffer {
-		array<com.x.ocl.Offer> updates; //must have marketOfferId
+		array<com.x.ocl.Offer> updates; //must have channelOfferId
 		string policyGroupId;
 	}
 

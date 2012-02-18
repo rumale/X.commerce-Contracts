@@ -223,21 +223,11 @@ protocol Marketplace {
 		union{null, string} cancelURL = null;
 		union{null, string} environmentName = null;
 		union{null, string} userMarketplaceId = null;
-
-		/*
-		   This guid is use to correlate between this message and AuthorizationPending.
-		   This can be any string that is unique to the client. It will not be used by
-		   the adapter for any purpose except returned as part of the AuthorizationPending.
-		 */
-		string guid;
 	}
 
 	@topic("/marketplace/authorization/pending")
 	@version("1.0.0")
 	record AuthorizationPending {
-		//This guid is use to correlate between this message and InitAuthorization
-		string guid;
-
 		string redirectURL;
 		string authId; //A unique identifier for the authorization
 
