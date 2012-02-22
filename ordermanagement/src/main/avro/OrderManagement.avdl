@@ -55,7 +55,7 @@ protocol OrderManagement {
 	@topic("/order/cancel")
 	@version("1.0.0")
 	record CancelOrder {
-		array<string> orderIds;
+		array<string> orderNumbers;
 	}
 	
 	@topic("/order/cancelled")
@@ -67,7 +67,7 @@ protocol OrderManagement {
 	@topic("/order/cancelFailed")
 	@version("1.0.0")
 	record CancelOrderFailed {
-		string orderIds;
+		array<string> orderNumbers;
 		array<com.x.ocl.Error> errors;
 	}
 
@@ -94,7 +94,7 @@ protocol OrderManagement {
 	@version("1.0.0")
 	record OrderShipmentShipped {
 		union{null,string} accountId = null;
-		string orderId;
+		string orderNumber;
 		string shipmentId;
 		array<com.x.ocl.TrackingDetail> trackingDetails;
 	}
@@ -103,7 +103,7 @@ protocol OrderManagement {
 	@topic("/order/payment/captured")
 	@version("1.0.0")
 	record OrderPaymentCaptured {
-		string orderId;
+		string orderNumber;
 		com.x.ocl.OrderPaymentInfo paymentInfo;	
 	}
 
@@ -120,7 +120,7 @@ protocol OrderManagement {
 	@topic("order/tax/calculated")
 	@version("1.0.0")
 	record OrderTaxCalculated {
-		string orderId;
+		string orderNumber;
 		Tax tax;
 	}
 	
