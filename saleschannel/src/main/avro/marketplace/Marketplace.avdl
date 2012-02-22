@@ -2,6 +2,7 @@
 
 protocol Marketplace {
 	import idl "../SalesChannel.avdl";
+	import idl "../Order.avdl";
 	
 	/*
 		An environment represents a sub-section of the marketplace/site.
@@ -274,5 +275,23 @@ protocol Marketplace {
 		array<com.x.ocl.Error> errors;
 	}
 
+	@topic("/marketplace/order/search")
+	@version("1.0.0")
+	record SearchOrder {
+		union{null,com.x.ocl.Query} query = null;
+	}
+
+	@topic("/marketplace/order/searchSucceeded")
+	@version("1.0.0")
+	record SearchOrdersSucceeded {
+		array<com.x.ocl.Order> orders;
+		union{null,com.x.ocl.Query} query = null;
+	}
+
+	@topic("/marketplace/order/searchFailed")
+	@version("1.0.0")
+	record SearchOrderFailed {
+		union{null,com.x.ocl.Query} query = null;
+	}
 
 }
