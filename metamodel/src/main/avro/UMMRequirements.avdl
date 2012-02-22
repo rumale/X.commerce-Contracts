@@ -1,0 +1,65 @@
+@namespace("com.x.ocl.umm")
+protocol BusinessRequirements {
+	import idl "UMMBase.avdl";
+
+	record EntityStateTransition {
+		string name;
+		string nextStateName;
+	}
+	
+	record EntityState {
+		string name; //unique within entity
+		union{null,array<EntityStateTransition>} outTransition = null;
+	}
+
+	record BusinessEntity {
+		string name;
+		
+		string currentStateName;
+		map<EntityState> possibleStates; //key is EntityState.name
+	}
+
+	@abstract("true")
+	record BusinessProcess {
+		string name;
+		string description;
+
+		//TODO: how do we model triggerEvent?
+		//TODO: how do we model endEvent?
+		
+		//Map of BusinessEntity.name to current EntityState.name
+		map<string> preConditions;
+		map<string> postConditions;
+	}
+
+	@extends("com.x.ocl.umm.Package")
+	@abstract("true")
+	record BusinessCategory {
+		Package _base;
+		
+		string objective;
+		string scope;
+		string opportunity;
+		
+		union{null,array<BusinessProcess>} processes;
+	}
+	
+	@extends("com.x.ocl.umm.BusinessCategory")
+	record ProcessArea {
+		BusinessCategory _base;
+		
+		union{null,string} parentUniqueIdentifier = null;
+		union{null,array<ProcessArea>} childProcesses = null;
+	}
+	
+	@extends("com.x.ocl.umm.BusinessCategory")
+	record BusinessArea {
+		BusinessCategory _base;
+		
+		union{null,string} parentUniqueIdentifier = null;
+		
+		union{null,array<BusinessArea>} childAreas = null;
+		union{null,array<ProcessArea>} childProcesAreas = null;
+	}
+	
+}

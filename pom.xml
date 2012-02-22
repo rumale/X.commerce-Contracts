@@ -54,6 +54,7 @@
 		<module>inventory</module>
 		<module>loyaltymarketing</module>
 		<module>marketplace</module>
+		<module>metamodel</module>
 		<module>offermanagement</module>
 		<module>ordermanagement</module>
 		<module>paidsearchadvertising</module>
@@ -114,6 +115,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>marketplace-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>metamodel</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

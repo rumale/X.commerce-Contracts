@@ -1,0 +1,13 @@
+@namespace("com.x.ocl.umm")
+protocol BaseModule {
+
+	@abstract("true")
+	record Package {
+		string version;
+		string uniqueIdentifier;
+		union{null,string} status = null;
+
+		array<string> owners;
+		array<string> references;		
+	}
+}

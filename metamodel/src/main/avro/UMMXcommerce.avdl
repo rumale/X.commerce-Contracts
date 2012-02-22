@@ -1,0 +1,37 @@
+@namespace("com.x.ocl.umm")
+protocol Xcommerce {
+
+	enum PropertyType {
+		BOOLEAN,
+		STRING,
+		INTEGER,
+		LONG,
+		FLOAT,
+		DOUBLE,
+		BYTES,
+		ARRAY,
+		MAP,
+		UNION,
+		ENUM,
+		FIXED,
+		NAMED
+	}
+
+	record MessageProperty {
+		string name;
+		PropertyType type;
+		boolean isRequired = true;
+		union{null,string} namedType = null; //only if type is NAMED.		
+	}
+
+	record Message {
+		string fullName; //Fully qualified name of the message
+		
+		array<MessageProperty> properties;
+	}
+
+	record Topic {
+		string name; 
+		string fullMessageName;
+	}	
+}
