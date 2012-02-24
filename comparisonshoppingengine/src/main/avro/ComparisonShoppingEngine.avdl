@@ -32,6 +32,12 @@ protocol ComparisonShoppingEngine {
 		Incremental
 	}
 	
+	enum ImageBackgroundType {
+		HasBackground,
+		NoBackground,
+		Unknown
+	}
+	
 	record ProductAttribute {
 		string id;
 		string label;
@@ -41,7 +47,7 @@ protocol ComparisonShoppingEngine {
 	record ProductImage {
 		string imageUrl;
 		ImagePurpose imagePurpose;
-		boolean hasBackground;
+		ImageBackgroundType backgroundType;
 	}
 	
 	record TaxRate {
