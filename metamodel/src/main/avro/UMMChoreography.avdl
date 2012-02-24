@@ -93,6 +93,10 @@ protocol BusinessChoreography {
 		string initiatorName;
 		string providerName;
 		
+		/** Key = CollaborationRole.name, Value = TransactionRole.name */
+		union{null,map<string>} initiatorListener = null;
+		union{null,map<string>} providerListener = null;
+		
 		string transactionName;
 	}
 	
@@ -110,7 +114,10 @@ protocol BusinessChoreography {
 		TransactionPattern pattern;
 		
 		TransactionRole initiator;
-		TransactionRole provider;		
+		TransactionRole provider;
+		
+		union{null,map<TransactionRole>} initiatorListener = null;
+		union{null,map<TransactionRole>} providerListener = null;
 		
 		union{EventAction,RequestAction} action;
 		union{null,EventAction,ResponseAction} result = null;
