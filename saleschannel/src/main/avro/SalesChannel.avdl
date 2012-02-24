@@ -48,7 +48,8 @@ protocol SalesChannel {
 		int shippingTimeMax; //in days
 		int shippingTimeMin;
 		union{null,ShippingRateType} rateType = null;
-
+		ShippingLocaleType localeType;  // Domestic or international
+		
 		boolean dimensionsRequired;
 		boolean weightRequired;
 		boolean surchargeApplicable;
@@ -213,7 +214,7 @@ protocol SalesChannel {
 	}
 
 	@topic("/salesChannel/shippingService/searchSucceeded")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchShippingServiceSucceeded {
 		array<SupportedShippingService> services;
 		string channelName;
