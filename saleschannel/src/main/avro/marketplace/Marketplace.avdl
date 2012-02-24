@@ -277,20 +277,26 @@ protocol Marketplace {
 
 	@topic("/marketplace/order/search")
 	@version("1.0.0")
-	record SearchOrder {
-		union{null,com.x.ocl.Query} query = null;
+	record MarketplaceSearchOrders {
+		union{null,string} siteCode = null;
+		union{null,string} sellerAccountId = null;
+		union{null,com.x.ocl.Query} @QueryType("com.x.ocl.Order") query = null;
 	}
 
 	@topic("/marketplace/order/searchSucceeded")
 	@version("1.0.0")
-	record SearchOrdersSucceeded {
+	record MarketplaceSearchOrdersSucceeded {
 		array<com.x.ocl.Order> orders;
+		union{null,string} siteCode = null;
+		union{null,string} sellerAccountId = null;
 		union{null,com.x.ocl.Query} query = null;
 	}
 
 	@topic("/marketplace/order/searchFailed")
 	@version("1.0.0")
-	record SearchOrderFailed {
+	record MarketplaceSearchOrdersFailed {
+		union{null,string} siteCode = null;
+		union{null,string} sellerAccountId = null;
 		union{null,com.x.ocl.Query} query = null;
 		array<com.x.ocl.Error> errors;
 	}
