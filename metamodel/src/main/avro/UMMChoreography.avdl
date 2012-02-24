@@ -7,9 +7,14 @@ protocol BusinessChoreography {
 		CAPABILITY //a software component connected to the bus
 	}
 	
-	record BusinessRole {
+	record CollaborationRole {
 		string name;
 		RoleType type;
+	}
+	
+	@extends("com.x.ocl.umm.CollaborationRole")
+	record TransactionRole {
+		CollaborationRole _base;
 	}
 	
 	@abstract("true")
@@ -17,10 +22,6 @@ protocol BusinessChoreography {
 		string topicName; //This action sends a message to this topic.
 		boolean isAuthorizationRequired = true;
 		boolean isNonRepudiationRequired = true;
-		
-		//We go with a silent acknowledgement model
-		long timeTillReceiptIsAssumed; //seconds
-		long timeTillProcessingIsAssumed; //seconds
 		
 		//Recipient of message must be able to parse it before timeTillReceiptIsAssumed
 		boolean isIntelligibleCheckRequired;
@@ -34,6 +35,10 @@ protocol BusinessChoreography {
 	@extends("com.x.ocl.umm.Action")
 	record RequestAction {
 		Action _base;
+		
+		//We go with a silent acknowledgement model
+		long timeToAcknowledgeReceipt; //seconds
+		long timeToAcknowledgeProcessing; //seconds
 		
 		long timeToRespond; //second
 		int retryCount;
@@ -58,6 +63,11 @@ protocol BusinessChoreography {
 	}
 	
 	@extends("com.x.ocl.umm.FlowElement")
+	record SyncPoint {
+		FlowElement _base;
+	}
+	
+	@extends("com.x.ocl.umm.FlowElement")
 	record StartPoint {
 		FlowElement _base;
 	}
@@ -73,6 +83,19 @@ protocol BusinessChoreography {
 		CollaborationState state;
 	}
 	
+	@extends("com.x.ocl.umm.FlowElement")
+	record TransactionCall {
+		FlowElement _base;
+		
+		/**
+		 * BusinessProcess.name that is bound to a TransactionRole.name
+		 */ 
+		string initiatorName;
+		string providerName;
+		
+		string transactionName;
+	}
+	
 	enum TransactionPattern {
 		INFO,
 		NOTIFICATION,
@@ -82,14 +105,12 @@ protocol BusinessChoreography {
 		OFFER_ACCEPTANCE
 	}
 	
-	@extends("com.x.ocl.umm.FlowElement")
 	record Transaction {
-		FlowElement _base;
-		
-		string initiatorRoleName; //ref. BusinessRole
-		string providerRoleName; //ref. BusinessRole
-		
+		string name;
 		TransactionPattern pattern;
+		
+		TransactionRole initiator;
+		TransactionRole provider;		
 		
 		union{EventAction,RequestAction} action;
 		union{null,EventAction,ResponseAction} result = null;
@@ -101,8 +122,10 @@ protocol BusinessChoreography {
 		BusinessProcess _base;
 		
 		string name;
-		array<BusinessRole> participants; //min of 2
+		array<CollaborationRole> participants; //min of 2
 
-		StartPoint start;
+		//Map of FlowElement.name to FlowElements
+		map<union{StartPoint,SyncPoint,EndPoint,TransactionCall}> flow;
+		string startPointName;
 	}
 }

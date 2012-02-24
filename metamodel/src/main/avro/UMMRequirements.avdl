@@ -18,6 +18,22 @@ protocol BusinessRequirements {
 		string currentStateName;
 		map<EntityState> possibleStates; //key is EntityState.name
 	}
+	
+	/** A particular role of a collaboration */
+	record CollaborationRoleAssignment {
+		string collaborationName;
+		string collaborationRoleName;
+	}
+	
+	/** 
+	 * A real company/partner that will be assigned to participate
+	 * as a particular BusinessRole of a Collaboration.
+	 */
+	record BusinessPartner {
+		string name;
+		
+		array<CollaborationRoleAssignment> participation;
+	}
 
 	@abstract("true")
 	record BusinessProcess {
