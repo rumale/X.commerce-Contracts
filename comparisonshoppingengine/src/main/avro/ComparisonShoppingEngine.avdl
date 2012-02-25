@@ -5,6 +5,7 @@
 	the messages that are part of the CSE domain.
 */
 protocol ComparisonShoppingEngine {
+	import idl "Offer.avdl";
 	import idl "CurrencyAmount.avdl";
 
 	enum ImagePurpose {
@@ -76,21 +77,20 @@ protocol ComparisonShoppingEngine {
 		string id;
 		array<VariationValue> values;
 	}
-
-	//TODO: need to remove this and use common Product type definition.
-	record ProductDetails {
-   		string sku;
+	
+	@extends("com.x.ocl.Offer")
+	record CseOffer {
+		com.x.ocl.Offer offer;
    		string title;
    		string description;
    		string manufacturer;
-   		string MPN;
-   		string GTIN;
+   		string mpn;
+   		string gtin;
    		string brand;
    		string category;
+   		array<string> productTypes;
    		array<ProductImage> images;
    		string link;
-   		ConditionType condition;
-   		com.x.ocl.CurrencyAmount salePrice;
    		com.x.ocl.CurrencyAmount originalPrice;
    		AvailabilityType availability;
    		TaxRate taxRate;
@@ -102,11 +102,13 @@ protocol ComparisonShoppingEngine {
    		com.x.ocl.CurrencyAmount cpc;
 	}
 	
-	@topic("/cse/offer/create, /cse/offer/created")
-	record ProductFeed {
-		array<ProductDetails> products;
-		ProductFeedType productFeedType;
+	@topic("/cse/offer/create /cse/offer/created")
+	@version("1.0.0")
+	record CreateOffer {
+		array<com.x.ocl.Offer> offers; 
+		string siteId;
 	}
+	
 }
 
 
