@@ -58,6 +58,11 @@
 			<artifactId>core-contract</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>common-contract</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -79,7 +84,6 @@
 						</goals>
 						<configuration>
 							<includeGroupIds>com.x.ocl</includeGroupIds>
-							<includeArtifactIds>core-contract</includeArtifactIds>
 							<excludeTransitive>true</excludeTransitive>
 							<includes>**\/*.avdl</includes>
 							<outputDirectory>src/main/avro</outputDirectory>
