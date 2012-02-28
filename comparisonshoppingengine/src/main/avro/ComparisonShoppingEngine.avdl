@@ -106,6 +106,7 @@ protocol ComparisonShoppingEngine {
 	@version("1.0.0")
 	record CreateOffer {
 		array<com.x.ocl.Offer> offers; 
+		ProductFeedType feedType;
 		string siteId;
 	}
 	
