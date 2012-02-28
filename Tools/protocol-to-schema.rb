@@ -79,7 +79,7 @@ def process_protocol(protocol_file_name)
     return
   end
 
-  http = Net::HTTP.new('ocl.cloud.x.com', 443)
+  http = Net::HTTP.new('api.x.com', 443)
   http.use_ssl = true
 #  http = Net::HTTP.new('localhost', 3010)
   
@@ -101,7 +101,7 @@ def process_protocol(protocol_file_name)
 #      out.print buf.read
 #      out.close
       
-      path = "/#{namespace}/#{type.name}/#{type.props['version']}"
+      path = "/ocl/#{namespace}/#{type.name}/#{type.props['version']}"
       if type.props['topic']
         path += "?topic=#{type.props['topic'][1..-1]}&namespace=#{namespace}"
       end
