@@ -15,9 +15,7 @@ protocol Customer {
 		Female,
 		Unknown
 	}
-
-		
-    /** TODO:  vet the statuses */
+	
 	enum ContactStatus {
 		New,
 		Warm,
@@ -32,6 +30,7 @@ protocol Customer {
 		boolean emailOptOut;
 		Gender gender;
 		
+	
 	    /** Date Time Format: ISO 8601 */
 		string dateCreated;
 		
