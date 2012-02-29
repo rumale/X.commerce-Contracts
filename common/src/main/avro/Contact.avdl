@@ -7,6 +7,7 @@ protocol Common {
 	import idl "Name.avdl";
 	import idl "Email.avdl";
 
+
 	record Contact {
 		com.x.ocl.Name fullName;	   
 		com.x.ocl.Address address;
