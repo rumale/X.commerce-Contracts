@@ -27,11 +27,36 @@ protocol Xcommerce {
 	record Message {
 		string fullName; //Fully qualified name of the message
 		
+		/** A message can extends another message with specific data */
+		union{null,string} baseMessageName = null;
+		
 		array<MessageProperty> properties;
+	}
+	
+	/** A specialized message used for message acknowledgment. */
+	@extends("com.x.ocl.umm.Message")
+	record AckMessage {
+		Message _base;
+		
+		string correlationId;
 	}
 
 	record Topic {
 		string name; 
-		string fullMessageName;
-	}	
+		
+		/** Key=extension name, Value=message name */
+		map<string> extensionMapping;
+		
+		/** 
+		 * The possible DEFAULT messages sent to this topic.
+		 * key = Fully qualified message name
+		 */
+		map<Message> possibleMessages;
+		
+		/** 
+		 * The possible extensions messages to use instead of the default ones.
+		 * key = Fully qualified message name
+		 */
+		union{null,map<Message>} possibleExtensionMessages = null;
+	}
 }
