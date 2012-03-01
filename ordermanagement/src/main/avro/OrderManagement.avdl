@@ -51,24 +51,11 @@ protocol OrderManagement {
 		union{null,string} accountId = null;
 		array<com.x.ocl.Error> errors;
 	}
-		
-	@topic("/order/cancelled")
-	@version("1.0.0")
-	record OrderCancelled {
-		com.x.ocl.Order order;
-	}
-	
-	@topic("/order/cancelFailed")
-	@version("1.0.0")
-	record CancelOrderFailed {
-		array<string> orderNumbers;
-		array<com.x.ocl.Error> errors;
-	}
-	
+			
 	@topic("/order/update")
 	@version("1.0.0")
 	record UpdateOrder {
-		array<string> orderNumbers;
+		com.x.ocl.Order order;
 	}
 	
 	@topic("/order/updated")
@@ -80,7 +67,7 @@ protocol OrderManagement {
 	@topic("/order/updateFailed")
 	@version("1.0.0")
 	record UpdateOrderFailed {
-		array<string> orderNumbers;
+		string orderNumber;
 		array<com.x.ocl.Error> errors;
 	}
 	
