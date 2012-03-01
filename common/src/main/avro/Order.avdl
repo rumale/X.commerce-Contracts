@@ -85,8 +85,7 @@ protocol Common {
 	record Shipment {
 		/** only need to be unique to the order like 1, 2, 3, etc...*/
 		string shipmentId;
-		com.x.ocl.Address shipToAddress;
-		
+				
 		/** The fees paid by the customer for this shipment */
 		com.x.ocl.CurrencyAmount shippingFees;
 		
