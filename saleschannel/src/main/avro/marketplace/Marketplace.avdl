@@ -297,7 +297,7 @@ protocol Marketplace {
 		array<com.x.ocl.Error> errors;
 	}
 	
-	@topic("/marketplace/updateShipment")
+	@topic("/marketplace/order/updateShipment")
 	@version("1.0.0")
 	record UpdateShipment {
 		array<string> trackingNumbers;
@@ -306,13 +306,13 @@ protocol Marketplace {
 		union{null,string} sellerAccountId = null;
 	}
 	
-	@topic("/marketplace/updateShipmentSucceeded")
+	@topic("/marketplace/order/updateShipmentSucceeded")
 	@version("1.0.0")
 	record UpdateShipmentSucceeded {
 		UpdateShipment shipment;
 	}
 	
-	@topic("/order/channel/updateShipmentFailed")
+	@topic("/marketplace/order/updateShipmentFailed")
 	@version("1.0.0")
 	record UpdateShipmentFailed {
 		UpdateShipment shipment;
