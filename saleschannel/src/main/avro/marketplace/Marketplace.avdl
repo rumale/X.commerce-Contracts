@@ -287,17 +287,13 @@ protocol Marketplace {
 	@version("1.0.0")
 	record MarketplaceSearchOrdersSucceeded {
 		array<com.x.ocl.Order> orders;
-		union{null,string} siteCode = null;
-		union{null,string} sellerAccountId = null;
-		union{null,com.x.ocl.Query} query = null;
+		MarketplaceSearchOrders marketplaceSearchOrders;
 	}
 
 	@topic("/marketplace/order/searchFailed")
 	@version("1.0.0")
 	record MarketplaceSearchOrdersFailed {
-		union{null,string} siteCode = null;
-		union{null,string} sellerAccountId = null;
-		union{null,com.x.ocl.Query} query = null;
+		MarketplaceSearchOrders marketplaceSearchOrders;
 		array<com.x.ocl.Error> errors;
 	}
 	
