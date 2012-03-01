@@ -300,5 +300,28 @@ protocol Marketplace {
 		union{null,com.x.ocl.Query} query = null;
 		array<com.x.ocl.Error> errors;
 	}
+	
+	@topic("/marketplace/udpateShipment")
+	@version("1.0.0")
+	record UpdateShipment {
+		array<string> trackingNumber;
+		string orderNumber;
+		string shipmentId;
+		union{null,string} sellerAccountId = null;
+	}
+	
+	@topic("/marketplace/udpateShipmentSucceeded")
+	@version("1.0.0")
+	record ProcessShipmentSucceeded {
+		UpdateShipment shipment;
+	}
+	
+	@topic("/order/channel/udpateShipmentFailed")
+	@version("1.0.0")
+	record udpateShipmentFailed {
+		UpdateShipment shipment;
+		array<com.x.ocl.Error> errors;
+	}
+	
 
 }
