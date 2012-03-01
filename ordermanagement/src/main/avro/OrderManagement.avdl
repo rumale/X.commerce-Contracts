@@ -67,7 +67,7 @@ protocol OrderManagement {
 	@topic("/order/updateFailed")
 	@version("1.0.0")
 	record UpdateOrderFailed {
-		string orderNumber;
+		com.x.ocl.Order order;
 		array<com.x.ocl.Error> errors;
 	}
 	
