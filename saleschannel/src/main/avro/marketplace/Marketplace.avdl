@@ -318,7 +318,7 @@ protocol Marketplace {
 	
 	@topic("/order/channel/updateShipmentFailed")
 	@version("1.0.0")
-	record UdpateShipmentFailed {
+	record UpdateShipmentFailed {
 		UpdateShipment shipment;
 		array<com.x.ocl.Error> errors;
 	}
