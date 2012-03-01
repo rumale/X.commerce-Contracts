@@ -301,24 +301,24 @@ protocol Marketplace {
 		array<com.x.ocl.Error> errors;
 	}
 	
-	@topic("/marketplace/udpateShipment")
+	@topic("/marketplace/updateShipment")
 	@version("1.0.0")
 	record UpdateShipment {
-		array<string> trackingNumber;
+		array<string> trackingNumbers;
 		string orderNumber;
 		string shipmentId;
 		union{null,string} sellerAccountId = null;
 	}
 	
-	@topic("/marketplace/udpateShipmentSucceeded")
+	@topic("/marketplace/updateShipmentSucceeded")
 	@version("1.0.0")
-	record ProcessShipmentSucceeded {
+	record UpdateShipmentSucceeded {
 		UpdateShipment shipment;
 	}
 	
-	@topic("/order/channel/udpateShipmentFailed")
+	@topic("/order/channel/updateShipmentFailed")
 	@version("1.0.0")
-	record udpateShipmentFailed {
+	record UdpateShipmentFailed {
 		UpdateShipment shipment;
 		array<com.x.ocl.Error> errors;
 	}
