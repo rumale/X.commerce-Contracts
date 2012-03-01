@@ -52,9 +52,8 @@ protocol Common {
 	}
 
 	record OrderItemPriceInfo {
-		/** The price after all adjustments are applied */
-		com.x.ocl.CurrencyAmount cost; 
-		com.x.ocl.CurrencyAmount originalPrice;
+		/** The price the customer is paying for this item (without taxes, fees, etc.) */
+		com.x.ocl.CurrencyAmount price; 
 
 		union{null,com.x.ocl.CurrencyAmount} insuranceCost = null;
 		union{null,com.x.ocl.CurrencyAmount} taxAmount = null;
@@ -77,7 +76,7 @@ protocol Common {
 	}
 	
 	record TrackingDetail {
-		string trackingNumber;
+		array<string> trackingNumber;
 		union{null,string} carrier = null;
 		union{null,string} service = null;
 		union{null,ShippingServiceType} serviceType = null;
@@ -88,16 +87,15 @@ protocol Common {
 		string shipmentId;
 		com.x.ocl.Address shipToAddress;
 		
-		com.x.ocl.CurrencyAmount cost;
+		/** The fees paid by the customer for this shipment */
+		com.x.ocl.CurrencyAmount shippingFees;
+		
 		/** Total discount amount summarized from all PromotionalDiscount. */
 		union{null,com.x.ocl.CurrencyAmount} discountAmount = null;
 		union{null,array<PromotionalDiscount>} discounts = null;
 		union{null,com.x.ocl.CurrencyAmount} additionalCost = null;
 		union{null,com.x.ocl.CurrencyAmount} packagingHandlingCost = null;
 		union{null,com.x.ocl.CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
-
-		union{null,com.x.ocl.DateRange} deliveryWindow = null;
-		union{null,com.x.ocl.DateRange} shippingWindow = null;
 
 		union{null,TrackingDetail} trackingDetail = null;
 		union{null,string} recipientName = null;
@@ -144,11 +142,17 @@ protocol Common {
 		OrderCustomerInfo customer;
 		union{null,Address} billingAddress = null;
 
-		/** Summary of various amounts */ 
-		com.x.ocl.CurrencyAmount totalAmount;
+		/** The total paid by the customer (total of items, fees, taxes, etc.) */ 
+		com.x.ocl.CurrencyAmount grandTotal;
+	
+		/** Total of all the items -- without taxes, fees, etc. */
+		com.x.ocl.CurrencyAmount itemPriceTotal;
+
+		/** Breakdown of the total of all related fees that influence the price */		
 		union{null,com.x.ocl.CurrencyAmount} totalInsuranceCost = null;
 		union{null,com.x.ocl.CurrencyAmount} totalTaxAmount = null;
 		union{null,com.x.ocl.CurrencyAmount} totalDiscountAmount = null;
+		union{null,com.x.ocl.CurrencyAmount} totalShippingFees = null;
 		union{null,OrderPaymentInfo} paymentMethod = null;
 		
 		array<OrderItem> orderItems;
