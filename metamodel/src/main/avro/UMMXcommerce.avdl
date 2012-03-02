@@ -1,7 +1,7 @@
 @namespace("com.x.ocl.umm")
 protocol Xcommerce {
 
-	enum PropertyType {
+	enum PrimitiveTypeEnum {
 		BOOLEAN,
 		STRING,
 		INTEGER,
@@ -9,54 +9,82 @@ protocol Xcommerce {
 		FLOAT,
 		DOUBLE,
 		BYTES,
-		ARRAY,
-		MAP,
-		UNION,
 		ENUM,
-		FIXED,
-		NAMED
+		FIXED
+	}
+	
+	enum CollectionTypeEnum {
+		ARRAY,
+		MAP
+	}	
+
+	@abstract("true")
+	record PropertyType {
+		string name;
+	}
+	
+	@extends("com.x.ocl.umm.PropertyType")
+	record PrimitiveType {
+		PrimitiveTypeEnum type;
+	}
+
+	@extends("com.x.ocl.umm.PropertyType")
+	record ComplexType {
+		/** Key=member name, value=member's PropertyType.name */
+		map<string> members;
+	}
+	
+	@extends("com.x.ocl.umm.PropertyType")
+	record CollectionType {
+		CollectionTypeEnum type;
+		string memberTypeName;
+	}
+
+	@extends("com.x.ocl.umm.PropertyType")
+	record UnionType {
+		array<string> unionMembers; //PropertyType.names
+	}
+	
+	@extends("com.x.ocl.umm.PropertyType")
+	record EnumType {
+		/** Key=enum literal name, value=enum literal value */
+		map<string> values;
 	}
 
 	record MessageProperty {
 		string name;
-		PropertyType type;
+		string propertyTypeName;
 		boolean isRequired = true;
-		union{null,string} namedType = null; //only if type is NAMED.		
 	}
-
+	
 	record Message {
 		string fullName; //Fully qualified name of the message
-		
-		/** A message can extends another message with specific data */
-		union{null,string} baseMessageName = null;
 		
 		array<MessageProperty> properties;
 	}
 	
 	/** A specialized message used for message acknowledgment. */
-	@extends("com.x.ocl.umm.Message")
+	@abstract("true")
 	record AckMessage {
-		Message _base;
-		
 		string correlationId;
+	}
+	
+	@extends("com.x.ocl.umm.AckMessage")
+	record ReceiptAckMessage {
+		AckMessage _base;
+	}
+
+	@extends("com.x.ocl.umm.AckMessage")
+	record ProcessingAckMessage {
+		AckMessage _base;
 	}
 
 	record Topic {
 		string name; 
-		
-		/** Key=extension name, Value=message name */
-		map<string> extensionMapping;
-		
 		/** 
 		 * The possible DEFAULT messages sent to this topic.
 		 * key = Fully qualified message name
 		 */
-		map<Message> possibleMessages;
-		
-		/** 
-		 * The possible extensions messages to use instead of the default ones.
-		 * key = Fully qualified message name
-		 */
-		union{null,map<Message>} possibleExtensionMessages = null;
+		map<union{Message,ReceiptAckMessage,ProcessingAckMessage}> allowedMessages;
 	}
 }

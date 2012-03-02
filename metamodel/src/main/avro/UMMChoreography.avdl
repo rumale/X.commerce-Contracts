@@ -3,21 +3,22 @@ protocol BusinessChoreography {
 	import idl "UMMRequirements.avdl";
 	import idl "UMMXcommerce.avdl";
 	
-	enum RoleType {
-		CAPABILITY //a software component connected to the bus
-	}
-	
-	record CollaborationRole {
+	@abstract("true")
+	record Role {
 		string name;
 		string description;
-		RoleType type;
 	}
 	
-	@extends("com.x.ocl.umm.CollaborationRole")
+	@extends("com.x.ocl.umm.Role")
 	record TransactionRole {
-		CollaborationRole _base;
+		Role _base;
 	}
 	
+	@extends("com.x.ocl.umm.Role")
+	record CollaborationRole {
+		Role _base;
+	}
+
 	record ExtensionMessageMap {
 		string extensionName;
 		
@@ -35,31 +36,37 @@ protocol BusinessChoreography {
 		boolean isAuthorizationRequired = true;
 		boolean isNonRepudiationRequired = true;
 
-		//Recipient of message must be able to parse it before timeTillReceiptIsAssumed
-		boolean isIntelligibleCheckRequired;
-		
 		/** Key = extensionName */
 		union{null,map<ExtensionMessageMap>} extensions = null;
 	}
 	
 	@extends("com.x.ocl.umm.Action")
-	record RequestAction {
+	record NotifyAction {
 		Action _base;
-		
 		long timeToAcknowledgeReceipt; //seconds
-		long timeToAcknowledgeProcessing; //seconds
+		int retryCount;
+
+		//Recipient of message must be able to parse it
+		//boolean isIntelligibleCheckRequired = true;
+		//If timeToAcknowledgeProcessing is NULL, it is assumed that the message is intelligible when receipt is acknowledged.
+		union{null,long} timeToAcknowledgeProcessing; //seconds
+				
+	}
+	
+	@extends("com.x.ocl.umm.NotifyAction")
+	record RequestAction {
+		NotifyAction _base;
 		
 		long timeToRespond; //second
-		int retryCount;
 	}
 	
-	@extends("com.x.ocl.umm.Action")
+	@extends("com.x.ocl.umm.NotifyAction")
 	record ResponseAction {
-		Action _base;
+		NotifyAction _base;
 	}
 	
 	@extends("com.x.ocl.umm.Action")
-	record EventAction {
+	record InformAction {
 		Action _base;
 	}
 	
@@ -79,7 +86,7 @@ protocol BusinessChoreography {
 	}
 
 	record FlowTransition {
-		string condition; //ocl?
+		union{null,string} condition = null; //ocl?
 		string nextFlowElementName;
 	}
 	
@@ -133,7 +140,7 @@ protocol BusinessChoreography {
 		string transactionName;
 		
 		/** Use a particular extension if specified */
-		union{null,string} extensionName = null;
+		union{null,string} txnExtensionName = null;
 		
 		/**
 		 * BusinessProcess.name that is bound to a TransactionRole.name
@@ -166,20 +173,20 @@ protocol BusinessChoreography {
 		
 		TransactionPattern pattern;
 		
-		TransactionRole initiator;
-		TransactionRole recipient;
+		TransactionRole sender;
+		union{null,TransactionRole} receiver;
 		
-		union{EventAction,RequestAction} initiatorAction;
-		union{EventAction,ResponseAction} recipientAction;
+		union{InformAction,NotifyAction,RequestAction} senderAction;
+		union{null,ResponseAction} receiverAction = null;
 		union{null,ResponseAction} exceptionAction = null;
 		
 		array<EntityStateChange> successfulStateChange;
 		array<EntityStateChange> failureStateChange;
 	}
 	
-	@extends("com.x.ocl.umm.BusinessProcess")
 	record Collaboration {
-		BusinessProcess _base;
+		//The name of the business process that this realizes
+		string businessProcessName;
 		
 		string name;
 		
@@ -194,23 +201,5 @@ protocol BusinessChoreography {
 		//Map of FlowElement.name to FlowElements
 		map<union{StartPoint,SyncPoint,EndPoint,TransactionCall,CollaborationCall}> flow;
 		string startPointName;
-	}
-
-	/** 
-	 * A group of collaborations that achieves similar business purpose but
-	 * the flow of transaction can be different among them. One BusinessPartner
-	 * should not use more than one variation of a collaboration.
-	 */
-	record CollaborationVariation {
-		//Key = unique name assigned to the variation
-		map<Collaboration> variants;
-	}
-
-	@extends("com.x.ocl.umm.BusinessCategory")
-	record CollaborationArea {
-		BusinessCategory _base;
-		
-		union{null,string} parentCategory = null;
-		union{null,array<union{Collaboration,CollaborationVariation}>} childCollaboration = null;
 	}
 }

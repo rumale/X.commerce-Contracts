@@ -35,10 +35,18 @@ protocol BusinessRequirements {
 		array<CollaborationRoleAssignment> participation;
 	}
 
-	@abstract("true")
+	/** 
+	 * A group of collaborations that achieves similar business purpose but
+	 * the flow of transaction can be different among them. One BusinessPartner
+	 * should not use more than one variation of a collaboration.
+	 */
 	record BusinessProcess {
 		string name;
 		string description;
+
+		string objective;
+		string scope;
+		string opportunity;
 
 		//TODO: how do we model triggerEvent?
 		//TODO: how do we model endEvent?
@@ -47,23 +55,11 @@ protocol BusinessRequirements {
 		map<string> preConditions;
 		map<string> postConditions;
 	}
-	
+
 	@extends("com.x.ocl.umm.Package")
-	@abstract("true")
-	record BusinessCategory {
-		Package _base;
-		
-		string objective;
-		string scope;
-		string opportunity;
-		
-		union{null,array<BusinessProcess>} processes;
-	}
-	
-	@extends("com.x.ocl.umm.BusinessCategory")
 	record BusinessArea {
-		BusinessCategory _base;
 		
-		union{null,string} parentCategory = null;
+		union{null,string} parentArea = null;
+		map<BusinessProcess> processes;
 	}
 }
