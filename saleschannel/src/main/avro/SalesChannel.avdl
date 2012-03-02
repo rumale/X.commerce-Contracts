@@ -45,8 +45,8 @@ protocol SalesChannel {
 		string description;
 		union{null,string} carrier = null; //USPS
 		string serviceName; //i.e. USPSPriorityFlatRateBox
-		int shippingTimeMax; //in days
-		int shippingTimeMin;
+		int shippingTimeMaxInDays;
+		int shippingTimeMinInDays;
 		union{null,ShippingRateType} rateType = null;
 		ShippingLocaleType localeType;  // Domestic or international
 		
@@ -307,7 +307,7 @@ protocol SalesChannel {
 	@topic("/salesChannel/category/search")
 	@version("1.0.0")
 	record SearchCategories {
-		string siteCode;
+		union{null,string} siteCode = null;
 		union{null,string} xProductTypeId = null;  // Taxonomy product type id
 		union{null,string} environmentName = null;
 	}
@@ -315,9 +315,9 @@ protocol SalesChannel {
 	@topic("/salesChannel/category/searchSucceeded")
 	@version("1.0.0")
 	record SearchCategoriesSucceeded {
-		array<Category> categories;
+		array<Category> @paginated("true") categories;
 		string channelName;
-		string siteCode;
+		union{null,string} siteCode = null;
 		union{null,string} environmentName = null;
 	}
 
@@ -325,7 +325,7 @@ protocol SalesChannel {
 	@version("1.0.0")
 	record SearchCategoriesFailed {
 		string channelName;
-		string siteCode;
+		union{null,string} siteCode = null;
 		union{null,string} environmentName = null;
 		array<com.x.ocl.Error> errors;
 	}
@@ -410,33 +410,33 @@ protocol SalesChannel {
 	@version("1.0.0")
 	record CreateOffer {
 		array<com.x.ocl.Offer> offers; //does not have channelOfferId yet
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/created")
 	@version("1.0.0")
 	record OfferCreated { //Does not map 1:1 with request message
 		array<com.x.ocl.Offer> offers;
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/createFailed")
 	@version("1.0.0")
 	record CreateOfferFailed {
 		array<OfferError> errors;
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/search")
 	@version("1.0.0")
 	record SearchOffer {
-		union{null,com.x.ocl.Query} query = null;
+		union{null,com.x.ocl.Query} @query("com.x.ocl.Offer") query = null;
 	}
 
 	@topic("/salesChannel/offer/searchSucceeded")
 	@version("1.0.0")
 	record SearchOfferSucceeded {
-		array<union{com.x.ocl.QueryResult,com.x.ocl.Offer}> offers;
+		array<union{com.x.ocl.Offer}> @paginated("true") offers;
 		union{null,com.x.ocl.Query} query = null;
 	}
 
@@ -451,41 +451,41 @@ protocol SalesChannel {
 	@version("1.0.0")
 	record UpdateOffer {
 		array<com.x.ocl.Offer> updates; //must have channelOfferId
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/updated")
 	@version("1.0.0")
 	record OfferUpdated {
 		array<com.x.ocl.Offer> updates;
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/updateFailed")
 	@version("1.0.0")
 	record UpdateOfferFailed {
 		array<OfferUpdateError> errors;
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/cancel")
 	@version("1.0.0")
 	record CancelOffer {
 		array<string> skus;
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/cancelled")
 	@version("1.0.0")
 	record OfferCancelled {
 		array<string> skus;
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
 	}
 
 	@topic("/salesChannel/offer/cancelFailed")
 	@version("1.0.0")
 	record CancelOfferFailed {
 		array<CancelOfferError> errors;
-		string policyGroupId;
+		union{null,string} policyGroupId = null;
   	}
 }
