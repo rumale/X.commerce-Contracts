@@ -1,7 +1,7 @@
 @namespace("com.x.ocl")
 protocol BusinessChoreography {
-	import idl "UMMRequirements.avdl";
-	import idl "UMMXcommerce.avdl";
+	import idl "Requirements.avdl";
+	import idl "Xcommerce.avdl";
 	
 	@abstract("true")
 	record Role {
