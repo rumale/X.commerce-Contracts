@@ -104,7 +104,7 @@ protocol ProductInformationManagementCapability
         // Minimal advertisement price, override the field in Product
         union {null, com.x.ocl.CurrencyAmount} MAP = null;
         // variation attributes, the list must match the variationAttributeIds in Product 
-        union {null, array<ProductAttributeValue>} attributes = null;
+        union {null, array<ProductAttributeValue>} variationAttributeValues = null;
         // SKU specific images 
         union {null, array<Image>} images = null;
     }
@@ -117,6 +117,16 @@ protocol ProductInformationManagementCapability
         union {null, string} id = null;
         // ID of the product type 
         union {null, string} productTypeId = null;
+	// descriptive name
+	union {null, LocalizedString} name = null;
+	// short description
+	union {null, LocalizedString} shortDescription = null;
+	// full description
+	union {null, LocalizedString} description = null;
+	union {null, string} GTIN = null;
+	union {null, LocalizedString} brand = null;
+	union {null, LocalizedString} manufacturer = null;
+	union {null, string} MPN = null;
         // Manufacturer suggested retail price
         union {null, com.x.ocl.CurrencyAmount} MSRP = null;
         // Minimal advertisement price
@@ -126,7 +136,7 @@ protocol ProductInformationManagementCapability
         // product attributes 
         union {null, array<ProductAttributeValue>} attributes = null;
         // defines the ids of variation variables 
-        union {null, array<string>} variationAttributeIds = null;
+        union {null, array<string>} variationFactors = null;
 	// list of associated SKUs
         union {null, array<SKU>} skuList = null;
     }
