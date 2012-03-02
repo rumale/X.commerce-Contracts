@@ -93,7 +93,7 @@ protocol OrderManagement {
 	@topic("/order/search")
 	@version("1.0.0")
 	record SearchOrders {
-		union{null,com.x.ocl.Query} @QueryType("com.x.ocl.Order") query = null;
+		union{null,com.x.ocl.Query} @queryType("com.x.ocl.Order") query = null;
 	}
 
 	@topic("/order/searchSucceeded")

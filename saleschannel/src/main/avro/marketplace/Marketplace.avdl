@@ -280,7 +280,7 @@ protocol Marketplace {
 	record SearchMarketplaceOrder {
 		union{null,string} siteCode = null;
 		union{null,string} sellerAccountId = null;
-		union{null,com.x.ocl.Query} @QueryType("com.x.ocl.Order") query = null;
+		union{null,com.x.ocl.Query} @queryType("com.x.ocl.Order") query = null;
 	}
 
 	@topic("/marketplace/order/searchSucceeded")
