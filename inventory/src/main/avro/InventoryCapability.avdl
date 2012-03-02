@@ -14,8 +14,8 @@ protocol InventoryCapability
 	record StockItem 
 	{
 		string skuId;
-		int quantity;  // note: quantity is a high consistency field due to serialization issues.
-		union{null,Location} location;
+		int quantity;        // note: quantity is a high consistency field due to serialization issues.
+		string locationName; // reference to location based on unique name
 	}
 
 	record InventoryError
