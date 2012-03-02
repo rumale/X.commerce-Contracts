@@ -285,7 +285,7 @@ protocol Marketplace {
 
 	@topic("/marketplace/order/searchSucceeded")
 	@version("1.0.0")
-	record SearchMarketplaceSearchOrderSucceeded {
+	record SearchMarketplaceSearchSucceeded {
 		array<com.x.ocl.Order> orders;
 		SearchMarketplaceOrder searchMarketplaceOrder;
 	}
