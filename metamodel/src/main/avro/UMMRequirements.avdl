@@ -1,7 +1,16 @@
 @namespace("com.x.ocl")
 protocol BusinessRequirements {
-	import idl "UMMBase.avdl";
+	/** A package is 
+	@abstract("true")
+	record Package {
+		string version;
+		string uniqueIdentifier;
+		union{null,string} status = null;
 
+		array<string> owners;
+		array<string> references;		
+	}
+	
 	record EntityStateTransition {
 		string name;
 		string nextStateName;
@@ -58,6 +67,7 @@ protocol BusinessRequirements {
 
 	@extends("com.x.ocl.Package")
 	record BusinessArea {
+		Package _base;
 		
 		union{null,string} parentArea = null;
 		map<BusinessProcess> processes;
