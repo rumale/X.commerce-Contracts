@@ -95,7 +95,7 @@ protocol Xcommerce {
 	record Topic {
 		string name; 
 		/** 
-		 * The possible DEFAULT messages sent to this topic.
+		 * The possible messages sent to this topic.
 		 * key = Fully qualified message name
 		 */
 		map<union{Message,ReceiptAckMessage,ProcessingAckMessage}> allowedMessages;
