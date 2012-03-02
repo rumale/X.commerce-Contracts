@@ -264,21 +264,21 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record UpdateProduct
     {
-        Product product;
+        array<Product> products;
     }
  
     @topic("/pim/product/updated")
     @version("1.0.0")
     record ProductUpdated
     {
-        Product product;
+        array<Product> products;
     }
  
     @topic("/pim/product/updateFailed")
     @version("1.0.0")
     record UpdateProductFailed
     {
-        Product product;
+        array<Product> products;
         array<com.x.ocl.Error> errors;
     }
  
@@ -287,21 +287,21 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record UpdateSKU
     {
-        SKU sku;
+        array<SKU> skus;
     }
  
     @topic("/pim/sku/updated")
     @version("1.0.0")
     record SKUUpdated
     {
-        SKU sku;
+        array<SKU> skus;
     }
  
     @topic("/pim/sku/updateFailed")
     @version("1.0.0")
     record UpdateSKUFailed
     {
-        SKU sku;
+        array<SKU> skus;
         array<com.x.ocl.Error> errors;
     }
  
@@ -310,21 +310,21 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record DeleteProduct
     {
-        Product product;
+        array<Product> products;
     }
  
     @topic("/pim/product/deleted")
     @version("1.0.0")
     record ProductDeleted
     {
-        Product product;
+        array<Product> products;
     }
  
     @topic("/pim/product/deleteFailed")
     @version("1.0.0")
     record DeleteProductFailed
     {
-        Product product;
+        array<Product> products;
         array<com.x.ocl.Error> errors;
     }
 
@@ -333,21 +333,21 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record DeleteSKU
     {
-        SKU sku;
+        array<SKU> skus;
     }
  
     @topic("/pim/sku/deleted")
     @version("1.0.0")
     record SKUDeleted
     {
-        SKU sku;
+        array<SKU> skus;
     }
  
     @topic("/pim/sku/deleteFailed")
     @version("1.0.0")
     record DeleteSKUFailed
     {
-        SKU sku;
+        array<SKU> skus;
         array<com.x.ocl.Error> errors;
     }
 }
