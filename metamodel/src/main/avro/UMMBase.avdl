@@ -1,4 +1,4 @@
-@namespace("com.x.ocl.umm")
+@namespace("com.x.ocl")
 protocol BaseModule {
 
 	@abstract("true")

@@ -1,4 +1,4 @@
-@namespace("com.x.ocl.umm")
+@namespace("com.x.ocl")
 protocol Xcommerce {
 
 	enum PrimitiveTypeEnum {
@@ -23,29 +23,29 @@ protocol Xcommerce {
 		string name;
 	}
 	
-	@extends("com.x.ocl.umm.PropertyType")
+	@extends("com.x.ocl.PropertyType")
 	record PrimitiveType {
 		PrimitiveTypeEnum type;
 	}
 
-	@extends("com.x.ocl.umm.PropertyType")
+	@extends("com.x.ocl.PropertyType")
 	record ComplexType {
 		/** Key=member name, value=member's PropertyType.name */
 		map<string> members;
 	}
 	
-	@extends("com.x.ocl.umm.PropertyType")
+	@extends("com.x.ocl.PropertyType")
 	record CollectionType {
 		CollectionTypeEnum type;
 		string memberTypeName;
 	}
 
-	@extends("com.x.ocl.umm.PropertyType")
+	@extends("com.x.ocl.PropertyType")
 	record UnionType {
 		array<string> unionMembers; //PropertyType.names
 	}
 	
-	@extends("com.x.ocl.umm.PropertyType")
+	@extends("com.x.ocl.PropertyType")
 	record EnumType {
 		/** Key=enum literal name, value=enum literal value */
 		map<string> values;
@@ -69,12 +69,12 @@ protocol Xcommerce {
 		string correlationId;
 	}
 	
-	@extends("com.x.ocl.umm.AckMessage")
+	@extends("com.x.ocl.AckMessage")
 	record ReceiptAckMessage {
 		AckMessage _base;
 	}
 
-	@extends("com.x.ocl.umm.AckMessage")
+	@extends("com.x.ocl.AckMessage")
 	record ProcessingAckMessage {
 		AckMessage _base;
 	}

@@ -1,4 +1,4 @@
-@namespace("com.x.ocl.umm")
+@namespace("com.x.ocl")
 protocol BusinessChoreography {
 	import idl "UMMRequirements.avdl";
 	import idl "UMMXcommerce.avdl";
@@ -9,25 +9,25 @@ protocol BusinessChoreography {
 		string description;
 	}
 	
-	@extends("com.x.ocl.umm.Role")
+	@extends("com.x.ocl.Role")
 	record TransactionRole {
 		Role _base;
 	}
 	
-	@extends("com.x.ocl.umm.Role")
+	@extends("com.x.ocl.Role")
 	record CollaborationRole {
 		Role _base;
 	}
 
-	record ExtensionMessageMap {
-		string extensionName;
+	record VariantMessageMap {
+		string variantName;
 		
 		/** 
 		 * If a default message is not specified in this map, it is assumed
 		 * that the original default message of the topic is used.
-		 * Key=original default message name, value=extension message name
+		 * Key=original default message name, value=variant message name
 		 */
-		map<string> extensionMessages; //Fully qualified message name		
+		map<string> variantMessages; //Fully qualified message name		
 	}
 	
 	@abstract("true")
@@ -36,11 +36,11 @@ protocol BusinessChoreography {
 		boolean isAuthorizationRequired = true;
 		boolean isNonRepudiationRequired = true;
 
-		/** Key = extensionName */
-		union{null,map<ExtensionMessageMap>} extensions = null;
+		/** Key = variantName */
+		union{null,map<VariantMessageMap>} variants = null;
 	}
 	
-	@extends("com.x.ocl.umm.Action")
+	@extends("com.x.ocl.Action")
 	record NotifyAction {
 		Action _base;
 		long timeToAcknowledgeReceipt; //seconds
@@ -53,19 +53,19 @@ protocol BusinessChoreography {
 				
 	}
 	
-	@extends("com.x.ocl.umm.NotifyAction")
+	@extends("com.x.ocl.NotifyAction")
 	record RequestAction {
 		NotifyAction _base;
 		
 		long timeToRespond; //second
 	}
 	
-	@extends("com.x.ocl.umm.NotifyAction")
+	@extends("com.x.ocl.NotifyAction")
 	record ResponseAction {
 		NotifyAction _base;
 	}
 	
-	@extends("com.x.ocl.umm.Action")
+	@extends("com.x.ocl.Action")
 	record InformAction {
 		Action _base;
 	}
@@ -75,12 +75,12 @@ protocol BusinessChoreography {
 		string calledRoleName;
 	}
 	
-	@extends("com.x.ocl.umm.RoleBinding")
+	@extends("com.x.ocl.RoleBinding")
 	record TransactionRoleBinding {
 		RoleBinding _base;
 	}
 	
-	@extends("com.x.ocl.umm.RoleBinding")
+	@extends("com.x.ocl.RoleBinding")
 	record CollaborationRoleBinding {
 		RoleBinding _base;
 	}
@@ -98,12 +98,12 @@ protocol BusinessChoreography {
 		union{null,array<FlowTransition>} next = null;
 	}
 	
-	@extends("com.x.ocl.umm.FlowElement")
+	@extends("com.x.ocl.FlowElement")
 	record SyncPoint {
 		FlowElement _base;
 	}
 	
-	@extends("com.x.ocl.umm.FlowElement")
+	@extends("com.x.ocl.FlowElement")
 	record StartPoint {
 		FlowElement _base;
 	}
@@ -113,20 +113,22 @@ protocol BusinessChoreography {
 		FAILURE
 	}
 	
-	@extends("com.x.ocl.umm.FlowElement")
+	@extends("com.x.ocl.FlowElement")
 	record EndPoint {
 		FlowElement _base;
 		CollaborationState state;
 	}
 	
-	@extends("com.x.ocl.umm.FlowElement")
+	@extends("com.x.ocl.FlowElement")
 	record CollaborationCall {
 		FlowElement _base;
 		
 		string collaborationName;
 
-		/** Use a particular extension if specified */
-		union{null,string} extensionName = null;
+		/** 
+		 * Key=calling Collaboration variantName, Value=called Collaboration variantName
+		 */
+		union{null,map<string>} variantMap = null;
 		
 		/**
 		 * Map of the calling collaboration's role name to the called collaboration role name.
@@ -134,13 +136,15 @@ protocol BusinessChoreography {
 		array<CollaborationRoleBinding> bindings;
 	}
 	
-	@extends("com.x.ocl.umm.FlowElement")
+	@extends("com.x.ocl.FlowElement")
 	record TransactionCall {
 		FlowElement _base;
 		string transactionName;
 		
-		/** Use a particular extension if specified */
-		union{null,string} txnExtensionName = null;
+		/** 
+		 * Key=calling Collaboration.variantName, Value=txn variantName
+		 */
+		union{null,map<string>} variantMap = null;
 		
 		/**
 		 * BusinessProcess.name that is bound to a TransactionRole.name
@@ -166,10 +170,10 @@ protocol BusinessChoreography {
 	record Transaction {
 		string name;
 		/** 
-		 * A list of known extension of this collaboration. Each extension
+		 * A list of known variations of this collaboration. Each variation
 		 * impacts the type of message used. e.g. ConsumerGood, Chemical, Hospitality, 
 		 */
-		array<string> extensionNames;
+		array<string> variantNames;
 		
 		TransactionPattern pattern;
 		
@@ -191,10 +195,10 @@ protocol BusinessChoreography {
 		string name;
 		
 		/** 
-		 * A list of known extension of this collaboration. Each extension
+		 * A list of known variation of this collaboration. Each variant
 		 * impacts the type of message used. e.g. ConsumerGood, Chemical, Hospitality, 
 		 */
-		array<string> extensionNames;
+		array<string> variantNames;
 		
 		array<CollaborationRole> participants; //min of 2
 

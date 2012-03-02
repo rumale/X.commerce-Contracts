@@ -1,4 +1,4 @@
-@namespace("com.x.ocl.umm")
+@namespace("com.x.ocl")
 protocol BusinessRequirements {
 	import idl "UMMBase.avdl";
 
@@ -56,7 +56,7 @@ protocol BusinessRequirements {
 		map<string> postConditions;
 	}
 
-	@extends("com.x.ocl.umm.Package")
+	@extends("com.x.ocl.Package")
 	record BusinessArea {
 		
 		union{null,string} parentArea = null;
