@@ -321,5 +321,12 @@ protocol Marketplace {
 		array<com.x.ocl.Error> errors;
 	}
 	
-
+	@topic("/marketplace/order/notifyBacklog/check")
+	record CheckOrderNotifyBacklog {
+		/**  
+		 * Notification to the Marketplace Adapter to check for
+		 * orders that are in the notify backlog that might not
+		 * have been notified to the system.
+		 */
+	}
 }
