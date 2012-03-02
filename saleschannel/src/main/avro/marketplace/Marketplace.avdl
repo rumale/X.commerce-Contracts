@@ -300,10 +300,11 @@ protocol Marketplace {
 	@topic("/marketplace/order/updateShipment")
 	@version("1.0.0")
 	record UpdateShipment {
-		array<string> trackingNumbers;
+		array<com.x.ocl.TrackingDetail> trackingNumbers;
 		string orderNumber;
 		string shipmentId;
 		union{null,string} sellerAccountId = null;
+		string SourceId;
 	}
 	
 	@topic("/marketplace/order/updateShipmentSucceeded")
