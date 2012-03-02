@@ -135,7 +135,7 @@ protocol Common {
 
 		/** The channel where this order originated. */
 		string source;
-		string sourceId;
+		string @query("true") sourceId;
 		OrderStatus @query("true") status;
 		
 		OrderCustomerInfo customer;
