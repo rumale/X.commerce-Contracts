@@ -101,6 +101,8 @@ protocol ProductInformationManagementCapability
         union {null, com.x.ocl.CurrencyAmount} MAP = null;
         // variation attributes, the list must match the variationAttributeIds in Product 
         union {null, array<ProductAttributeValue>} attributes = null;
+        // SKU specific images 
+        union {null, array<ProductImage>} images = null;
     }
 
     //-------------------------------------------------------------------
