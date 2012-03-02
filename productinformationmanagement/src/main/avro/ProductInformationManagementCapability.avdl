@@ -64,7 +64,7 @@ protocol ProductInformationManagementCapability
     }
  	
     record CustomAttributeValue {
- 		union {null, BooleanAttributeValue, StringAttributeValue, MeasurementAttributeValue} attributeValue = null;
+ 		union {null, BooleanAttributeValue, StringAttributeValue, MeasurementAttributeValue} value = null;
     }
  	
     record ProductTypeAttributeValue
@@ -76,7 +76,7 @@ protocol ProductInformationManagementCapability
     record ProductAttributeValue
     {
         string attributeId;
-        union {ProductTypeAttributeValue, CustomAttributeValue} value;
+        union {ProductTypeAttributeValue, CustomAttributeValue} attributeValue;
     }
   
     record ProductImage
