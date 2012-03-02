@@ -73,6 +73,7 @@ protocol Xcommerce {
 		 * NOTE: for named types, use string to reference them 
 		 */
 		map<union{string,Primitive,CollectionType,UnionType,FixedType}> members;
+		map<boolean> required; //Use same key as members map
 	}
 	
 	/** A specialized message used for message acknowledgment. */
