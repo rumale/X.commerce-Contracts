@@ -1,6 +1,6 @@
 @namespace("com.x.ocl")
 protocol BusinessRequirements {
-	/** A package is 
+	/** A package is a collection of business artifacts */ 
 	@abstract("true")
 	record Package {
 		string version;
