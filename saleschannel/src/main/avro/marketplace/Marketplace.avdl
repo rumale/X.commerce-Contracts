@@ -277,7 +277,7 @@ protocol Marketplace {
 
 	@topic("/marketplace/order/search")
 	@version("1.0.0")
-	record MarketplaceSearchOrders {
+	record SearchMarketplaceOrder {
 		union{null,string} siteCode = null;
 		union{null,string} sellerAccountId = null;
 		union{null,com.x.ocl.Query} @QueryType("com.x.ocl.Order") query = null;
@@ -285,15 +285,15 @@ protocol Marketplace {
 
 	@topic("/marketplace/order/searchSucceeded")
 	@version("1.0.0")
-	record MarketplaceSearchOrdersSucceeded {
+	record SearchMarketplaceSearchOrderSucceeded {
 		array<com.x.ocl.Order> orders;
-		MarketplaceSearchOrders marketplaceSearchOrders;
+		SearchMarketplaceOrder searchMarketplaceOrder;
 	}
 
 	@topic("/marketplace/order/searchFailed")
 	@version("1.0.0")
-	record MarketplaceSearchOrdersFailed {
-		MarketplaceSearchOrders marketplaceSearchOrders;
+	record SearchMarketplaceOrderFailed {
+		SearchMarketplaceOrder searchMarketplaceOrder;
 		array<com.x.ocl.Error> errors;
 	}
 	
