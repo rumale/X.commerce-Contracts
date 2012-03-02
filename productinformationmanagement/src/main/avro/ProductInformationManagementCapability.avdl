@@ -79,10 +79,15 @@ protocol ProductInformationManagementCapability
         union {ProductTypeAttributeValue, CustomAttributeValue} attributeValue;
     }
   
-    record ProductImage
+    record Image
     {
         string url;
-        // TODO: Other image attributes
+	// height in pixel
+	union {null, int} height = null;
+	// width in pixel
+	union {null, int} width = null;
+	union {null, LocalizedString} label = null;
+	union {null, LocalizedString} altText = null;
     }
 
     //
@@ -101,7 +106,7 @@ protocol ProductInformationManagementCapability
         // variation attributes, the list must match the variationAttributeIds in Product 
         union {null, array<ProductAttributeValue>} attributes = null;
         // SKU specific images 
-        union {null, array<ProductImage>} images = null;
+        union {null, array<Image>} images = null;
     }
 
     //-------------------------------------------------------------------
@@ -117,7 +122,7 @@ protocol ProductInformationManagementCapability
         // Minimal advertisement price
         union {null, com.x.ocl.CurrencyAmount} MAP = null;
         // product images 
-        union {null, array<ProductImage>} images = null;
+        union {null, array<Image>} images = null;
         // product attributes 
         union {null, array<ProductAttributeValue>} attributes = null;
         // defines the ids of variation variables 
