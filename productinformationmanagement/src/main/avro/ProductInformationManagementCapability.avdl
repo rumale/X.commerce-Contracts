@@ -232,7 +232,8 @@ protocol ProductInformationManagementCapability
     @version("1.0.0")
     record SearchProduct
     {
-        com.x.ocl.Query query;
+	
+	com.x.ocl.Query @QueryType("com.x.pim.v1.Product") query;
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
         union { null, array<com.x.ocl.Locale> } locales = null;
@@ -246,7 +247,7 @@ protocol ProductInformationManagementCapability
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
         union { null, array<com.x.ocl.Locale> } locales = null;
-        com.x.ocl.QueryResult queryResult;
+        array<Product> products;
     }
  
     @topic("/pim/product/searchFailed")
