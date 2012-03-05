@@ -14,7 +14,9 @@ protocol Common {
 		NEW,
 		ON_HOLD,
 		BACKORDERED,
+		PENDING_PAYMENT,
 		READYTOSHIP,
+		PARTIALLY_SHIPPED,
 		SHIPPED,
 		PROCESSING_RETURN,
 		EXCHANGED,
@@ -76,7 +78,7 @@ protocol Common {
 	}
 	
 	record TrackingDetail {
-		array<string> trackingNumber;
+		array<string> trackingNumbers;
 		union{null,string} carrier = null;
 		union{null,string} service = null;
 		union{null,ShippingServiceType} serviceType = null;
