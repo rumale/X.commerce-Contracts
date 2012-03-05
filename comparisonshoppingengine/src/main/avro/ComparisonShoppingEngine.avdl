@@ -5,6 +5,7 @@
 	the messages that are part of the CSE domain.
 */
 protocol ComparisonShoppingEngine {
+	import idl "Error.avdl";
 	import idl "Offer.avdl";
 	import idl "CurrencyAmount.avdl";
 
@@ -77,6 +78,47 @@ protocol ComparisonShoppingEngine {
 		string id;
 		array<VariationValue> values;
 	}
+		record CseAccount {
+		union{null, string} xId = null;   // ID provided by X.commerce
+		union{null, string} cseAcccountId;
+		union{null, long} authorizationExpiration = null;
+		
+	}
+	
+	@topic("/cse/account/delete")
+	@version("1.0.0")
+	record DeleteAccount {
+	}
+
+	@topic("/cse/account/deleted")
+	@version("1.0.0")
+	record AccountDeleted {
+		string cseAccountId;
+	}
+
+	@topic("/cse/account/deleteFailed")
+	@version("1.0.0")
+	record DeleteAccountFailed {
+		union{null, string} cseAccountId;
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/cse/account/search")
+	@version("1.0.0")
+	record SearchAccount {
+	}
+
+	@topic("/cse/account/searchSucceeded")
+	@version("1.0.0")
+	record SearchAccountSucceeded {
+		array<CseAccount> accounts;
+	}
+
+	@topic("/cse/account/searchFailed")
+	@version("1.0.0")
+	record SearchAccountFailed {
+		array<com.x.ocl.Error> errors;
+	}
 	
 	@extends("com.x.ocl.Offer")
 	record CseOffer {
@@ -102,12 +144,23 @@ protocol ComparisonShoppingEngine {
    		com.x.ocl.CurrencyAmount cpc;
 	}
 	
-	@topic("/cse/offer/create /cse/offer/created")
+	@topic("/cse/offer/create")
 	@version("1.0.0")
 	record CreateOffer {
 		array<com.x.ocl.Offer> offers; 
-		ProductFeedType feedType;
 		string siteId;
+	}
+	
+	@topic("/cse/offer/created")
+	@version("1.0.0")
+	record OfferCreated {
+		array<com.x.ocl.Offer> offers;
+	}
+
+	@topic("/cse/offer/createFailed")
+	@version("1.0.0")
+	record CreateOfferFailed {
+		array<com.x.ocl.Error> errors;
 	}
 	
 }
