@@ -8,9 +8,9 @@ protocol PaidSearchAdvertisingCapability
 	import idl "Error.avdl";
 	import idl "Campaign.avdl";
 	import idl "Query.avdl";
-	import idl "Locale.avdl";
 	import idl "CurrencyAmount.avdl";
 	import idl "Contact.avdl";
+	import idl "Report.avdl";
 	
 	/**
 	 * Advertiser Account
@@ -117,39 +117,9 @@ protocol PaidSearchAdvertisingCapability
 	 * Type of report. This determines the fields that can be used in the 
 	 * Selector
 	 */
-	enum ReportType
+	enum PsaReportType
 	{
 		CAMPAIGN_PERFORMANCE_REPORT
-	}
-
-	/**
-	 * Report definition
-	 */
-	record ReportDefinition
-	{
-		/**
-		 * Locale in which the report should be returned. i.e. en_US
-		 */
-		union {null, com.x.ocl.Locale} locale = null;
-
-		/**
-		 * Type of the report
-		 */
-		ReportType reportType;
-
-		/**
-		 * Query that describes the report
-		 */
-		com.x.ocl.Query query;
-	}
-
-	/**
-	 * Report
-	 */
-	record Report
-	{
-		ReportDefinition reportDefinition;
-		com.x.ocl.QueryResult result;
 	}
 
 	/**
@@ -342,21 +312,24 @@ protocol PaidSearchAdvertisingCapability
 	@version("1.0.0") 
 	record GetReport
 	{
-		ReportDefinition reportDefinition;
+		PsaReportType reportType;
+		com.x.ocl.ReportDefinition reportDefinition;
 	}
 
 	@topic("/paidSearchAdvertising/report/getSucceeded") 
 	@version("1.0.0") 
 	record GetReportSucceeded
 	{
-		Report report;
+		PsaReportType reportType;
+		com.x.ocl.Report report;
 	}
 
 	@topic("/paidSearchAdvertising/report/getFailed") 
 	@version("1.0.0") 
 	record GetReportFailed
 	{
-		ReportDefinition reportDefinition;
+		PsaReportType reportType;
+		com.x.ocl.ReportDefinition reportDefinition;
 		array<com.x.ocl.Error> errors;
 	}
 

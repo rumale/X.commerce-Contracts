@@ -7,6 +7,7 @@ protocol LoyaltyMarketing
 	import idl "Campaign.avdl";
 	import idl "Query.avdl";
 	import idl "Contact.avdl";
+	import idl "Report.avdl";
 
 	record Points {
 		string type; //i.e. "X_Airline_FrequentFlyerMiles" or "BankOfX_Reward"
@@ -49,6 +50,10 @@ protocol LoyaltyMarketing
 		
 		string balanceType; //A value equivalent to Balance.type
 	}
+	
+	enum LoyaltyReportType {
+		LOYALTY_CAMPAIGN_PERFORMANCE
+	}
 
 	@extends("com.x.ocl.Campaign")
 	record LoyaltyCampaign {
@@ -82,7 +87,7 @@ protocol LoyaltyMarketing
 	 * of any active campaign.
 	 */
 	record Reward {
-		string rewardId;
+		union{null,string} id = null; //Empty if not yet created
 		string customerId;
 		array<Event> events;
 		
@@ -206,6 +211,25 @@ protocol LoyaltyMarketing
 		Event event;
 		union{null,Reward} reward; //The reward that resulted from the event being created
 	}
+	
+	@topic("/loyalty/event/reward/predict")
+	@version("0.0.1")
+	record PredictEventReward {
+		array<Event> events;
+	}
+	
+	@topic("/loyalty/event/reward/predicted")
+	@version("0.0.1")
+	record EventRewardPredicted {
+		Event event;
+		union{null,Reward} reward; //If no, it means this event does not result in any reward
+	}
+	
+	@topic("/loyalty/event/reward/predictFailed")
+	@version("0.0.1")
+	record PredictEventRewardFailed {
+		array<Event> events;
+	}
 
 	@topic("/loyalty/event/createFailed")
 	@version("0.0.1")
@@ -226,7 +250,7 @@ protocol LoyaltyMarketing
 		Reward reward;
 	}
 	
-	@topic("/loyalty/reard/createFailed")
+	@topic("/loyalty/reward/createFailed")
 	@version("0.0.1")
 	record CreateRewardFailed {
 		array<RewardError> errors;
@@ -248,6 +272,28 @@ protocol LoyaltyMarketing
 	@topic("/loyalty/reward/searchFailed")
 	@version("0.0.1")
 	record SearchRewardFailed {
+		array<com.x.ocl.Error> errors;
+	}
+
+	@topic("/loyalty/report/get") 
+	@version("1.0.0") 
+	record GetReport {
+		LoyaltyReportType reportType;
+		com.x.ocl.ReportDefinition reportDefinition;
+	}
+
+	@topic("/loyalty/report/getSucceeded") 
+	@version("1.0.0") 
+	record GetReportSucceeded {
+		LoyaltyReportType reportType;
+		com.x.ocl.Report report;
+	}
+
+	@topic("/loyalty/report/getFailed") 
+	@version("1.0.0") 
+	record GetReportFailed {
+		LoyaltyReportType reportType;
+		com.x.ocl.ReportDefinition reportDefinition;
 		array<com.x.ocl.Error> errors;
 	}
 }
