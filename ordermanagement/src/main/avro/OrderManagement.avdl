@@ -117,6 +117,7 @@ protocol OrderManagement {
 		string orderNumber;
 		string shipmentId;
 		array<com.x.ocl.TrackingDetail> trackingDetails;
+		union{null,string} siteCode = null;
 	}
 
 	/** An Order Management capability will be listening for this event. */
