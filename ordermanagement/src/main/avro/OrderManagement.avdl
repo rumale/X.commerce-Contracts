@@ -116,7 +116,7 @@ protocol OrderManagement {
 		union{null,string} accountId = null;
 		string orderNumber;
 		string shipmentId;
-		array<com.x.ocl.TrackingDetail> trackingDetails;
+		union{null, array<com.x.ocl.TrackingDetail>} trackingDetails;
 		union{null,string} siteCode = null;
 	}
 
