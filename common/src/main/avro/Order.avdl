@@ -78,7 +78,7 @@ protocol Common {
 	}
 	
 	record TrackingDetail {
-		array<string> trackingNumbers;
+		union{null, array<string>} trackingNumbers;
 		union{null,string} carrier = null;
 		union{null,string} service = null;
 		union{null,ShippingServiceType} serviceType = null;
