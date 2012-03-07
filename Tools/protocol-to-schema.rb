@@ -32,7 +32,14 @@ def write_type(buf, schema, delim, written, namespace = nil)
 
       namespace = schema.namespace if schema.namespace
       
-      buf.print "{\"type\":\"record\",\"name\":\"#{schema.name}\", \"version\":\"#{schema.props['version']}\""
+      buf.print "{\"type\":\"record\",\"name\":\"#{schema.name}\""
+
+      ['version', 'topic'].each do |prop|
+        if schema.props.has_key? prop
+          buf.print ", \"#{prop}\":\"#{schema.props[prop]}\""
+        end
+      end
+
       if namespace
         buf.print ",\"namespace\":\"#{namespace}\""
       end
