@@ -51,6 +51,11 @@ def write_type(buf, schema, delim, written, namespace = nil)
         buf.print delim
         buf.print "{\"name\":\"#{field.name}\",\"type\":"
         write_type(buf, field.type, '', written)
+
+        field.props.each do |k,v|
+          buf.print ", \"#{k}\": \"#{v}\""
+        end
+
         buf.print '}'
         delim = ','
       end
@@ -117,7 +122,7 @@ def process_protocol(protocol_file_name)
       req.basic_auth ARGV[0], ARGV[1]
       req.body = buf.read
       resp, data = http.request req
-      puts "done: #{resp.code} #{resp.code_type}"
+      puts "done: #{resp.code} #{resp.code_type} #{data}"
     end
   end
 end
