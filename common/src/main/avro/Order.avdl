@@ -98,7 +98,7 @@ protocol Common {
 		union{null,com.x.ocl.CurrencyAmount} packagingHandlingCost = null;
 		union{null,com.x.ocl.CurrencyAmount} surcharge = null;  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
 
-		union{null,TrackingDetail} trackingDetail = null;
+		union{null,array<TrackingDetail>} trackingDetails = null;
 		union{null,string} recipientName = null;
 	}
 
