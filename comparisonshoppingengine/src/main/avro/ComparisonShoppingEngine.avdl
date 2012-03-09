@@ -132,7 +132,7 @@ protocol ComparisonShoppingEngine {
         //Only used if cse web-auth flow supports it
         union{null, string} cseAccountId = null;
 
-        array<Error> errors;
+        array<com.x.ocl.Error> errors;
     }
 
 	@topic("/cse/authorization/completed")
@@ -151,7 +151,7 @@ protocol ComparisonShoppingEngine {
         //any extra credentials needed to complete the process
         union{null, Credential} cred = null;
 
-        array<Error> errors;
+        array<com.x.ocl.Error> errors;
     }
 	
 	@topic("/cse/account/delete")
