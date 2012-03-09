@@ -85,6 +85,16 @@ protocol ComparisonShoppingEngine {
 		union{null, long} authorizationExpiration = null;
 	}
 	
+	/*
+		Each cse adapter will require a different set of
+		credential keys with its own name/value. Please
+		check the cse adapter documentation for specific
+		requirements.
+	*/
+	record Credential {
+		map<string> properties;
+	}
+
 	@topic("/cse/authorization/init")
 	@version("1.0.0")
 	record InitAuthorization {
