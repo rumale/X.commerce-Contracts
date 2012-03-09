@@ -154,7 +154,7 @@ protocol Common {
 		union{null,com.x.ocl.CurrencyAmount} totalTaxAmount = null;
 		union{null,com.x.ocl.CurrencyAmount} totalDiscountAmount = null;
 		union{null,com.x.ocl.CurrencyAmount} totalShippingFees = null;
-		union{null,OrderPaymentInfo} paymentMethod = null;
+		union{null,array<OrderPaymentInfo>} paymentMethods = null;
 		
 		array<OrderItem> orderItems;
 		
