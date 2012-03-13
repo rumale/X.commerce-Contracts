@@ -195,8 +195,8 @@ protocol ComparisonShoppingEngine {
    		string title;
    		string description;
    		string manufacturer;
-   		string mpn;
-   		string gtin;
+   		union{null, string} mpn;
+   		union{null, string} gtin;
    		string brand;
    		string category;
    		union{null, string} xProductTypeId = null;  // Product type id as defined by the taxonomy manager.
@@ -205,9 +205,9 @@ protocol ComparisonShoppingEngine {
    		string link;
    		com.x.ocl.CurrencyAmount originalPrice;
    		AvailabilityType availability;
-   		TaxRate taxRate;
-   		Shipping shipping;
-   		double shippingWeight;
+   		union{null, TaxRate} taxRate;
+   		union{null, Shipping} shipping;
+   		union{null, double} shippingWeight;
    		array<ProductAttribute> attributes;
    		array<Variation> variations;
    		string offerId;
@@ -218,6 +218,7 @@ protocol ComparisonShoppingEngine {
 	@version("1.0.0")
 	record CreateOffer {
 		array<com.x.ocl.Offer> offers;
+		ProductFeedType feedType;
 		string xAccountId; 
 		string siteId;
 	}
