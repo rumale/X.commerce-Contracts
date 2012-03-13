@@ -61,32 +61,32 @@ protocol Customer {
 	}
 	
 	@topic("/customer/create")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CustomerCreate {
 		Customer c;
 	}
 	
 	@topic("/customer/created")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CustomerCreated {
 		Customer c;
 	}
 	
 	@topic("/customer/createFailed")
-    @version("1.0.0")
+    @version("2.0.0")
 	record CustomerCreateFailure {
 		Customer c;
 		array<com.x.ocl.Error> errors;
 	}
 	
     @topic("/customer/update")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CustomerUpdate {
 		Customer c;
 	}
 	
 	@topic("/customer/updated")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CustomerUpdated {
 		Customer c;
 	}
@@ -156,20 +156,20 @@ protocol Customer {
 	}
 	
     @topic("/customer/search")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchCustomer {
 		com.x.ocl.Query query;
 	}
 
 	@topic("/customer/searchSucceeded")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchCustomerSucceeded {
 		array<com.x.ocl.QueryResult> customers;
 		union{null,com.x.ocl.Query} query = null;
 	}
 
 	@topic("/customer/searchFailed")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchCustomerFailed {
 		union{null,com.x.ocl.Query} query = null;
 		array<com.x.ocl.Error> errors;

@@ -92,14 +92,14 @@ protocol OfferManagementCapability
 	}
  
 	@topic("/offer/search")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchOffer
 	{
 		com.x.ocl.Query query;
 	}
  
 	@topic("/offer/searchSucceeded")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchOfferSucceeded
 	{
 		com.x.ocl.Query query;
@@ -107,7 +107,7 @@ protocol OfferManagementCapability
 	}
  
 	@topic("/offer/searchFailed")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchOfferFailed
 	{
 		com.x.ocl.Query query;

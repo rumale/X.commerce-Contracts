@@ -126,7 +126,7 @@ protocol PaidSearchAdvertisingCapability
 	 * Create an Advertiser Account
 	 */
 	@topic("/paidSearchAdvertising/advertiserAccount/create") 
-	@version("1.0.0") 
+	@version("2.0.0") 
 	record CreateAdvertiserAccount
 	{
 		AdvertiserAccount advertiserAccount;
@@ -136,7 +136,7 @@ protocol PaidSearchAdvertisingCapability
 	 * Successful creation of an Advertiser Account
 	 */
 	@topic("/paidSearchAdvertising/advertiserAccount/created") 
-	@version("1.0.0") 
+	@version("2.0.0") 
 	record AdvertiserAccountCreated
 	{
 		AdvertiserAccount advertiserAccount;
@@ -146,7 +146,7 @@ protocol PaidSearchAdvertisingCapability
 	 * Advertiser Account creation failed
 	 */
 	@topic("/paidSearchAdvertising/advertiserAccount/createFailed") 
-	@version("1.0.0") 
+	@version("2.0.0") 
 	record CreateAdvertiserAccountFailed
 	{
 		AdvertiserAccount advertiserAccount;
@@ -188,7 +188,7 @@ protocol PaidSearchAdvertisingCapability
 	 * Retrieve a campaign.
 	 */
 	@topic("/paidSearchAdvertising/campaign/search") 
-	@version("1.0.0") 
+	@version("1.0.1") 
 	record SearchCampaign
 	{
 		union {null, com.x.ocl.Query} query = null;
@@ -198,7 +198,7 @@ protocol PaidSearchAdvertisingCapability
 	 * Successful retrieval of a campaign
 	 */
 	@topic("/paidSearchAdvertising/campaign/searchSucceeded") 
-	@version("1.0.0") 
+	@version("1.0.1") 
 	record SearchCampaignSucceeded
 	{
 		array<com.x.ocl.Campaign> campaigns;
@@ -209,7 +209,7 @@ protocol PaidSearchAdvertisingCapability
 	 * Campaign retrieval failed
 	 */
 	@topic("/paidSearchAdvertising/campaign/searchFailed") 
-	@version("1.0.0") 
+	@version("1.0.1") 
 	record SearchCampaignFailed
 	{
 		union {null, com.x.ocl.Query} query = null;
@@ -309,7 +309,7 @@ protocol PaidSearchAdvertisingCapability
 	}
 
 	@topic("/paidSearchAdvertising/report/get") 
-	@version("1.0.0") 
+	@version("2.0.0") 
 	record GetReport
 	{
 		PsaReportType reportType;
@@ -317,7 +317,7 @@ protocol PaidSearchAdvertisingCapability
 	}
 
 	@topic("/paidSearchAdvertising/report/getSucceeded") 
-	@version("1.0.0") 
+	@version("2.0.0") 
 	record GetReportSucceeded
 	{
 		PsaReportType reportType;
@@ -325,7 +325,7 @@ protocol PaidSearchAdvertisingCapability
 	}
 
 	@topic("/paidSearchAdvertising/report/getFailed") 
-	@version("1.0.0") 
+	@version("2.0.0") 
 	record GetReportFailed
 	{
 		PsaReportType reportType;

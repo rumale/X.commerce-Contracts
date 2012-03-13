@@ -31,21 +31,21 @@ protocol OrderManagement {
 	 * through a UI channel.
 	 */
 	@topic("/order/create")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CreateOrder {
 		com.x.ocl.Order order;
 		union{null,string} accountId = null;
 	}
 	
 	@topic("/order/created")
-	@version("1.0.0")
+	@version("2.0.0")
 	record OrderCreated {
 		com.x.ocl.Order order;
 		union{null,string} accountId = null;
 	}
 	
 	@topic("/order/createFailed")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CreateOrderFailed {
 		com.x.ocl.Order order;
 		union{null,string} accountId = null;
@@ -53,19 +53,19 @@ protocol OrderManagement {
 	}
 			
 	@topic("/order/update")
-	@version("1.0.0")
+	@version("2.0.0")
 	record UpdateOrder {
 		com.x.ocl.Order order;
 	}
 	
 	@topic("/order/updated")
-	@version("1.0.0")
+	@version("2.0.0")
 	record OrderUpdated {
 		com.x.ocl.Order order;
 	}
 	
 	@topic("/order/updateFailed")
-	@version("1.0.0")
+	@version("2.0.0")
 	record UpdateOrderFailed {
 		com.x.ocl.Order order;
 		array<com.x.ocl.Error> errors;
@@ -78,7 +78,7 @@ protocol OrderManagement {
 	}
 	
 	@topic("/order/cancelled")
-	@version("1.0.0")
+	@version("2.0.0")
 	record OrderCancelled {
 		com.x.ocl.Order order;
 	}
@@ -91,27 +91,27 @@ protocol OrderManagement {
 	}
 
 	@topic("/order/search")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchOrders {
 		union{null,com.x.ocl.Query} @queryType("com.x.ocl.Order") query = null;
 	}
 
 	@topic("/order/searchSucceeded")
-	@version("1.0.0")
+	@version("2.0.0")
 	record SearchOrdersSucceeded {
 		array<com.x.ocl.Order> @paginated("true") orders;
 		union{null,com.x.ocl.Query} query = null;
 	}
 
 	@topic("/order/searchFailed")
-	@version("1.0.0")
+	@version("1.0.1")
 	record SearchOrdersFailed {
 		union{null,com.x.ocl.Query} query = null;
 		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/order/shipment/shipped")
-	@version("1.0.0")
+	@version("2.0.0")
 	record OrderShipmentShipped {
 		union{null,string} accountId = null;
 		string orderNumber;
@@ -133,7 +133,7 @@ protocol OrderManagement {
 	 * 3rd party capability to calculate the tax on an order. 
 	 */
 	@topic("order/tax/calculate")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CalculateOrderTax {
 		com.x.ocl.Order order;
 	}
@@ -146,7 +146,7 @@ protocol OrderManagement {
 	}
 	
 	@topic("order/tax/calculateFailed")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CalculateOrderTaxFailed {
 		com.x.ocl.Order order;
 		array<com.x.ocl.Error> errors;

@@ -106,77 +106,77 @@ protocol LoyaltyMarketing
 	}
 	
 	@topic("/loyalty/campaign/search")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchCampaign {
 		com.x.ocl.Query query;
 	}
 	
 	@topic("/loyalty/campaign/searchSucceeded")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchCampaignSucceeded {
 		com.x.ocl.Query query;
 		array<com.x.ocl.Campaign> campaigns;
 	}
 	
 	@topic("/loyalty/campaign/searchFailed")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchCampaignFailed {
 		com.x.ocl.Query query;
 		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/loyalty/customer/create")
-	@version("0.0.1")
+	@version("0.0.2")
 	record CreateCustomer {
 		array<Customer> customers;
 	}
 	
 	@topic("/loyalty/customer/created")
-	@version("0.0.1")
+	@version("0.0.2")
 	record CustomerCreated {
 		array<Customer> customers;
 	}
 	
 	@topic("/loyalty/customer/createFailed")
-	@version("0.0.1")
+	@version("0.0.2")
 	record CreateCustomerFailed {
 		array<LoyaltyCustomerError> errors;
 	}
 	
 	@topic("/loyalty/customer/search")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchCustomer {
 		com.x.ocl.Query query;
 	}
 	
 	@topic("/loyalty/customer/searchSucceeded")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchCustomerSucceeded {
 		com.x.ocl.Query query;
 		array<Customer> customers;
 	}
 	
 	@topic("/loyalty/customer/searchFailed")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchCustomerFailed {
 		com.x.ocl.Query query;
 		array<com.x.ocl.Error> errors;
 	}
 
 	@topic("/loyalty/customer/update")
-	@version("0.0.1")
+	@version("0.0.2")
 	record UpdateCustomer {
 		array<Customer> customers;
 	}
 	
 	@topic("/loyalty/customer/updated")
-	@version("0.0.1")
+	@version("0.0.2")
 	record CustomerUpdated {
 		array<Customer> customers;
 	}
 	
 	@topic("/loyalty/customer/updateFailed")
-	@version("0.0.1")
+	@version("0.0.2")
 	record UpdateCustomerFailed {
 		array<LoyaltyCustomerError> errors;
 	}
@@ -257,13 +257,13 @@ protocol LoyaltyMarketing
 	}
 
 	@topic("/loyalty/reward/search")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchReward {
 		com.x.ocl.Query query;
 	}
 	
 	@topic("/loyalty/reward/searchSucceeded")
-	@version("0.0.1")
+	@version("0.0.2")
 	record SearchRewardSucceeded {
 		com.x.ocl.Query query;
 		array<Reward> rewards;
