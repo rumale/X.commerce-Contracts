@@ -1,7 +1,6 @@
 @namespace("com.x.loyalty.v1")
  
-protocol LoyaltyMarketing
-{
+protocol LoyaltyMarketing {
 	import idl "Error.avdl";
 	import idl "EmbeddedObject.avdl";
 	import idl "Campaign.avdl";

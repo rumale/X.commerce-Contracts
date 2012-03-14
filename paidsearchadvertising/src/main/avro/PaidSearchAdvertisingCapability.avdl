@@ -3,8 +3,7 @@
 /**
  * Message definitions for the paid search advertising
  */
-protocol PaidSearchAdvertisingCapability 
-{
+protocol PaidSearchAdvertisingCapability {
 	import idl "Error.avdl";
 	import idl "Campaign.avdl";
 	import idl "Query.avdl";

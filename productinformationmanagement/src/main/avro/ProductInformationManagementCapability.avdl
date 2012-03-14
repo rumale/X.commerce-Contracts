@@ -1,7 +1,6 @@
 @namespace("com.x.pim.v1")
  
-protocol ProductInformationManagementCapability 
-{
+protocol ProductInformationManagementCapability {
     import idl "CurrencyAmount.avdl";
     import idl "Error.avdl";
     import idl "Query.avdl";

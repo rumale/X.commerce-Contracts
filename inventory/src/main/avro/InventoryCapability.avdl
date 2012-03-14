@@ -1,7 +1,6 @@
 @namespace("com.x.inventory.v1")
  
-protocol InventoryCapability 
-{
+protocol InventoryCapability {
 	import idl "Error.avdl";
 	import idl "Query.avdl";
 

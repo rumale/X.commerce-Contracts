@@ -1,7 +1,6 @@
 @namespace("com.x.offermanagement.v1")
  
-protocol OfferManagementCapability 
-{
+protocol OfferManagementCapability {
 	import idl "Error.avdl";
 	import idl "Query.avdl";
 	import idl "Offer.avdl";
