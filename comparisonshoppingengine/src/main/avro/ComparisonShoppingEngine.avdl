@@ -157,18 +157,19 @@ protocol ComparisonShoppingEngine {
 	@topic("/cse/account/delete")
 	@version("1.0.0")
 	record DeleteAccount {
+		string xAccountId;
 	}
 
 	@topic("/cse/account/deleted")
 	@version("1.0.0")
 	record AccountDeleted {
-		string cseAccountId;
+		string xAccountId;
 	}
 
 	@topic("/cse/account/deleteFailed")
 	@version("1.0.0")
 	record DeleteAccountFailed {
-		union{null, string} cseAccountId;
+		union{null, string} xAccountId;
 		array<com.x.ocl.Error> errors;
 	}
 
