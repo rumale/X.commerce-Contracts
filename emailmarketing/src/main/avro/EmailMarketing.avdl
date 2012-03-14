@@ -297,25 +297,25 @@ protocol EmailMarketing {
 	/** THE BELOW TYPES ARE USED AS MESSAGES */
 	
 	@topic("/emailMarketing/contact/create")
-	@version("0.0.2")
+	@version("0.0.3")
 	record CreateContact {
-		array<EmailContact> listOfContacts;
+		array<com.x.ocl.Email> listOfContacts;
 		
 		/** Optionally subscribe these contacts to the list(s) if provided */
 		array<string> listIds;
 	}
 	
 	@topic("/emailMarketing/contact/created")
-	@version("0.0.2")
+	@version("0.0.3")
 	@event("true")
 	record ContactCreated {
-		array<EmailContact> listOfContacts;
+		array<com.x.ocl.Email> listOfContacts;
 	}
 	
 	@topic("/emailMarketing/contact/createFailed")
-	@version("0.0.2")
+	@version("0.0.3")
 	record CreateContactFailed {
-		array<EmailContact> listOfContacts;		
+		array<com.x.ocl.Email> listOfContacts;		
 		array<com.x.ocl.Error> errors;
 	}
 	
@@ -326,10 +326,10 @@ protocol EmailMarketing {
 	}
 	
 	@topic("/emailMarketing/contact/searchSucceeded")
-	@version("0.0.2")
+	@version("0.0.3")
 	record SearchContactSucceeded {
 		ContactSearchFilter filter;
-		array<EmailContact> listOfContacts;
+		array<com.x.ocl.Email> listOfContacts;
 	}
 	
 	@topic("/emailMarketing/contact/searchFailed")
@@ -339,22 +339,22 @@ protocol EmailMarketing {
 	}
 	
 	@topic("/emailMarketing/contact/update")
-	@version("0.0.2")
+	@version("0.0.3")
 	record UpdateContact {
-		array<EmailContact> listOfContacts;
+		array<com.x.ocl.Email> listOfContacts;
 	}
 	
 	@topic("/emailMarketing/contact/updated")
-	@version("0.0.2")
+	@version("0.0.3")
 	@event("true")
 	record ContactUpdated {
-		array<EmailContact> listOfContacts;
+		array<com.x.ocl.Email> listOfContacts;
 	}
 	
 	@topic("/emailMarketing/contact/updateFailed")
-	@version("0.0.2")
+	@version("0.0.3")
 	record UpdateContactFailed {
-		array<EmailContact> listOfContacts;
+		array<com.x.ocl.Email> listOfContacts;
 		array<com.x.ocl.Error> errors;
 	}
 	
@@ -431,12 +431,12 @@ protocol EmailMarketing {
 	}
 
 	@topic("/emailMarketing/list/create")
-	@version("0.0.1")
+	@version("0.0.2")
 	record CreateList {
 		List list;
 		
 		//Add the following new contacts to this new list
-		array<EmailContact> newContacts;
+		array<com.x.ocl.Email> newContacts;
 		
 		//Add any existing contact to this new list
 		array<string> existingContacts;
