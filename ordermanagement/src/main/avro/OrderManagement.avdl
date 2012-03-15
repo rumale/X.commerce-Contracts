@@ -121,6 +121,7 @@ protocol OrderManagement {
 		string shipmentId;
 		union{null, array<com.x.ocl.TrackingDetail>} trackingDetails;
 		union{null,string} siteCode = null;
+		string sourceId;
 	}
 
 	/** An Order Management capability will be listening for this event. */

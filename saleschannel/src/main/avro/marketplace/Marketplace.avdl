@@ -297,30 +297,6 @@ protocol Marketplace {
 		array<com.x.ocl.Error> errors;
 	}
 	
-	@topic("/marketplace/order/shipment/update")
-	@version("1.0.0")
-	record UpdateShipment {
-		array<com.x.ocl.TrackingDetail> trackingNumbers;
-		string orderNumber;
-		string shipmentId;
-		union{null,string} sellerAccountId = null;
-		union{null,string} siteCode = null;
-		string sourceId;
-	}
-	
-	@topic("/marketplace/order/shipment/succeeded")
-	@version("1.0.0")
-	record UpdateShipmentSucceeded {
-		UpdateShipment shipment;
-	}
-	
-	@topic("/marketplace/order/shipment/failed")
-	@version("1.0.0")
-	record UpdateShipmentFailed {
-		UpdateShipment shipment;
-		array<com.x.ocl.Error> errors;
-	}
-	
 	@topic("/marketplace/order/notifyBacklog/check")
 	record CheckOrderNotifyBacklog {
 		union{null,string} siteCode = null;
