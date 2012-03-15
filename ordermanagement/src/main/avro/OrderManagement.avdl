@@ -42,6 +42,7 @@ protocol OrderManagement {
 	record OrderCreated {
 		com.x.ocl.Order order;
 		union{null,string} accountId = null;
+        union{null,string} siteCode = null;
 	}
 	
 	@topic("/order/createFailed")
