@@ -21,7 +21,8 @@ protocol Common {
 		PROCESSING_RETURN,
 		EXCHANGED,
 		CANCELLED,
-		COMPLETED
+		COMPLETED,
+		PAID
 	}
 
 	record GiftTag {
@@ -37,6 +38,12 @@ protocol Common {
 		union{null,com.x.ocl.Phone} phone = null;
 	}
 
+    enum OrderPaymentStatus {
+        NONE,
+        AUTHORIZED,
+        PAID
+    }
+
 	record OrderPaymentInfo {
 		PaymentMethod method;
 
@@ -45,6 +52,8 @@ protocol Common {
 
 		union{null,string} transactionId = null;
 		union{null,string} transactionStatus = null;
+		union{null, OrderPaymentStatus} paymentStatus = null;
+		union{null, com.x.ocl.CurrencyAmount} processingFee = null;
 	}
 	
 	record PromotionalDiscount {
