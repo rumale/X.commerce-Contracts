@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>ontology</artifactId>
-		<version>0.0.8-SNAPSHOT</version>
+		<version>0.0.8</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.ocl</groupId>
@@ -13,7 +13,7 @@
 		This artifact contains the system contract.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/system</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/tags/ontology-0.0.8/system</connection>
 	</scm>
 
 	<repositories>
