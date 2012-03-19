@@ -191,8 +191,8 @@ protocol ComparisonShoppingEngine {
 	}
 	
 	@extends("com.x.ocl.Offer")
+	@version("1.0.0")
 	record CseOffer {
-		com.x.ocl.Offer offer;
    		string title;
    		string description;
    		string manufacturer;
