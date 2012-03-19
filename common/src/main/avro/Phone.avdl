@@ -5,7 +5,8 @@ protocol Common {
 		HOME,
 		MOBILE,
 		WORK,
-		FAX
+		FAX,
+		UNKNOWN
 	}
 
 	record Phone {
