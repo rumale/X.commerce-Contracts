@@ -4,12 +4,13 @@
 		The customer protocol defines the schema for all messages that are part of the customer domain.
 */
 protocol Customer {
-	import idl "Contact.avdl";
 	import idl "Name.avdl";
 	import idl "Error.avdl";
-	import idl "CurrencyAmount.avdl";
 	import idl "Query.avdl";  
-
+	import idl "Phone.avdl";
+	import idl "Address.avdl";
+    import idl "Email.avdl";
+	
 	enum Gender {
 		MALE,
 		FEMALE,
@@ -23,19 +24,45 @@ protocol Customer {
 		COLD
 	}
 
-	@extends("com.x.ocl.Contact")
-	record CRMContact{
-		union {null, string} company;  
+
+	record ShippingContact{
+		com.x.ocl.Name fullName;
+		com.x.ocl.Address address;
+		union {null, com.x.ocl.Phone} phone = null;
+	}
+	
+	
+	record Customer {
+	    
+	    /** null on create in the system of record, not null after created */
+		union{null, string} customerId = null; 
+	
+		com.x.ocl.Name fullName;	   
+	    
+	    union {null, com.x.ocl.Address} billingAddress = null;
+		
+		union {null, com.x.ocl.Phone} primaryPhone = null;
+	    
+	    array<com.x.ocl.Phone> additionalPhones = null;
+		
+		union {null, com.x.ocl.Email} emailAddress = null;   		
+		
+	    union {null, string} company;  
+		
 		boolean doNotCall;   
+		
 		boolean emailOptOut;
+		
 		Gender gender;
 		
-	
 	    /** Date Time Format: ISO 8601 */
 		string dateCreated;
 		
 	    /** Date Time Format: ISO 8601 */
 		string dateUpdated;
+		
+	    /** Date Time Format: ISO 8601 */
+		union{null, string} lastActivityDate;
 			
 	    /** Date Time Format: ISO 8601 */
 		union{null, string} birthday = null;
@@ -43,20 +70,11 @@ protocol Customer {
 		string sourceId;
 		
 		ContactStatus status; 
-	 }
-
-	record Customer {
-	    /** null on create in the system of record, not null after created */
-		union{null, string} customerId = null; 
 	    
 	    /** map of source system to source Id. This is used for audit purposes, to indicate where the customer came from in the flow */
 	    union{null, map<string>} sourceIds;
-	    
-	    /** Date Time Format: ISO 8601 */
-		union{null, string} lastActivityDate;
-		
-		com.x.ocl.Contact primaryContact;
-		array<com.x.ocl.Contact> additionalContacts;
+
+		array<ShippingContact> shippingContacts;
 	}
 	
 	@topic("/customer/create")
