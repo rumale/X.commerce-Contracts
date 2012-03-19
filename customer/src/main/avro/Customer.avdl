@@ -78,32 +78,32 @@ protocol Customer {
 	}
 	
 	@topic("/customer/create")
-	@version("2.1.1")
+	@version("2.1.2")
 	record CreateCustomer {
 		Customer c;
 	}
 	
 	@topic("/customer/created")
-	@version("2.1.1")
+	@version("2.1.2")
 	record CustomerCreated {
 		Customer c;
 	}
 	
 	@topic("/customer/createFailed")
-    @version("2.1.1")
+    @version("2.1.2")
 	record CreateCustomerFailed {
 		Customer c;
 		array<com.x.ocl.Error> errors;
 	}
 	
     @topic("/customer/update")
-	@version("2.1.1")
+	@version("2.1.2")
 	record UpdateCustomer {
 		Customer c;
 	}
 	
 	@topic("/customer/updated")
-	@version("2.1.1")
+	@version("2.1.2")
 	record CustomerUpdated {
 		Customer c;
 	}
