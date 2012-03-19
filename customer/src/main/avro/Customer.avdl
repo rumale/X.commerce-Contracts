@@ -11,16 +11,16 @@ protocol Customer {
 	import idl "Query.avdl";  
 
 	enum Gender {
-		Male,
-		Female,
-		Unknown
+		MALE,
+		FEMALE,
+		UNKNOWN
 	}
 	
 	enum ContactStatus {
-		New,
-		Warm,
-		Active,
-		Cold
+		NEW,
+		WARM,
+		ACTIVE,
+		COLD
 	}
 
 	@extends("com.x.ocl.Contact")
@@ -48,109 +48,108 @@ protocol Customer {
 	record Customer {
 	    /** null on create in the system of record, not null after created */
 		union{null, string} customerId = null; 
-		
-		/** Optional - ID of the customer in the source system that is not the system of record */ 
-		/** MAY BE REMOVED */
-	    union{null, string} sourceCustomerId = null;  
+	    
+	    /** map of source system to source Id. This is used for audit purposes, to indicate where the customer came from in the flow */
+	    union{null, map<string>} sourceIds;
 	    
 	    /** Date Time Format: ISO 8601 */
-		string lastActivityDate;
+		union{null, string} lastActivityDate;
 		
 		com.x.ocl.Contact primaryContact;
 		array<com.x.ocl.Contact> additionalContacts;
 	}
 	
 	@topic("/customer/create")
-	@version("2.1.0")
-	record CustomerCreate {
+	@version("2.1.1")
+	record CreateCustomer {
 		Customer c;
 	}
 	
 	@topic("/customer/created")
-	@version("2.1.0")
+	@version("2.1.1")
 	record CustomerCreated {
 		Customer c;
 	}
 	
 	@topic("/customer/createFailed")
-    @version("2.1.0")
-	record CustomerCreateFailure {
+    @version("2.1.1")
+	record CreateCustomerFailed {
 		Customer c;
 		array<com.x.ocl.Error> errors;
 	}
 	
     @topic("/customer/update")
-	@version("2.1.0")
-	record CustomerUpdate {
+	@version("2.1.1")
+	record UpdateCustomer {
 		Customer c;
 	}
 	
 	@topic("/customer/updated")
-	@version("2.1.0")
+	@version("2.1.1")
 	record CustomerUpdated {
 		Customer c;
 	}
 	
 	@topic("/customer/updateFailed")
-    @version("1.0.0")
-	record CustomerUpdateFailure {
+    @version("1.0.1")
+	record UpdateCustomerFailed {
 		string customerId;
 		array<com.x.ocl.Error> errors;
 	}
 	
     @topic("/customer/delete")
-	@version("1.0.0")
-	record CustomerDelete {
+	@version("1.0.1")
+	record DeleteCustomer {
 		string customerId;
 	}
 	
 	@topic("/customer/deleted")
-	@version("1.0.0")
+	@version("1.0.1")
 	record CustomerDeleted {
 		string customerId;
 	}
 	
 	@topic("/customer/deleteFailed")
-    @version("1.0.0")
-	record CustomerDeleteFailure {
+    @version("1.0.1")
+	record DeleteCustomerFailed {
 		string customerId;
 		array<com.x.ocl.Error> errors;
 	}
 	
 	@topic("/customer/activate")
-	@version("1.0.0")
-	record CustomerActivate {
+	@version("1.0.1")
+	record ActivateCustomer {
 		string customerId;
 	}
 	
 	@topic("/customer/activated")
-	@version("1.0.0")
+	@version("1.0.1")
 	record CustomerActivated {
 		string customerId;
 	}
 	
 	@topic("/customer/activateFailed")
-    @version("1.0.0")
-	record CustomerActivateFailure {
+    @version("1.0.1")
+	record ActivateCustomerFailed {
 		string customerId;
 		array<com.x.ocl.Error> errors;
 	}
 	
     @topic("/customer/deactivate")
-	@version("1.0.0")
-	record CustomerDeactivate {
+	@version("1.0.1")
+	record DeactivateCustomer {
 		string customerId;
 	}
 	
 	@topic("/customer/deactivated")
-	@version("1.0.0")
+	@version("1.0.1")
 	record CustomerDeactivated {
 		string customerId;
 	}
 	
 	@topic("/customer/deactivateFailed")
-    @version("1.0.0")
-	record CustomerDeactivateFailure {
+    @version("1.0.1")
+	record DeactivateCustomerFailed {
 		string customerId;
 		array<com.x.ocl.Error> errors;
 	}
