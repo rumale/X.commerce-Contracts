@@ -17,7 +17,7 @@ protocol Customer {
 		UNKNOWN
 	}
 	
-	enum ContactStatus {
+	enum CustomerStatus {
 		NEW,
 		WARM,
 		ACTIVE,
@@ -69,7 +69,7 @@ protocol Customer {
 		
 		string sourceId;
 		
-		ContactStatus status; 
+		Customer status; 
 	    
 	    /** map of source system to source Id. This is used for audit purposes, to indicate where the customer came from in the flow */
 	    union{null, map<string>} sourceIds;
@@ -78,32 +78,34 @@ protocol Customer {
 	}
 	
 	@topic("/customer/create")
-	@version("2.1.2")
+	@version("2.1.3")
 	record CreateCustomer {
 		Customer c;
 	}
 	
 	@topic("/customer/created")
-	@version("2.1.2")
+	@version("2.1.3")
+	@event("true")
 	record CustomerCreated {
 		Customer c;
 	}
 	
 	@topic("/customer/createFailed")
-    @version("2.1.2")
+    @version("2.1.3")
 	record CreateCustomerFailed {
 		Customer c;
 		array<com.x.ocl.Error> errors;
 	}
 	
     @topic("/customer/update")
-	@version("2.1.2")
+	@version("2.1.3")
 	record UpdateCustomer {
 		Customer c;
 	}
 	
 	@topic("/customer/updated")
-	@version("2.1.2")
+	@version("2.1.3")
+	@event("true")
 	record CustomerUpdated {
 		Customer c;
 	}
@@ -141,7 +143,8 @@ protocol Customer {
 	}
 	
 	@topic("/customer/activated")
-	@version("1.0.1")
+	@version("1.0.2")
+	@event("true")
 	record CustomerActivated {
 		string customerId;
 	}
@@ -160,7 +163,8 @@ protocol Customer {
 	}
 	
 	@topic("/customer/deactivated")
-	@version("1.0.1")
+	@version("1.0.2")
+	@event("true")
 	record CustomerDeactivated {
 		string customerId;
 	}
