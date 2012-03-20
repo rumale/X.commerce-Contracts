@@ -135,6 +135,14 @@ protocol ComparisonShoppingEngine {
         array<com.x.ocl.Error> errors;
     }
 
+	@topic("/cse/authorization/userCompleted")
+	@version("1.0.0")
+	record AuthorizationUserCompleted {
+		string authId;
+		//any extra credentials needed to complete the process
+		union{null, Credential} cred = null;
+	}
+
 	@topic("/cse/authorization/completed")
 	@version("1.0.0")
 	record AuthorizationCompleted {
