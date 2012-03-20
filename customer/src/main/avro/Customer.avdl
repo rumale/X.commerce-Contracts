@@ -67,9 +67,7 @@ protocol Customer {
 	    /** Date Time Format: ISO 8601 */
 		union{null, string} birthday = null;
 		
-		string sourceId;
-		
-		Customer status; 
+		CustomerStatus status; 
 	    
 	    /** map of source system to source Id. This is used for audit purposes, to indicate where the customer came from in the flow */
 	    union{null, map<string>} sourceIds;
