@@ -83,6 +83,9 @@ protocol ComparisonShoppingEngine {
 		union{null, string} xId = null;   // ID provided by X.commerce
 		union{null, string} cseAcccountId;
 		union{null, long} authorizationExpiration = null;
+		
+		/* location where the offer will be placed for this account */
+		union{null, string} targetLocation;
 	}
 	
 	/*
@@ -96,7 +99,7 @@ protocol ComparisonShoppingEngine {
 	}
 
 	@topic("/cse/authorization/init")
-	@version("1.0.0")
+	@version("2.0.0")
 	record InitAuthorization {
 		//Only used if cse web-auth flow supports it
 		union{null, string} returnURL = null;
@@ -109,6 +112,9 @@ protocol ComparisonShoppingEngine {
 		   the adapter for any purpose except returned as part of the AuthorizationPending.
 		 */
 		string guid;
+		
+		/* location where the offer will be placed for this account */
+		union{null, string} targetLocation;
 	}
 
 	@topic("/cse/authorization/pending")
@@ -163,19 +169,19 @@ protocol ComparisonShoppingEngine {
     }
 	
 	@topic("/cse/account/delete")
-	@version("1.0.0")
+	@version("2.0.0")
 	record DeleteAccount {
 		string xAccountId;
 	}
 
 	@topic("/cse/account/deleted")
-	@version("1.0.0")
+	@version("2.0.0")
 	record AccountDeleted {
 		string xAccountId;
 	}
 
 	@topic("/cse/account/deleteFailed")
-	@version("1.0.0")
+	@version("2.0.0")
 	record DeleteAccountFailed {
 		union{null, string} xAccountId;
 		array<com.x.ocl.Error> errors;
@@ -187,7 +193,7 @@ protocol ComparisonShoppingEngine {
 	}
 
 	@topic("/cse/account/searchSucceeded")
-	@version("1.0.0")
+	@version("2.0.0")
 	record SearchAccountSucceeded {
 		array<CseAccount> accounts;
 	}
@@ -224,12 +230,15 @@ protocol ComparisonShoppingEngine {
 	}
 	
 	@topic("/cse/offer/create")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CreateOffer {
 		array<com.x.ocl.Offer> offers;
 		ProductFeedType feedType;
 		string xAccountId; 
 		string siteId;
+		
+		/* the name that identifies the collection of offers */
+		union{null, string} offerName;
 	}
 	
 	@topic("/cse/offer/created")
