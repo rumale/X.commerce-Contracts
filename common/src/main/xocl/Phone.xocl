@@ -1,0 +1,15 @@
+	
+package com.x.xocl.common.phone.v1{
+	enum PhoneType {
+		HOME,
+		MOBILE,
+		WORK,
+		FAX,
+		UNKNOWN
+	}
+
+	record Phone {
+		string number
+		PhoneType type
+	}
+}
