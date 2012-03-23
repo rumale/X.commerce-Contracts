@@ -1,0 +1,9 @@
+grammar com.x.ocl.XOCL with org.eclipse.xtext.common.Terminals
+
+generate xOCL "http://www.x.com/ocl/XOCL"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
