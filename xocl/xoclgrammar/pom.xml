@@ -12,9 +12,9 @@
 	<artifactId>xoclgrammar</artifactId>
 	<name>XOCL DSL Grammar</name>
 	<packaging>jar</packaging>
-    <scm>
-        <connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/xocl/xoclgrammar</connection>
-    </scm>
+	<scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/Ontology/trunk/xocl/xoclgrammar</connection>
+	</scm>
 	<repositories>
 		<repository>
 			<id>xtend</id>
@@ -138,6 +138,10 @@
 							<resources>
 								<resource>
 									<directory>src</directory>
+									<directory>src-gen</directory>
+									<excludes>
+										<exclude>**/*.java</exclude>
+									</excludes>
 								</resource>
 							</resources>
 						</configuration>
