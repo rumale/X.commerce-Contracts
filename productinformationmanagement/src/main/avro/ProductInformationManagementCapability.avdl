@@ -324,7 +324,7 @@ protocol ProductInformationManagementCapability {
     @version("2.0.0")
     record DeleteProduct
     {
-        array<Product> products;
+        array<string> productIds;
     }
  
     @topic("/pim/product/deleted")
@@ -338,7 +338,7 @@ protocol ProductInformationManagementCapability {
     @version("2.0.0")
     record DeleteProductFailed
     {
-        array<Product> products;
+        array<string> productIds;
         array<com.x.ocl.Error> errors;
     }
 
@@ -347,7 +347,7 @@ protocol ProductInformationManagementCapability {
     @version("2.0.0")
     record DeleteSKU
     {
-        array<SKU> skus;
+        array<string> skus;
     }
  
     @topic("/pim/sku/deleted")
@@ -361,7 +361,7 @@ protocol ProductInformationManagementCapability {
     @version("2.0.0")
     record DeleteSKUFailed
     {
-        array<SKU> skus;
+        array<string> skus;
         array<com.x.ocl.Error> errors;
     }
 }
