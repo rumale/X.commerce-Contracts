@@ -95,7 +95,7 @@ protocol ProductInformationManagementCapability {
     record SKU
     {
         // unique identifier of the SKU
-        union {null, string} sku = null;
+        string sku;
         // ID of the product for this SKU 
         union {null, string} productId = null;
         // Manufacturer suggested retail price, override the field in Product
@@ -113,7 +113,7 @@ protocol ProductInformationManagementCapability {
     record Product 
     {
         // product id 
-        union {null, string} id = null;
+        string id;
         // ID of the product type 
         union {null, string} productTypeId = null;
         // descriptive name
