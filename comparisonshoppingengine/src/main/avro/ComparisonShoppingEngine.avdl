@@ -235,8 +235,8 @@ protocol ComparisonShoppingEngine {
 	record CreateOffer {
 		array<com.x.ocl.Offer> offers;
 		ProductFeedType feedType;
-		string xAccountId; 
-		string siteId;
+		union{null, string} xAccountId; 
+		union{null, string} siteId;
 		
 		/* the name that identifies the collection of offers */
 		union{null, string} offerName;
@@ -246,16 +246,16 @@ protocol ComparisonShoppingEngine {
 	@version("1.0.0")
 	record OfferCreated {
 		array<com.x.ocl.Offer> offers;
-		string xAccountId; 
-		string siteId;
+		union{null, string} xAccountId; 
+		union{null, string} siteId;
 	}
 
 	@topic("/cse/offer/createFailed")
 	@version("1.0.0")
 	record CreateOfferFailed {
 		array<com.x.ocl.Error> errors;
-		string xAccountId; 
-		string siteId;
+		union{null, string} xAccountId; 
+		union{null, string} siteId;
 	}
 }
 
