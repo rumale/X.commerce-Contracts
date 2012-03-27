@@ -1,5 +1,5 @@
 @namespace("com.x.marketplace.v2")
-
+@status("Working Draft")
 protocol Marketplace {
 	import idl "../SalesChannel.avdl";
 	import idl "../Order.avdl";

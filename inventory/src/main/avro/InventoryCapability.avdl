@@ -1,5 +1,5 @@
 @namespace("com.x.inventory.v1")
- 
+@status("Working Draft")
 protocol InventoryCapability {
 	import idl "Error.avdl";
 	import idl "Query.avdl";

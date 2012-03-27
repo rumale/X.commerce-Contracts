@@ -9,6 +9,7 @@
  * The messages based on channel specific schema can be embedded in 
  * specific "extension" points defined in this schema.
  */
+@status("Working Draft")
 protocol SalesChannel {
 
 	import idl "CurrencyAmount.avdl";

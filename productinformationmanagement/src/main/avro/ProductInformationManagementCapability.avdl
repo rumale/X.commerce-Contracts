@@ -1,5 +1,5 @@
 @namespace("com.x.pim.v1")
- 
+@status("Working Draft")
 protocol ProductInformationManagementCapability {
     import idl "CurrencyAmount.avdl";
     import idl "Error.avdl";
