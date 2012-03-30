@@ -224,6 +224,7 @@ protocol Advance {
 	
 
 	@topic("/incubator/advance/personalProfile/createFailed")
+	@version("1.0.0")
 	record CreatePersonalProfileFailed {
 		array<com.x.ocl.Error> errors;
 	}
