@@ -239,23 +239,25 @@ protocol ComparisonShoppingEngine {
 		union{null, string} siteId;
 		
 		/* the name that identifies the collection of offers */
-		union{null, string} offerName;
+		union{null, string} offerName = null;
 	}
 	
 	@topic("/cse/offer/created")
-	@version("1.0.0")
+	@version("2.0.0")
 	record OfferCreated {
 		array<com.x.ocl.Offer> offers;
 		union{null, string} xAccountId; 
 		union{null, string} siteId;
+		union{null, string} offerName;
 	}
 
 	@topic("/cse/offer/createFailed")
-	@version("1.0.0")
+	@version("2.0.0")
 	record CreateOfferFailed {
 		array<com.x.ocl.Error> errors;
 		union{null, string} xAccountId; 
 		union{null, string} siteId;
+		union{null, string} offerName;
 	}
 }
 
