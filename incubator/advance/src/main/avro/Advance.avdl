@@ -7,7 +7,7 @@
 	offering.
 */
 
-protocol CapitalAdvance {
+protocol Advance {
 	import idl "CurrencyAmount.avdl";
 	import idl "Name.avdl";
 	import idl "Address.avdl";
@@ -186,7 +186,6 @@ protocol CapitalAdvance {
 		com.x.ocl.Address address;
 		com.x.ocl.Phone phone;
 	}
-
 	
 	/* 
 	 * After creating the business profile and processing business logic that verifies the business,
