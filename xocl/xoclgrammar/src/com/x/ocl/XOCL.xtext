@@ -185,7 +185,7 @@ TransactionVariant: name = ID;
 TransactionParameter: Parameter;
 
 InformTransaction:
-    pattern = INFORM 
+    pattern = (INFORM | INFORMATION | EVENT)
     (body = InformBody)?
 ;
 
@@ -227,14 +227,18 @@ RequiredFeatures:
     REQUIRES LPAREN (features += RequiredFeature) (COMMA (features += RequiredFeature))? RPAREN
 ;
 
-RequiredFeature: AuthorizationFeature | NonRepudiationFeature;
+RequiredFeature: AuthorizationFeature | NonRepudiationFeature | ConfidentialityFeature | IntegrityFeature;
 
 AuthorizationFeature: authorization ?= AUTHORIZATION;
 
 NonRepudiationFeature: nonrepudiation ?= NONREPUDIATION;
 
+ConfidentialityFeature: confidentiality ?= CONFIDENTIALITY;
+
+IntegrityFeature: integrity ?= INTEGRITY;
+
 NotifyTransaction:
-    pattern = NOTIFY
+    pattern = (NOTIFY | NOTIFICATION)
     (body = NotifyBody)?
 ;
 
@@ -295,7 +299,7 @@ TimeUnit:
 
 Pattern:
     (pattern = RESPONSE) | 
-    (pattern = CONFIRM) | 
+    (pattern = CONFIRM) | (pattern = CONFIRMATION) |
     (pattern = QUERY) | 
     (pattern = OBLIGATION)
 ;
@@ -520,14 +524,20 @@ TOPIC: 'topic';
 SENDER: 'sender';
 RECEIVER: 'receiver';
 INFORM: 'inform';
+INFORMATION: 'information';
+EVENT: 'event';
 NOTIFY: 'notify';
+NOTIFICATION: 'notification';
 CONFIRM: 'confirm';
+CONFIRMATION: 'confirmation';
 QUERY: 'query';
 OBLIGATION: 'obligation';
 REQUIRES: 'requires';
 AUTHORIZATION: 'authorization';
 IMPLEMENTS: 'implements';
 NONREPUDIATION: 'nonrepudiation';
+CONFIDENTIALITY: 'confidentiality';
+INTEGRITY: 'integrity';
 _TRANSACTION: 'transaction';
 _WORKFLOW: 'workflow';
 RECEIPT: 'receipt';
