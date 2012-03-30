@@ -94,7 +94,7 @@ protocol Advance {
 	/*
 		This message carries the merchant's volume on marketplaces to establish a pre-approval amount.
 	*/
-	@topic("incubator/advance/funding/prequalify")
+	@topic("/incubator/advance/funding/prequalify")
 	@version("1.0.0")
 	record OrderVolume {
 		array<SalesChannelVolume> salesChannelVolumes;
@@ -103,7 +103,7 @@ protocol Advance {
 	/*
 		This message is published by the adapter. It carries a pre-approved amount based on business volume. 
 	*/
-	@topic("incubator/advance/funding/prequalifySucceeded")
+	@topic("/incubator/advance/funding/prequalifySucceeded")
 	@version("1.0.0")
 	record PrequalifyAmount {
 		com.x.ocl.CurrencyAmount amount;
@@ -112,7 +112,7 @@ protocol Advance {
 	/*
 		This message is published by the adapter. 
 	*/
-	@topic("incubator/advance/funding/prequalifyFailed")
+	@topic("/incubator/advance/funding/prequalifyFailed")
 	@version("1.0.0")
 	record PrequalifyFailed {
 		array<com.x.ocl.Error> errors;
@@ -122,7 +122,7 @@ protocol Advance {
 		This message is published by the extension. It requests either a specific segment on the account or 
 		all the segments associated with the merchant's account.
 	*/
-	@topic("incubator/advance/funding/search")
+	@topic("/incubator/advance/funding/search")
 	@version("1.0.0")
 	record SearchFunding {
 		union {null, string} segment;     //null if all segments should be returned
@@ -131,7 +131,7 @@ protocol Advance {
 	/*
 		This message is published by the adapter. It publishes one or more advances resulting from a search.
 	*/
-	@topic("incubator/advance/funding/searchSucceeded")
+	@topic("/incubator/advance/funding/searchSucceeded")
 	@version("1.0.0")
 	record SearchFundingSucceeded {
 		array<Segment> segments;
@@ -140,7 +140,7 @@ protocol Advance {
 	/*
 		This message is published by the adapter. It indicates either an error was encountered or there were no advances found.
 	*/
-	@topic("incubator/advance/funding/searchFailed")
+	@topic("/incubator/advance/funding/searchFailed")
 	@version("1.0.0")
 	record SearchFundingFailed {
 		array<com.x.ocl.Error> errors;
@@ -153,13 +153,13 @@ protocol Advance {
 	 */
 
 
-	@topic("incubator/advance/thirdparty/getLink")
+	@topic("/incubator/advance/thirdparty/getLink")
 	@version("1.0.0")
 	record thirdPartyAuthorizationLink {
 		string thirdParty;
 	}
 
-	@topic("incubator/advance/thirdparty/getLinkSucceeded")
+	@topic("/incubator/advance/thirdparty/getLinkSucceeded")
 	@version("1.0.0")
 	record thirdPartyAuthorizationLinkSucceeded {
 		string thirdParty;
@@ -167,7 +167,7 @@ protocol Advance {
 		string requestToken;
 	}
 
-	@topic("incubator/advance/thirdparty/getLinkFailed")
+	@topic("/incubator/advance/thirdparty/getLinkFailed")
 	@version("1.0.0")
 	record thirdPartyAuthorizationLinkFailed {
 		string thirdParty;
@@ -177,7 +177,7 @@ protocol Advance {
 	/*
 		This message is published by the extension.
 	*/
-	@topic("incubator/advance/businessProfile/create")
+	@topic("/incubator/advance/businessProfile/create")
 	@version("1.0.0")
 	record BusinessDetail {
 		string name;
@@ -191,20 +191,20 @@ protocol Advance {
 	 * After creating the business profile and processing business logic that verifies the business,
 	 * a success message is published no record needed, but on success this topic will be published.
 	 */
-	@topic("incubator/advance/businessProfile/createSucceeded")
+	@topic("/incubator/advance/businessProfile/createSucceeded")
 	@version("1.0.0")
 	record CreateBusinessProfileSucceeded {
 	}
 	 
 	 
-	@topic("incubator/advance/businessProfile/createFailed")
+	@topic("/incubator/advance/businessProfile/createFailed")
 	@version("1.0.0")
 	record CreateBusinessProfileFailed {
 		array<com.x.ocl.Error> errors;
 	}
 	
 	
-	@topic("incubator/advance/personalProfile/create")
+	@topic("/incubator/advance/personalProfile/create")
 	@version("1.0.0")
 	record PersonalDetail {
 		com.x.ocl.Contact contact;
@@ -217,13 +217,13 @@ protocol Advance {
 	 * After creating the business profile and processing business logic that verifies the business,
 	 * a success message is published no record needed, but on success this topic will be published.
 	 */
-	@topic("incubator/advance/personalProfile/createSucceeded")
+	@topic("/incubator/advance/personalProfile/createSucceeded")
 	@version("1.0.0")
 	record CreatePersonalProfileSucceeded {
 	}
 	
 
-	@topic("incubator/advance/personalProfile/createFailed")
+	@topic("/incubator/advance/personalProfile/createFailed")
 	record CreatePersonalProfileFailed {
 		array<com.x.ocl.Error> errors;
 	}
@@ -237,7 +237,7 @@ protocol Advance {
 	/*
 		This message is published by the adapter when the vendor is not able to offer the merchant an advance.
 	*/
-	@topic("incubator/advance/advanceOffer/rejected")
+	@topic("/incubator/advance/advanceOffer/rejected")
 	@version("1.0.0")
 	record AdvanceOfferReject {
 		array<com.x.ocl.Error> errors;
@@ -246,7 +246,7 @@ protocol Advance {
 	/*
 		This message is published by the adapter. It carries a set of offers for the merchant to select from.
 	*/
-	@topic("incubator/advance/advanceOffer/created")
+	@topic("/incubator/advance/advanceOffer/created")
 	@version("1.0.0")
 	record AvailableAdvanceOffers {
 		array<AdvanceOffer> advanceOffers;
@@ -256,7 +256,7 @@ protocol Advance {
 	/*
 		This message is published by the extension. 
 	*/
-	@topic("incubator/advance/advanceOffer/accepted")
+	@topic("/incubator/advance/advanceOffer/accepted")
 	@version("1.0.0")
 	record AdvanceOfferAccept {
 		long agreementDate;
@@ -267,7 +267,7 @@ protocol Advance {
 	/*
 		This message is published by the adapter. It indicates that the loan was funded.
 	*/
-	@topic("incubator/advance/advanceOffer/funded")
+	@topic("/incubator/advance/advanceOffer/funded")
 	@version("1.0.0")
 	record Advance {
 		string advanceNumber;
@@ -279,7 +279,7 @@ protocol Advance {
 	/*
 		This message is published by the extension. It requests a new offer from the Advance company.
 	*/
-	@topic("incubator/advance/advanceOffer/search")
+	@topic("/incubator/advance/advanceOffer/search")
 	@version("1.0.0") 
 	record GetAdvanceOffer {
 	}
@@ -294,7 +294,7 @@ protocol Advance {
 	   the regularly scheduled payments. If the payment fails the cause will be recorded in the AdvanceStatement
 	   with a code of 'FAILED' 
 	*/
-	@topic("incubator/advance/payment/create")
+	@topic("/incubator/advance/payment/create")
 	@version("1.0.0")
 	record AdvancePayment {
 		string segmentNumber;          // identify the segment the payment will be applied to.
@@ -303,7 +303,7 @@ protocol Advance {
  		PaymentMethod paymentMethod;   
  	}
 
-	@topic("incubator/advance/payment/createSucceeded")
+	@topic("/incubator/advance/payment/createSucceeded")
 	@version("1.0.0")
 	record AdvancePaymentSucceeded {
 		string segmentNumber;          // identify the segment the payment will be applied to.
@@ -311,7 +311,7 @@ protocol Advance {
 		com.x.ocl.CurrencyAmount amount;         
  	}
 
-	@topic("incubator/advance/payment/createFailed")
+	@topic("/incubator/advance/payment/createFailed")
 	@version("1.0.0")
 	record AdvancePaymentFailed {
 		string segmentNumber;          // identify the segment the payment will be applied to.
