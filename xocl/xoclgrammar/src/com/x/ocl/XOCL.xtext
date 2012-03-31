@@ -23,7 +23,7 @@ PackageMember:
     Contract | 
     Entity | 
     Process | 
-    Workflow | 
+    NamedWorkflow | 
     Transaction | 
     NamedType
 ;
@@ -51,6 +51,7 @@ Process:
         DESCRIPTION description = STRING
         ROLES LPAREN (roles += ProcessRole) (COMMA (roles += ProcessRole))+ RPAREN
     	(preconditions = PreconditionsClause)?
+    	(workflow = AnonymousWorkflow)?
     	(postconditions = PostconditionsClause)?
     RBRACE
 ;
@@ -107,39 +108,54 @@ OnProcessFailure:
     FAILURE LPAREN (conditions += ParameterExpression) (COMMA conditions += ParameterExpression)* RPAREN
 ;
 
-Workflow:
-    _WORKFLOW name = ID 
-    IMPLEMENTS implements = [Process | QualifiedName] 
-    contents = WorkflowBlock
+AnonymousWorkflow: 
+	_WORKFLOW 
+	contents = WorkflowBody
 ;
 
-WorkflowBlock: {WorkflowBlock}
+NamedWorkflow:
+    _WORKFLOW name = ID 
+    IMPLEMENTS implements = [Process | QualifiedName] 
+    contents = WorkflowBody
+;
+
+WorkflowBody: {WorkflowBody}
     LBRACE
-        (elements += BlockElement)*
+        (elements += WorkflowElement)*
         (elements += EndPoint)?
     RBRACE
 ;
 
 EndPoint: (name = SUCCESS) | (name = FAILURE);
 
-BlockElement: BlockSplit | BlockAction;
+WorkflowElement: AnyElement | AllElement | IfElement | ActionElement;
 
-BlockSplit:
-    SPLIT
+AnyElement:
+    ANY
     LBRACE
-    	children += BlockBranch
-    	(children += BlockBranch)+
+    	(elements += WorkflowElement)+
     RBRACE
 ;
 
-BlockBranch:
-    BRANCH (LPAREN expression = ParameterExpression RPAREN)?
-    contents = WorkflowBlock
+AllElement:
+    ALL
+    LBRACE
+		elements += WorkflowElement
+    	(elements += WorkflowElement)+
+    RBRACE
+;
+
+IfElement:
+    IF 
+    LPAREN (expression = ParameterExpression)? RPAREN
+    LBRACE
+    	(elements += WorkflowElement)+
+    RBRACE
 ;
 
 BooleanExpression: STRING;
 
-BlockAction: TransactionCall | WorkflowCall;
+ActionElement: TransactionCall | WorkflowCall;
 
 TransactionCall:
     _TRANSACTION name = [Transaction | QualifiedName]
@@ -159,7 +175,7 @@ SenderRoleMapping: value = [ProcessRole| QualifiedName];
 ReceiverRoleMapping: value = [ProcessRole| QualifiedName];
 
 WorkflowCall:
-    _WORKFLOW name = [Workflow | QualifiedName]
+    _WORKFLOW name = [NamedWorkflow | QualifiedName]
     (LANGLE (variants += WorkflowVariantMapping) (COMMA variants += WorkflowVariantMapping)* RANGLE)?
     (LPAREN (arguments += WorkflowArgument) (COMMA (arguments += WorkflowArgument))* RPAREN)?
     LBRACE
@@ -514,13 +530,13 @@ PRECONDITIONS: 'preconditions';
 _ENTITY: 'entity';
 SUCCESS: 'success';
 FAILURE: 'failure';
-BRANCH: 'branch';
-SPLIT: 'split';
+ANY: 'any';
+ALL: 'all';
+IF: 'if';
 MESSAGE: 'message';
 RESPONSE: 'response';
 TIMEOUTS: 'timeouts';
 RETRIES: 'retries';
-TOPIC: 'topic';
 SENDER: 'sender';
 RECEIVER: 'receiver';
 INFORM: 'inform';
