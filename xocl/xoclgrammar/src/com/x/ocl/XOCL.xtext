@@ -155,7 +155,9 @@ IfElement:
 
 BooleanExpression: STRING;
 
-ActionElement: TransactionCall | WorkflowCall;
+ActionElement: NoopAction | TransactionCall | WorkflowCall;
+
+NoopAction: {NoAction} NOOP;
 
 TransactionCall:
     _TRANSACTION name = [Transaction | QualifiedName]
@@ -533,6 +535,7 @@ FAILURE: 'failure';
 ANY: 'any';
 ALL: 'all';
 IF: 'if';
+NOOP: 'noop';
 MESSAGE: 'message';
 RESPONSE: 'response';
 TIMEOUTS: 'timeouts';
