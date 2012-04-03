@@ -119,14 +119,19 @@ NamedWorkflow:
     contents = WorkflowBody
 ;
 
-WorkflowBody: {WorkflowBody}
+WorkflowBody: 
+	{WorkflowBody}
     LBRACE
         (elements += WorkflowElement)*
         (elements += EndPoint)?
     RBRACE
 ;
 
-EndPoint: (name = SUCCESS) | (name = FAILURE);
+EndPoint: SuccessEndpoint | FailureEndpoint;
+
+SuccessEndpoint: name = SUCCESS;
+
+FailureEndpoint: name = FAILURE;
 
 WorkflowElement: AnyElement | AllElement | IfElement | ActionElement;
 
@@ -134,22 +139,25 @@ AnyElement:
     ANY
     LBRACE
     	(elements += WorkflowElement)+
+        (elements += SuccessEndpoint)?
     RBRACE
 ;
 
 AllElement:
     ALL
     LBRACE
-		elements += WorkflowElement
     	(elements += WorkflowElement)+
+        (elements += FailureEndpoint)?
     RBRACE
 ;
 
 IfElement:
+	{IfElement}
     IF 
     LPAREN (expression = ParameterExpression)? RPAREN
     LBRACE
-    	(elements += WorkflowElement)+
+        (elements += WorkflowElement)*
+        (elements += EndPoint)?
     RBRACE
 ;
 
@@ -479,13 +487,13 @@ PrimitiveProperty:
     (type = BYTES (optional ?= QMARK)? name = PropertyName)
 ;
 
-FixedProperty: type = FixedType (optional ?= QMARK)? name = PropertyName;
+FixedProperty: type = FixedType (optional ?= QMARK)? name = PropertyName (EQUALS sdefault = NULL)?;
 
-CollectionProperty: type = CollectionType (optional ?= QMARK)? name = PropertyName;
+CollectionProperty: type = CollectionType (optional ?= QMARK)? name = PropertyName (EQUALS sdefault = NULL)?;
 
 EnumProperty: type = [EnumType | QualifiedName] (optional ?= QMARK)? name = PropertyName EQUALS default = EnumLiteral?;
 
-NamedTypeProperty: type = [NamedType | QualifiedName] (optional ?= QMARK)? name = PropertyName;
+NamedTypeProperty: type = [NamedType | QualifiedName] (optional ?= QMARK)? name = PropertyName (EQUALS sdefault = NULL)?;
 
 UnionProperty: type = UnionType (optional ?= QMARK)? name = PropertyName (EQUALS default = NULL)?;
 
