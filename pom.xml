@@ -49,6 +49,7 @@
 		<module>common</module>
 		<module>core</module>
 		<module>comparisonshoppingengine</module>
+		<module>consumerrating</module>
 		<module>customer</module>
 		<module>emailmarketing</module>
 		<module>inventory</module>
@@ -90,6 +91,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>comparisonshoppingengine-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>consumerrating-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
