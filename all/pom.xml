@@ -55,6 +55,16 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>advance-contract</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>consumerrating-contract</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>core-contract</artifactId>
 		</dependency>
 		<dependency>
@@ -64,10 +74,6 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>comparisonshoppingengine-contract</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>incubator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
