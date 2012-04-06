@@ -49,9 +49,9 @@
 		<module>common</module>
 		<module>core</module>
 		<module>comparisonshoppingengine</module>
-		<module>consumerrating</module>
 		<module>customer</module>
 		<module>emailmarketing</module>
+		<module>incubator</module>
 		<module>inventory</module>
 		<module>loyaltymarketing</module>
 		<module>marketplace</module>
@@ -95,17 +95,17 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>consumerrating-contract</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
 				<artifactId>customer-contract</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>emailmarketing-contract</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>incubator</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

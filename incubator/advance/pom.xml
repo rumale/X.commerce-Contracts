@@ -2,12 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.ocl</groupId>
-		<artifactId>ontology</artifactId>
-		<version>0.0.10-SNAPSHOT</version>
+		<artifactId>incubator</artifactId>
+		<version>0.0.11-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.ocl</groupId>
-	<name>Advance</name>
+	<artifactId>advance-contract</artifactId>
+	<name>Advance Contract</name>
 	<description>
 		This artifact contains the advance contract.
 	</description>
@@ -123,6 +124,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<artifactId>advance-contract</artifactId>
 </project>

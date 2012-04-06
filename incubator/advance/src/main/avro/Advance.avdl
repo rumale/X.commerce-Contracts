@@ -9,10 +9,8 @@
 
 protocol Advance {
 	import idl "CurrencyAmount.avdl";
-	import idl "Name.avdl";
 	import idl "Address.avdl";
 	import idl "Phone.avdl";
-	import idl "Email.avdl";
 	import idl "Error.avdl";
 	import idl "Contact.avdl";
 
