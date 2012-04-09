@@ -76,8 +76,8 @@ Role: name = ID;
 PreconditionsClause:
     PRECONDITIONS 
     LPAREN 
-    	(conditions += ParameterExpression) 
-    	(COMMA conditions += ParameterExpression)* 
+    	(conditions += BooleanExpression) 
+    	(COMMA conditions += BooleanExpression)* 
 	RPAREN
 ;
 
@@ -218,15 +218,28 @@ ElseElement:
 
 BooleanExpression :
 	({UnaryExpression} negation ?= NegationOperator operand = BooleanExpression) |
-	(TerminalExpression ({BinaryExpression.leftOperand=current} operator = LogicalOperator rightOperand = BooleanExpression)?)
+	(TerminalExpression ({BinaryExpression.leftOperand=current} operator = LogicalOperator rightOperand = BooleanExpression)?) | 
+	FunctionExpression
 ;
 
 NegationOperator: NOT;
 
 LogicalOperator: AND | OR;
- 
+
+FunctionExpression:
+	function = FunctionName LPAREN ((arguments += FunctionArgument) (COMMA arguments += FunctionArgument)*)? RPAREN
+;
+
+FunctionArgument: 
+	(expression = FunctionExpression) | 
+	(parameter = ParameterName)
+;
+
+// Use this rule to add function names to the language as necessary.
+FunctionName: EXISTS;
+
 TerminalExpression returns BooleanExpression:
-  '(' BooleanExpression ')' |
+  LPAREN BooleanExpression RPAREN |
   ParameterExpression | 
   ConstantExpression
 ;
@@ -293,7 +306,7 @@ InformTransaction:
 InformBody:
     LBRACE
      	(preconditions = PreconditionsClause)?
-    	SENDER (sender = STRING)? sendAction = InformAction
+    	SENDER sendAction = InformAction
     	(RECEIVER)?
      	(postconditions = PostconditionsClause)?
     RBRACE
@@ -309,6 +322,7 @@ InformAction:
 InformMessage:
 	MESSAGE {InformMessage}
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = InformOptions)?	
 ;
 
@@ -316,28 +330,25 @@ InformVariant:
 	MESSAGE 
 	LANGLE variant = [TransactionVariant] RANGLE 
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = InformOptions)?
 ;
 
 InformOptions:
 	LBRACE
-		requires = RequiredFeatures
+		requires = InformFeatures
 	RBRACE
 ;
 
-RequiredFeatures:
-    REQUIRES LPAREN (features += RequiredFeature) (COMMA (features += RequiredFeature))? RPAREN
+InformFeatures: 
+    REQUIRES LPAREN (features += InformFeature) (COMMA (features += InformFeature))? RPAREN
 ;
 
-RequiredFeature: AuthorizationFeature | NonRepudiationFeature | ConfidentialityFeature | IntegrityFeature;
-
-AuthorizationFeature: authorization ?= AUTHORIZATION;
-
-NonRepudiationFeature: nonrepudiation ?= NONREPUDIATION;
-
-ConfidentialityFeature: confidentiality ?= CONFIDENTIALITY;
+InformFeature: IntegrityFeature | ConfidentialityFeature;
 
 IntegrityFeature: integrity ?= INTEGRITY;
+
+ConfidentialityFeature: confidentiality ?= CONFIDENTIALITY;
 
 NotifyTransaction:
     pattern = (NOTIFY | NOTIFICATION)
@@ -347,7 +358,7 @@ NotifyTransaction:
 NotifyBody:
     LBRACE
      	(preconditions = PreconditionsClause)?
- 		SENDER (sender = STRING)? sendAction = NotifyAction
+ 		SENDER sendAction = NotifyAction
  		(RECEIVER)?
     	(postconditions = PostconditionsClause)?
     RBRACE
@@ -365,6 +376,7 @@ NotifyMessage:
 	{NotifyMessage}
 	MESSAGE 
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = NotifyOptions)?
 ;
 
@@ -372,17 +384,26 @@ NotifyVariant:
 	MESSAGE 
 	LANGLE variant = [TransactionVariant] RANGLE 
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = NotifyOptions)?
 ;
 
 NotifyOptions:
 	{NotifyOptions}
 	LBRACE 
-		(requires = RequiredFeatures)?
+		(requires = NotifyFeatures)?
 		(timeouts = NotifyTimeOuts)?
 		(RETRIES EQUALS retries = INT)?
 	RBRACE
 ;
+
+NotifyFeatures:
+    REQUIRES LPAREN (features += NotifyFeature) (COMMA (features += NotifyFeature))? RPAREN
+;
+
+NotifyFeature: InformFeature | NonRepudiationFeature;
+
+NonRepudiationFeature: nonrepudiation ?= NONREPUDIATION;
 
 NotifyTimeOuts:
     TIMEOUTS LPAREN (timeouts += NotifyTimeOut) (COMMA (timeouts += NotifyTimeOut))? RPAREN
@@ -406,7 +427,7 @@ TimeUnit:
 ;
 
 Pattern:
-    (pattern = RESPONSE) | 
+    (pattern = RESPONSE) | (pattern = COMMAND) | 
     (pattern = CONFIRM) | (pattern = CONFIRMATION) |
     (pattern = QUERY) | 
     (pattern = OBLIGATION)
@@ -421,8 +442,8 @@ ResponseBody:
 	{ResponseBody}
     LBRACE 
      	(preconditions = PreconditionsClause)?
- 		(SENDER (sender = STRING)? sendAction = SendAction)?
- 		(RECEIVER (receiver = STRING)? receiveAction = ReceiveAction)?
+ 		(SENDER sendAction = SendAction)?
+ 		(RECEIVER receiveAction = ReceiveAction)?
     	(postconditions = PostconditionsClause)?
     RBRACE
 ;
@@ -438,6 +459,7 @@ SendAction:
 SendMessage:
 	MESSAGE {SendMessage}
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = SendOptions)?
 ;
 
@@ -445,16 +467,21 @@ SendVariant:
 	MESSAGE 
 	LANGLE variant = [TransactionVariant] RANGLE 
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = SendOptions)?
 ;
 
 SendOptions:
 	LBRACE {SendOptions}
-		(requires = RequiredFeatures)?
+		(requires = SendFeatures)?
 		(timeouts = SendTimeOuts)?
 		(RETRIES EQUALS retries = INT)?
 	RBRACE
 ;
+
+SendFeatures: NotifyFeatures | AuthorizationFeature;
+
+AuthorizationFeature: authorization ?= AUTHORIZATION;
 
 SendTimeOuts:
     TIMEOUTS LPAREN (timeouts += SendTimeOut) ((COMMA (timeouts += SendTimeOut)) (COMMA (timeouts += SendTimeOut))?)? RPAREN
@@ -476,6 +503,7 @@ ReceiveAction:
 SuccessMessage:
 	SUCCESS {SuccessMessage}
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = NotifyOptions)?
 ;
 
@@ -483,12 +511,14 @@ SuccessVariant:
 	SUCCESS 
 	LANGLE variant = [TransactionVariant] RANGLE 
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = NotifyOptions)?
 ;
 
 FailureMessage:
 	FAILURE {FailureMessage}
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = NotifyOptions)?
 ;
 
@@ -496,6 +526,7 @@ FailureVariant:
 	FAILURE 
 	LANGLE variant = [TransactionVariant] RANGLE 
 	(type = [RecordType | QualifiedName])?
+	(topic = STRING)?
 	(options = NotifyOptions)?
 ;
 
@@ -628,6 +659,7 @@ OR: '|' | '||' | 'or';
 NOT: '!' | 'not';
 TRUE: 'true';
 FALSE: 'false';
+EXISTS: 'exists';
 _ENTITY: 'entity';
 SUCCESS: 'success';
 FAILURE: 'failure';
@@ -639,7 +671,6 @@ IF: 'if';
 ELSE: 'else';
 NOOP: 'noop';
 MESSAGE: 'message';
-RESPONSE: 'response';
 TIMEOUTS: 'timeouts';
 RETRIES: 'retries';
 SENDER: 'sender';
@@ -649,6 +680,8 @@ INFORMATION: 'information';
 EVENT: 'event';
 NOTIFY: 'notify';
 NOTIFICATION: 'notification';
+RESPONSE: 'response';
+COMMAND: 'command';
 CONFIRM: 'confirm';
 CONFIRMATION: 'confirmation';
 QUERY: 'query';
