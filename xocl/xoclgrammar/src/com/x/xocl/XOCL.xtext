@@ -287,10 +287,9 @@ WorkflowVariantMapping: value = [ProcessVariant | QualifiedName];
 WorkflowRoleMapping: value = ([ProcessRole | QualifiedName]);
 
 Transaction:
-    _TRANSACTION name = ID
+    (broadcast ?= BROADCAST)? _TRANSACTION name = ID
     (LANGLE (variants += TransactionVariant) (COMMA variants += TransactionVariant)* RANGLE)?
     (LPAREN (parameters += TransactionParameter) (COMMA (parameters += TransactionParameter))* RPAREN)?
-    ((broadcast ?= BROADCAST)? & (aggregate ?= AGGREGATE)?)
     body = (InformTransaction | NotifyTransaction | ResponseTransaction)
 ;
 
