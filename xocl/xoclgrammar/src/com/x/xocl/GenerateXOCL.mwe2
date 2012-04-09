@@ -6,7 +6,7 @@ import org.eclipse.xtext.ui.generator.*
 
 var grammarURI = "classpath:/com/x/xocl/XOCL.xtext"
 var file.extensions = "xocl, xocld, xoclt, xoclp, xoclc"
-var projectName = "com.x.xocl"
+var projectName = "xoclgrammar"
 var runtimeProject = "../${projectName}"
 
 Workflow {
@@ -14,8 +14,9 @@ Workflow {
         scanClassPath = true
         platformUri = "${runtimeProject}/.."
         // The following two lines can be removed, if Xbase is not used.
-        registerGeneratedEPackage = "org.eclipse.xtext.xbase.XbasePackage"
-        registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
+		// TODO: verify that we don't need the below two lines
+        //registerGeneratedEPackage = "org.eclipse.xtext.xbase.XbasePackage"
+        //registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
     }
 
     component = DirectoryCleaner {
@@ -49,7 +50,8 @@ Workflow {
 
             // Serializer 2.0
             fragment = serializer.SerializerFragment {
-            	generateStub = false
+            	//TODO: Look into this to see why we cannot generate
+				//generateStub = false
             }
             
             // the serialization component (1.0)

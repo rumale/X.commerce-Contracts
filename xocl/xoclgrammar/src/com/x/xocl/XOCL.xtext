@@ -81,10 +81,6 @@ PreconditionsClause:
 	RPAREN
 ;
 
-ParameterExpression:
-	value = ParameterName LBRACK state = [EntityState | QualifiedName] RBRACK
-;
-
 Entity:
     _ENTITY name = ID 
     (LBRACE (states += EntityState)+ RBRACE)?
@@ -109,11 +105,11 @@ PostconditionsClause:
 OnProcessResult: OnProcessSuccess | OnProcessFailure;
 
 OnProcessSuccess:
-    SUCCESS LPAREN (conditions += ParameterExpression) (COMMA conditions += ParameterExpression)* RPAREN
+    SUCCESS LPAREN (conditions += BooleanExpression) (COMMA conditions += BooleanExpression)* RPAREN
 ;
 
 OnProcessFailure:
-    FAILURE LPAREN (conditions += ParameterExpression) (COMMA conditions += ParameterExpression)* RPAREN
+    FAILURE LPAREN (conditions += BooleanExpression) (COMMA conditions += BooleanExpression)* RPAREN
 ;
 
 Workflow: AnonymousWorkflow | NamedWorkflow;
@@ -226,6 +222,22 @@ NegationOperator: NOT;
 
 LogicalOperator: AND | OR;
 
+TerminalExpression returns BooleanExpression:
+  LPAREN BooleanExpression RPAREN |
+  ParameterExpression | 
+  ConstantExpression
+;
+
+ParameterExpression:
+	value = ParameterName LBRACK state = [EntityState | QualifiedName] RBRACK
+;
+
+ConstantExpression: TrueExpression | FalseExpression;
+
+TrueExpression: value = TRUE;
+
+FalseExpression: value = FALSE;
+
 FunctionExpression:
 	function = FunctionName LPAREN ((arguments += FunctionArgument) (COMMA arguments += FunctionArgument)*)? RPAREN
 ;
@@ -237,18 +249,6 @@ FunctionArgument:
 
 // Use this rule to add function names to the language as necessary.
 FunctionName: EXISTS;
-
-TerminalExpression returns BooleanExpression:
-  LPAREN BooleanExpression RPAREN |
-  ParameterExpression | 
-  ConstantExpression
-;
-
-ConstantExpression: TrueExpression | FalseExpression;
-
-TrueExpression: value = TRUE;
-
-FalseExpression: value = FALSE;
 
 ActionElement: NoopAction | TransactionCall | WorkflowCall;
 
@@ -287,7 +287,7 @@ WorkflowVariantMapping: value = [ProcessVariant | QualifiedName];
 WorkflowRoleMapping: value = ([ProcessRole | QualifiedName]);
 
 Transaction:
-    (broadcast ?= BROADCAST)? _TRANSACTION name = ID
+    _TRANSACTION name = ID
     (LANGLE (variants += TransactionVariant) (COMMA variants += TransactionVariant)* RANGLE)?
     (LPAREN (parameters += TransactionParameter) (COMMA (parameters += TransactionParameter))* RPAREN)?
     body = (InformTransaction | NotifyTransaction | ResponseTransaction)
@@ -350,6 +350,7 @@ IntegrityFeature: integrity ?= INTEGRITY;
 ConfidentialityFeature: confidentiality ?= CONFIDENTIALITY;
 
 NotifyTransaction:
+	(broadcast ?= BROADCAST)?
     pattern = (NOTIFY | NOTIFICATION)
     (body = NotifyBody)?
 ;
@@ -425,16 +426,17 @@ TimeUnit:
 	(unit = DAYS)
 ;
 
-Pattern:
-    (pattern = RESPONSE) | (pattern = COMMAND) | 
-    (pattern = CONFIRM) | (pattern = CONFIRMATION) |
-    (pattern = QUERY) | 
-    (pattern = OBLIGATION)
-;
-
 ResponseTransaction:
+	(broadcast ?= BROADCAST)?
     pattern = Pattern
     (body = ResponseBody)?
+;
+
+Pattern:
+    (pattern = RESPONSE) | (pattern = COMMAND) | 
+    (pattern = QUERY)
+//    (pattern = CONFIRM) | (pattern = CONFIRMATION) |
+//    (pattern = OBLIGATION)
 ;
 
 ResponseBody:
