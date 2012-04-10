@@ -30,7 +30,8 @@ WildcardImport: PackageName PERIOD ASTERISK?;
 ElementImport: PackageName PERIOD ID;
 
 Contract:
-    _CONTRACT name = ID (EXTENDS extends = [Contract | QualifiedName])?
+    _CONTRACT name = ID 
+    (EXTENDS extends += [Contract | QualifiedName] (COMMA extends += [Contract | QualifiedName])*)?
     LBRACE
         DESCRIPTION description = STRING
         ROLES
@@ -212,10 +213,9 @@ ElseElement:
     RBRACE
 ;
 
-BooleanExpression :
-	({UnaryExpression} negation ?= NegationOperator operand = BooleanExpression) |
-	(TerminalExpression ({BinaryExpression.leftOperand=current} operator = LogicalOperator rightOperand = BooleanExpression)?) | 
-	FunctionExpression
+BooleanExpression:
+	(operator = NegationOperator leftOperand = BooleanExpression) |
+	(TerminalExpression ({BinaryExpression.leftOperand=current} operator = LogicalOperator rightOperand = BooleanExpression)?)
 ;
 
 NegationOperator: NOT;
@@ -223,13 +223,14 @@ NegationOperator: NOT;
 LogicalOperator: AND | OR;
 
 TerminalExpression returns BooleanExpression:
+  FunctionExpression |
   LPAREN BooleanExpression RPAREN |
-  ParameterExpression | 
-  ConstantExpression
+  ConstantExpression | 
+  ParameterExpression 
 ;
 
 ParameterExpression:
-	value = ParameterName LBRACK state = [EntityState | QualifiedName] RBRACK
+	value = [Parameter | QualifiedName] LBRACK state = [EntityState | QualifiedName] RBRACK
 ;
 
 ConstantExpression: TrueExpression | FalseExpression;
@@ -244,7 +245,7 @@ FunctionExpression:
 
 FunctionArgument: 
 	(expression = FunctionExpression) | 
-	(parameter = ParameterName)
+	(parameter = [Parameter | QualifiedName])
 ;
 
 // Use this rule to add function names to the language as necessary.
