@@ -47,6 +47,7 @@ protocol Advance {
 		com.x.ocl.CurrencyAmount available;
 		com.x.ocl.CurrencyAmount balance;
 		com.x.ocl.CurrencyAmount increment;
+		com.x.ocl.CurrencyAmount minimumDue;
 	}
 
 	record Payment {
@@ -60,7 +61,7 @@ protocol Advance {
 	}
 	
 	record Segment {
-		string segmentNumber;                  //Need to verify 'segment' is an industry term           
+		string segmentNumber;                   //Identifies the specific advance within the umbrella account      
 		FundingDetail fundingInfo;
 		array<Payment> payments;
 	}
@@ -96,9 +97,6 @@ protocol Advance {
 	//  THE SECTION BELOW CONTAINS THE SUPPORTED TOPICS/MESSAGES
 	//###########################################################
 
-	/*
-	 * This message notifies the Magento capability that the adapter has been a record of the tenant.
-	 */
 	@topic("/incubator/advance/customerOnboard")
 	@version("1.0.0")
 	record CustomerOnboard {
@@ -145,7 +143,7 @@ protocol Advance {
 		This message is published by the adapter. It publishes one or more advances resulting from a search.
 	*/
 	@topic("/incubator/advance/funding/searchSucceeded")
-	@version("1.0.0")
+	@version("1.1.0")
 	record SearchFundingSucceeded {
 		array<Segment> segments;
 	}
