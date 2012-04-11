@@ -5,13 +5,17 @@ generate domainmodel "http://xocl.x.com/XOCL"
 DomainModel: elements += Package;
 
 Package:
-    _PACKAGE name = PackageName
+    _PACKAGE name = PackageName (VersionNumber)?
     LBRACE
         (members += PackageMember)+
     RBRACE
 ;
 
 PackageName: ID (PERIOD ID)* PERIOD VERSION;
+
+VersionNumber: FLOATVALUE;
+
+QualifiedName: (PackageName PERIOD)? ID (PERIOD ID)*;
 
 PackageMember:
 	Import |
@@ -40,8 +44,6 @@ Contract:
     	RBRACE
     RBRACE
 ;
-
-QualifiedName: ID (PERIOD ID)*;
 
 Responsibility:
 	role = [ProcessRole | QualifiedName] 
