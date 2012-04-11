@@ -85,15 +85,21 @@ protocol ProductInformationManagementCapability
         union {ProductTypeAttributeValue, CustomAttributeValue} attributeValue;
     }
   
+    enum ImageTag{
+    	THUMBNAIL
+    }
+  
+  
     record Image
     {
-        string url;
+    string url;
     // height in pixel
     union {null, int} height = null;
     // width in pixel
     union {null, int} width = null;
     union {null, LocalizedString} label = null;
     union {null, LocalizedString} altText = null;
+    union {null, array<ImageTag>} tags = null;
     }
 
     //
@@ -103,23 +109,8 @@ protocol ProductInformationManagementCapability
     {
         //unique identifier of the SKU
         string sku;
-        // ID of the product for this SKU (required)
-        string productId;
-        // Manufacturer suggested retail price, override the field in Product
-        union {null, com.x.core.v1.CurrencyAmount} MSRP = null;
-        // Minimal advertisement price, override the field in Product
-        union {null, com.x.core.v1.CurrencyAmount} MAP = null;
-        // variation attributes, the list must match the variationAttributeIds in Product 
-        union {null, array<ProductAttributeValue>} variationAttributeValues = null;
-        // SKU specific images 
-        union {null, array<Image>} images = null;
-        
-    }
-    
-    record SKUData
-    {
-        // ID of the product for this SKU (required)
-        string productId;
+        // ID of the product for this SKU 
+        union{null, string} productId;
         // Manufacturer suggested retail price, override the field in Product
         union {null, com.x.core.v1.CurrencyAmount} MSRP = null;
         // Minimal advertisement price, override the field in Product
@@ -371,7 +362,7 @@ protocol ProductInformationManagementCapability
     @version("1.1.0")
     record CreateSKU
     {
-        array<SKUData> sku;
+        array<SKU> sku;
     }
     
     @topic("/com.x.pim.v1/ProductUpdate/CreateSKUFailed")
