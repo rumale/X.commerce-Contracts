@@ -84,11 +84,26 @@ protocol Advance {
 		string advanceOfferDetailsURL;
 	}
 
+	record Statement
+	{
+	  long statementDate;
+	  string statementTitle;
+	  string statementFormat; 
+	  union {string,bytes} statementData; 
+	}
 	
 	//###########################################################
 	//  THE SECTION BELOW CONTAINS THE SUPPORTED TOPICS/MESSAGES
 	//###########################################################
 
+	/*
+	 * This message notifies the Magento capability that the adapter has been a record of the tenant.
+	 */
+	@topic("/incubator/advance/customerOnboard")
+	@version("1.0.0")
+	record CustomerOnboard {
+	}
+	
 	/*
 		This message carries the merchant's volume on marketplaces to establish a pre-approval amount.
 	*/
@@ -283,7 +298,38 @@ protocol Advance {
 	record GetAdvanceOffer {
 	}
 
+	/* 
+	 * This topic provides account user data to Magento from the adapter. 
+	 */
+	@topic("/incubator/advance/thirdParty/userMetadata")
+	record UserMetadataRecord {
+	  map <string> userDataMap;
+	}
 
+	
+	/* 
+	 * These topics allow a search for Statements related to a merchant's account 
+	 */
+	@topic("/incubator/advance/statements/search")
+	@version("1.0.0") 
+	record SearchStatements {
+	}
+
+
+	@topic("/incubator/advance/statements/searchSucceeded")
+	@version("1.0.0") 
+	record SearchStatementsSucceeded
+	{
+	  array<Statement> statements;
+	}	
+
+	
+	@topic("/incubator/advance/statements/searchFailed")
+	@version("1.0.0") 
+	record SearchStatementsFailed {
+	        array<com.x.ocl.Error> errors;
+    	}
+	
 	/* 
 	 * These topics allow a merchant to make payments on a segment outside of the normally scheduled payments.
 	 */
@@ -318,5 +364,7 @@ protocol Advance {
 		com.x.ocl.CurrencyAmount amount;
 		array<com.x.ocl.Error> errors;
  	}
+ 	
+ 	
 }
 
