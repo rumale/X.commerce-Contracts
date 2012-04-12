@@ -53,6 +53,7 @@ protocol Advance {
 		com.x.ocl.CurrencyAmount balance;
 		com.x.ocl.CurrencyAmount increment;
 		com.x.ocl.CurrencyAmount minimumDue;
+		long minimumDueDate;
 	}
 
 	record Payment {
@@ -148,7 +149,7 @@ protocol Advance {
 		This message is published by the adapter. It publishes one or more advances resulting from a search.
 	*/
 	@topic("/incubator/advance/funding/searchSucceeded")
-	@version("1.1.0")
+	@version("1.2.0")
 	record SearchFundingSucceeded {
 		array<Segment> segments;
 	}
