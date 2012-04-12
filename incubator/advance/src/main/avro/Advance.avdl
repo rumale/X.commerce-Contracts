@@ -40,6 +40,11 @@ protocol Advance {
 		LLC,
 		PROFESSIONAL_CORPORATION
 	}
+	
+	record BankAccountInformation {
+		string accountNumber;
+		string routingNumber;
+	}
 
 	
 	record FundingDetail {
@@ -189,13 +194,14 @@ protocol Advance {
 		This message is published by the extension.
 	*/
 	@topic("/incubator/advance/businessProfile/create")
-	@version("1.0.0")
+	@version("1.1.0")
 	record BusinessDetail {
 		string name;
 		BusinessStructure structure;
 		string identificationNumber;
 		com.x.ocl.Address address;
 		com.x.ocl.Phone phone;
+		BankAccountInformation bankAccountInformation;
 	}
 	
 	/* 
@@ -300,6 +306,7 @@ protocol Advance {
 	 * This topic provides account user data to Magento from the adapter. 
 	 */
 	@topic("/incubator/advance/thirdParty/userMetadata")
+	@version("1.0.0") 
 	record UserMetadataRecord {
 	  map <string> userDataMap;
 	}
