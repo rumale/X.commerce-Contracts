@@ -499,7 +499,7 @@ ReceiveAction:
 	LBRACE {ReceiveAction}
 		(success = SuccessMessage)?
     	(successVariants += SuccessVariant)*
-    	(faiure = FailureMessage)?
+    	(failure = FailureMessage)?
     	(failureVariants += FailureVariant)*
 	RBRACE
 ;
