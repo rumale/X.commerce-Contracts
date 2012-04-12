@@ -316,7 +316,7 @@ InformBody:
 
 InformAction:
     LBRACE {InformAction}
-		(messages += InformMessage)?
+		(message = InformMessage)?
     	(variants += InformVariant)*
     RBRACE	
 ;
@@ -370,7 +370,7 @@ NotifyBody:
 NotifyAction: 
 	{NotifyAction}
     LBRACE 
-    	(messages += NotifyMessage)?
+    	(message = NotifyMessage)?
     	(variants += NotifyVariant)*
     RBRACE
 ;
@@ -455,7 +455,7 @@ ResponseBody:
 SendAction: 
 	{SendAction}
     LBRACE 
-    	(messages += SendMessage)?
+    	(message = SendMessage)?
     	(variants += SendVariant)*
     RBRACE
 ;
@@ -497,10 +497,10 @@ ResponseTimeOut: RESPONSE EQUALS timeout = TimeOut;
 
 ReceiveAction:
 	LBRACE {ReceiveAction}
-		(messages += SuccessMessage)?
-    	(variants += SuccessVariant)*
-    	(messages += FailureMessage)?
-    	(variants += FailureVariant)*
+		(success = SuccessMessage)?
+    	(successVariants += SuccessVariant)*
+    	(faiure = FailureMessage)?
+    	(failureVariants += FailureVariant)*
 	RBRACE
 ;
 
