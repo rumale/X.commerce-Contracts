@@ -18,7 +18,7 @@ protocol Core {
         ValidationError, // The sender was not able to validate the message.
         ResponseTimedOut, // The sender timed out waiting for a response.
         ResponseOutOfSequence, // The sender received a response unexpectedly.
-        MessageOutOfSequence, // The sender received a message unexpectedly.
+        MessageOutOfSequence // The sender received a message unexpectedly.
     }
     
     /*
