@@ -31,6 +31,7 @@ protocol Common {
 		string message;
 	}
 
+	@security("Confidential")
 	record OrderCustomerInfo {
 		string channelAssignedCustomerId;
 		union{null,com.x.ocl.Email} email = null;
@@ -74,6 +75,7 @@ protocol Common {
 		union{null,array<PromotionalDiscount>} discounts = null;
 	}
 	
+	@security("Confidential")
 	record ShipTo {
 		com.x.ocl.Name name;
 		com.x.ocl.Address address;
@@ -127,7 +129,7 @@ protocol Common {
 		OrderItemPriceInfo price;
 		
 		/** If specified, override the destination defined on the Order header */
-		union{null,ShipTo} destination = null;
+		union{null,ShipTo} @security("Confidential") destination = null;
 		
 		/** Defined once the item is shipped. */		
 		union{null,string} shipmentId = null; 
@@ -149,7 +151,7 @@ protocol Common {
 		string @query("true") sourceId;
 		OrderStatus @query("true") status;
 		
-		OrderCustomerInfo customer;
+		OrderCustomerInfo @security("Confidential") customer;
 		union{null,Address} billingAddress = null;
 
 		/** The total paid by the customer (total of items, fees, taxes, etc.) */ 
@@ -168,7 +170,7 @@ protocol Common {
 		array<OrderItem> orderItems;
 		
 		/** if not provided, use ShipTo info on OrderItem */
-		union{null,ShipTo} destination = null;
+		union{null,ShipTo} @security("Confidential") destination = null;
 		union{null,array<Shipment>} shipments = null;
 		
 		union{null,com.x.ocl.EmbeddedObject} extension = null;
