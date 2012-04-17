@@ -37,7 +37,9 @@ release() {
     rm -rf OntologyTrunkForTagging
 	svn co --trust-server-cert  --non-interactive $REPO OntologyTrunkForTagging
 	cd OntologyTrunkForTagging
+	set +x 
 	mvn --batch-mode release:prepare -Dusername=$SVN_USER -Dpassword=$SVN_PASS
+	set -x
 	cd ..
 }
 
