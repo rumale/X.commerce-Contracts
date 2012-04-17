@@ -25,21 +25,23 @@ Example: $0 -u johndoe -p secret -r https://svn.corp.x.com:8080/svn/x/Ontology/t
 EOF
 }
 
-verify_install{
+verify_install() {
     rm -rf OntologyTrunk
 	svn co $REPO OntologyTrunk
 	cd OntologyTrunk
 	mvn install
+	cd ..
 }
 
-release{
+release() {
     rm -rf OntologyTrunkForTagging
-	svn co $REPO OntologyTrunkForTagging
+	svn co --trust-server-cert  --non-interactive $REPO OntologyTrunkForTagging
 	cd OntologyTrunkForTagging
 	mvn --batch-mode release:prepare -Dusername=$SVN_USER -Dpassword=$SVN_PASS
+	cd ..
 }
 
-build_deploy{
+build_deploy() {
 	rm -rf OntologyTrunkTagged
 	str=`svn --trust-server-cert  --non-interactive log $TAGBASE --limit 1| grep ontology`
 	tag=${str##*ontology-}
@@ -47,6 +49,7 @@ build_deploy{
 	svn co $RELEASE_TAG_URL OntologyTrunkTagged
 	cd OntologyTrunkTagged
 	mvn install deploy
+	cd ..
 }
 
 while getopts u:p:hrt OPTION
