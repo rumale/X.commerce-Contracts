@@ -64,6 +64,7 @@ protocol Advance {
 		com.x.ocl.CurrencyAmount fee;
 		PaymentStatus status;
 		string message;				//used to elaborate on FAILED and PASTDUE
+		string type;
 	}
 	
 	record Segment {
@@ -149,7 +150,7 @@ protocol Advance {
 		This message is published by the adapter. It publishes one or more advances resulting from a search.
 	*/
 	@topic("/incubator/advance/funding/searchSucceeded")
-	@version("1.2.0")
+	@version("1.3.0")
 	record SearchFundingSucceeded {
 		array<Segment> segments;
 	}
