@@ -18,6 +18,7 @@ protocol Customer {
 		UNKNOWN
 	}
 	
+	
 	enum CustomerStatus {
 		NEW,
 		WARM,
