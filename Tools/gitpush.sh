@@ -30,14 +30,40 @@ Example: $0 -u johndoe -m johndoe@x.com -l https://svn.corp.x.com:8080/svn/x/Ont
 EOF
 }
 
-SVN_REPO=https://svn.corp.x.com:8080/svn/x/Ontology/trunk/
-GIT_REPO=git@github.com:xcommerce/X.commerce-Contracts
-GIT_USER=rumale
-GIT_USER_EMAIL=rumale@x.com
-GIT_USER_NAME=Ramashri Umale
-GIT_USER_KEYFILE_PATH=~/tmp/ontology/id_rsa
+init_git() {	
+	svn2git $SVN_REPO --verbose
+	git tag
+}
 
-while getopts l:r:t:k:humnk OPTION
+configure_git() {
+	git config user.name $GIT_USER_NAME
+	git config user.email $GIT_USER_EMAIL
+	git config github.user $GIT_USER	
+}
+
+configure_ssh() {
+	rm -rf ~/tmpssh
+	mkdir ~/tmpssh
+	cat $GIT_USER_KEYFILE_PATH >> ~/tmpssh/id_rsa
+	chmod 600 ~/tmpssh/id_rsa
+	mv ~/.ssh/config ~/.ssh/config_old
+	echo "Host github.com" >> ~/.ssh/config
+	echo "  IdentityFile ~/tmpssh/id_rsa" >> ~/.ssh/config
+}
+
+reset_ssh_config() {
+	rm -rf ~/.ssh/config
+	mv ~/.ssh/config_old ~/.ssh/config
+}
+
+git_sync() {
+	git remote add origin $GIT_REPO
+	git pull origin master
+	git push origin master
+	git push origin tag $GIT_TAG	
+}
+
+while getopts l:r:t:k:u:m:n:h OPTION
 do
      case $OPTION in
          h)
@@ -71,53 +97,51 @@ do
              ;;
      esac
 done
+shift $(($OPTIND - 1))
 
-if [[ -z "$GIT_TAG" ]] || 
+if [[ -z "$GIT_TAG" ]]
 then
      usage
      exit 1
 fi
 
-init_git{
-	rm -rf gitsync
-	mkdir gitsync
-	cd gitsync
-	svn2git $SVN_REPO --verbose
-	git tag
-	cd ..
-}
+if [[ -z "$SVN_REPO" ]]
+then
+     SVN_REPO=https://svn.corp.x.com:8080/svn/x/Ontology
+fi
 
-configure_git{
-	git config user.name $GIT_USER_NAME
-	git config user.email $GIT_USER_EMAIL
-	git config github.user $GIT_USER	
-}
+if [[ -z "$GIT_REPO" ]]
+then
+     GIT_REPO=git@github.com:johndoe/X.commerce-Contracts
+fi
 
-configure_ssh{
-	rm -rf ~/tmpssh
-	mkdir ~/tmpssh
-	cat $GIT_USER_KEYFILE_PATH >> ~/tmpssh/id_rsa
-	mv ~/.ssh/config ~/.ssh/config_old
-	echo "Host github.com" >> ~/.ssh/config
-	echo "  IdentityFile ~/tmpssh/id_rsa" >> ~/.ssh/config
-}
+if [[ -z "$GIT_USER" ]]
+then
+     GIT_USER=johndoe
+fi
 
-reset_ssh_config{
-	rm -rf ~/.ssh/config
-	mv ~/.ssh/config_old ~/.ssh/config
-}
+if [[ -z "$GIT_USER_EMAIL" ]]
+then
+     GIT_USER_EMAIL=johndoe@x.com
+fi
 
-git_sync{
-	cd gitsync
-	git remote add origin $GIT_REPO
-	git pull origin master
-	git push origin master
-	git push origin tag $GIT_TAG	
-	cd ..
-}
+if [[ -z "$GIT_USER_NAME" ]]
+then
+     GIT_USER_NAME="John Doe"
+fi
+
+if [[ -z "$GIT_USER_KEYFILE_PATH" ]]
+then
+     GIT_USER_KEYFILE_PATH="keyfile/id_rsa"
+fi
+
 set -xe
 configure_ssh
+rm -rf gitsync
+mkdir gitsync
+cd gitsync
 init_git
 configure_git
 git_sync
+cd ..
 reset_ssh_config
