@@ -25,28 +25,28 @@ protocol Customer {
 		COLD
 	}
 
-	@security("Confidential")
+	@security("confidential")
 	record ShippingContact{
-		com.x.ocl.Name @security("Confidential") fullName;
-		com.x.ocl.Address @security("Confidential") address;
-		union {null, com.x.ocl.Phone} @security("Confidential") phone = null;
+		com.x.ocl.Name @security("confidential") fullName;
+		com.x.ocl.Address @security("confidential") address;
+		union {null, com.x.ocl.Phone} @security("confidential") phone = null;
 	}
 	
-	@security("Confidential")
+	@security("confidential")
 	record Customer {
 	    
 	    /** null on create in the system of record, not null after created */
 		union{null, string} customerId = null; 
 	
-		com.x.ocl.Name @security("Confidential") fullName;	   
+		com.x.ocl.Name @security("confidential") fullName;	   
 	    
-	    union {null, com.x.ocl.Address} @security("Confidential") billingAddress = null;
+	    union {null, com.x.ocl.Address} @security("confidential") billingAddress = null;
 		
-		union {null, com.x.ocl.Phone} @security("Confidential") primaryPhone = null;
+		union {null, com.x.ocl.Phone} @security("confidential") primaryPhone = null;
 	    
-	    array<com.x.ocl.Phone> @security("Confidential") additionalPhones = null;
+	    array<com.x.ocl.Phone> @security("confidential") additionalPhones = null;
 		
-		union {null, com.x.ocl.Email} @security("Confidential") emailAddress = null;   		
+		union {null, com.x.ocl.Email} @security("confidential") emailAddress = null;   		
 		
 	    union {null, string} company;  
 		
@@ -66,14 +66,14 @@ protocol Customer {
 		union{null, string} lastActivityDate;
 			
 	    /** Date Time Format: ISO 8601 */
-		union{null, string} @security("Confidential") birthday = null;
+		union{null, string} @security("confidential") birthday = null;
 		
 		CustomerStatus status; 
 	    
 	    /** map of source system to source Id. This is used for audit purposes, to indicate where the customer came from in the flow */
 	    union{null, map<string>} sourceIds;
 
-		array<ShippingContact> @security("Confidential") shippingContacts;
+		array<ShippingContact> @security("confidential") shippingContacts;
 	}
 	
 	@topic("/customer/create")
