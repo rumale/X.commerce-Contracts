@@ -15,18 +15,17 @@
 usage()
 {
 cat << EOF
-usage: $0 [required-options] [optional-options]
+usage: $0 [options]
 
 OPTIONS:
    -h      show this message  
-   -l      svn url <optional>
-   -r      git url <optioanl>
+   -r      project bame (ontology/xocl/xocl-incubator)
    -t      git tag name    
-   -u      git userid <optional>
-   -m      git user email <optional>
-   -n      git user name <optional>
-   -k      git keyfile path <optional>
-Example: $0 -u johndoe -m johndoe@x.com -l https://svn.corp.x.com:8080/svn/x/Ontology -r git@github.com:xcommerce/X.commerce-Contracts -t release22
+   -u      git userid
+   -m      git user email
+   -n      git user name
+   -k      git keyfile path
+Example: $0 -u johndoe -m johndoe@x.com -n "John Doe" -r ontology -t release22
 EOF
 }
 
@@ -60,21 +59,18 @@ git_sync() {
 	git remote add origin $GIT_REPO
 	git pull origin master
 	git push origin master
-	git push origin tag $GIT_TAG	
+	git push origin $GIT_TAG	
 }
 
-while getopts l:r:t:k:u:m:n:h OPTION
+while getopts r:t:u:k:m:n:h OPTION
 do
      case $OPTION in
          h)
              usage
              exit 1
              ;;
-         l)
-             SVN_REPO=$OPTARG
-             ;;
          r)
-             GIT_REPO=$OPTARG
+             PROJ=$OPTARG
              ;;
          t)
              GIT_TAG=$OPTARG
@@ -99,43 +95,27 @@ do
 done
 shift $(($OPTIND - 1))
 
-if [[ -z "$GIT_TAG" ]]
+if [[ -z "$GIT_TAG" ]] || [[ -z "$PROJ" ]] || [[ -z "$GIT_USER" ]] || [[ -z "$GIT_USER_EMAIL" ]] || [[ -z "$GIT_USER_NAME" ]] || [[ -z "$GIT_USER_KEYFILE_PATH" ]]
 then
      usage
      exit 1
 fi
 
-if [[ -z "$SVN_REPO" ]]
+if [[ "$PROJ" != "ontology" ]] && [[ "$PROJ" != "xocl" ]] && [[ "$PROJ" != "xocl-incubator" ]]
 then
-     SVN_REPO=https://svn.corp.x.com:8080/svn/x/Ontology
-fi
-
-if [[ -z "$GIT_REPO" ]]
-then
-     GIT_REPO=git@github.com:johndoe/X.commerce-Contracts
-fi
-
-if [[ -z "$GIT_USER" ]]
-then
-     GIT_USER=johndoe
-fi
-
-if [[ -z "$GIT_USER_EMAIL" ]]
-then
-     GIT_USER_EMAIL=johndoe@x.com
-fi
-
-if [[ -z "$GIT_USER_NAME" ]]
-then
-     GIT_USER_NAME="John Doe"
-fi
-
-if [[ -z "$GIT_USER_KEYFILE_PATH" ]]
-then
-     GIT_USER_KEYFILE_PATH="keyfile/id_rsa"
+	usage
+	exit 1
 fi
 
 set -xe
+declare -A svn_repos
+svn_repos=( ["ontology"]="https://svn.corp.x.com:8080/svn/x/Ontology" ["xocl"]="https://svn.corp.x.com:8080/svn/x/xocl" ["xocl-incubator"]="https://svn.corp.x.com:8080/svn/x/xocl")
+SVN_REPO="${svn_repos["${PROJ}"]}"
+
+declare -A git_repos
+git_repos=( ["ontology"]="git@github.com:xcommerce/X.commerce-Contracts" ["xocl"]="git@github.com:xcommerce/XOCL" ["xocl-incubator"]="git@github.com:xcommerce/XOCL")
+GIT_REPO="${git_repos["${PROJ}"]}"
+
 configure_ssh
 rm -rf gitsync
 mkdir gitsync
