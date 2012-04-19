@@ -76,9 +76,6 @@ do
      esac
 done
 
-ONTOLOGY="ontology"
-XOCL="xocl"
-INCUBATOR="xocl-incubator"
 
 if [[ -z "$SVN_USER" ]] || [[ -z "$SVN_PASS" ]] || [[ -z "$PROJ" ]]
 then
